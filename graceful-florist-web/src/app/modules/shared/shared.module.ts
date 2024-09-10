@@ -20,14 +20,18 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {CommonModule} from '@angular/common';
+import {AsyncPipe, CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatTabsModule} from '@angular/material/tabs';
+import {TabCategoryComponent} from './components/tab-category/tab-category.component';
+import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [TabCategoryComponent, AutocompleteComponent],
   imports: [
+    AsyncPipe,
     CommonModule,
     HttpClientModule,
     RouterModule,
@@ -54,7 +58,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MatDividerModule,
     MatIconModule,
     MatChipsModule,
-    MatCardModule
+    MatCardModule,
+    MatTabsModule
   ],
   exports: [
     HttpClientModule,
@@ -82,7 +87,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MatDividerModule,
     MatIconModule,
     MatChipsModule,
-    MatCardModule
+    MatCardModule,
+    MatTabsModule,
+    AutocompleteComponent
   ]
 })
 export class SharedModule {}

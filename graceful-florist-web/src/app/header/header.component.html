@@ -1,1 +1,51 @@
-<p>graceful-florist-header works!</p>
+<div class="flex justify-between my-2.5">
+    <!--  Logo  -->
+    <div class="flex flex-col items-center justify-around">
+        <div
+            style="
+                color: #ff3f5f;
+                font-size: 32px;
+                font-style: normal;
+                font-weight: 900;
+                line-height: 150%; /* 48px */
+                text-transform: uppercase;
+            "
+        >
+            Graceful Florist
+        </div>
+        <div
+            style="
+                color: #ff3f5f;
+                font-size: 15px;
+                font-style: normal;
+                font-weight: 900;
+                line-height: 150%; /* 22.5px */
+                text-transform: uppercase;
+            "
+        >
+            Flower Speak Your Language
+        </div>
+    </div>
+    <!--  Navigations  -->
+    <div class="flex flex-row justify-between items-center">
+        <button mat-button>Tra Cứu Đơn Hàng</button>
+        <button mat-button>Sản Phẩm</button>
+        <button mat-button>Thiết Kế Hoa</button>
+    </div>
+    <!--  Search, User & Cart  -->
+    <div class="flex flex-row">
+        <graceful-florist-autocomplete></graceful-florist-autocomplete>
+        <button
+            mat-icon-button
+            aria-label="Example icon button with a user icon"
+        >
+            <mat-icon color="accent">person</mat-icon>
+        </button>
+        <button
+            mat-icon-button
+            aria-label="Example icon button with a cart icon"
+        >
+            <mat-icon color="accent">shopping_cart</mat-icon>
+        </button>
+    </div>
+</div>

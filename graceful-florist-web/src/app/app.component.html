@@ -1,3 +1,9 @@
-<graceful-florist-header />
-<router-outlet></router-outlet>
-<graceful-florist-footer />
+<div class="container mx-auto h-screen flex flex-col">
+    <graceful-florist-header class="sticky z-50 top-0" />
+
+    <div class="flex flex-1 overflow-auto">
+        <router-outlet></router-outlet>
+    </div>
+
+    <graceful-florist-footer class="z-50 bottom-0" />
+</div>

@@ -10,7 +10,7 @@ $pink-palette: (
   200: #f48fb1,
   300: #f06292,
   400: #ec407a,
-  500: #e91e63,
+  500: #FF3F5F,
   600: #d81b60,
   700: #c2185b,
   800: #ad1457,
@@ -78,7 +78,7 @@ $grey-palette: (
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $graceful-florist-web-primary: mat.define-palette($pink-palette);
-$graceful-florist-web-accent: mat.define-palette($grey-palette);
+$graceful-florist-web-accent: mat.define-palette($pink-palette);
 
 // The warn palette is optional (defaults to red).
 $graceful-florist-web-warn: mat.define-palette(mat.$red-palette);
