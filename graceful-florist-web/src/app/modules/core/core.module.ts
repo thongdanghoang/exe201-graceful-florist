@@ -5,10 +5,12 @@ import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {throwIfAlreadyLoaded} from './module-import-guard';
 import {ApplicationService} from './application.service';
+import {BrowserModule} from '@angular/platform-browser';
 
 @NgModule({
   declarations: [],
   imports: [
+    BrowserModule,
     CommonModule,
     HttpClientModule,
     RouterModule,

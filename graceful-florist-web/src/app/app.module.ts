@@ -8,16 +8,18 @@ import {provideNativeDateAdapter} from '@angular/material/core';
 
 import {CoreModule} from './modules/core/core.module';
 import {SharedModule} from './modules/shared/shared.module';
-import {GracefulFloristHeaderComponent} from './graceful-florist-header/graceful-florist-header.component';
-import {GracefulFloristFooterComponent} from './graceful-florist-footer/graceful-florist-footer.component';
+import {HeaderComponent} from './header/header.component';
+import {FooterComponent} from './footer/footer.component';
+import {HomepageComponent} from './homepage/homepage.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GracefulFloristHeaderComponent,
-    GracefulFloristFooterComponent
+    HeaderComponent,
+    HomepageComponent,
+    FooterComponent
   ],
-  imports: [AppRoutingModule, BrowserModule, CoreModule, SharedModule],
+  imports: [BrowserModule, AppRoutingModule, CoreModule, SharedModule],
   providers: [provideAnimationsAsync(), provideNativeDateAdapter()],
   bootstrap: [AppComponent]
 })

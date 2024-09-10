@@ -19,13 +19,20 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatStepperModule} from '@angular/material/stepper';
-import {CoreModule} from '../core/core.module';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {CommonModule} from '@angular/common';
+import {HttpClientModule} from '@angular/common/http';
+import {RouterModule} from '@angular/router';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [],
   imports: [
-    CoreModule,
+    CommonModule,
+    HttpClientModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatTableModule,
     MatCheckboxModule,
     MatTooltipModule,
@@ -50,6 +57,10 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatCardModule
   ],
   exports: [
+    HttpClientModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatTableModule,
     MatCheckboxModule,
     MatTooltipModule,
