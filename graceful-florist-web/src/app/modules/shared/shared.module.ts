@@ -27,9 +27,14 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatTabsModule} from '@angular/material/tabs';
 import {TabCategoryComponent} from './components/tab-category/tab-category.component';
 import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
+import {GracefulFloristDateTimePickerComponent} from './components/date-time-picker/graceful-florist-date-time-picker.component';
 
 @NgModule({
-  declarations: [TabCategoryComponent, AutocompleteComponent],
+  declarations: [
+    TabCategoryComponent,
+    AutocompleteComponent,
+    GracefulFloristDateTimePickerComponent
+  ],
   imports: [
     AsyncPipe,
     CommonModule,
@@ -62,6 +67,9 @@ import {AutocompleteComponent} from './components/autocomplete/autocomplete.comp
     MatTabsModule
   ],
   exports: [
+    AutocompleteComponent,
+    TabCategoryComponent,
+    GracefulFloristDateTimePickerComponent,
     HttpClientModule,
     RouterModule,
     FormsModule,
@@ -88,8 +96,7 @@ import {AutocompleteComponent} from './components/autocomplete/autocomplete.comp
     MatIconModule,
     MatChipsModule,
     MatCardModule,
-    MatTabsModule,
-    AutocompleteComponent
+    MatTabsModule
   ]
 })
 export class SharedModule {}

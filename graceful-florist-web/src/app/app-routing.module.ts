@@ -6,7 +6,8 @@ import {AppRoutingConstants} from './app-routing-constants';
 const routes: Routes = [
   {
     path: '',
-    component: HomepageComponent
+    loadChildren: () =>
+      import('./modules/dev/dev.module').then(m => m.DevModule)
   },
   {
     path: AppRoutingConstants.HOME_PATH,
@@ -23,7 +24,8 @@ const routes: Routes = [
   },
   {
     path: '**',
-    component: HomepageComponent
+    loadChildren: () =>
+      import('./modules/dev/dev.module').then(m => m.DevModule)
   }
 ];
 
