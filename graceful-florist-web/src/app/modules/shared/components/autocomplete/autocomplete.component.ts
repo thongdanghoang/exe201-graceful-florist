@@ -15,10 +15,11 @@ export class AutocompleteComponent implements OnInit {
     'Abbey Road',
     'Fifth Avenue'
   ];
-  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   filteredStreets: Observable<string[]>;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.filteredStreets = this.control.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || ''))

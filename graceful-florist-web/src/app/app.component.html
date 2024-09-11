@@ -1,9 +1,13 @@
-<div class="container mx-auto h-screen flex flex-col">
-    <graceful-florist-header class="sticky z-50 top-0" />
+<div class="min-h-screen flex flex-col">
+    <div class="container mx-auto">
+        <graceful-florist-header class="sticky z-50 top-0" />
+    </div>
 
     <div class="flex flex-1 overflow-auto">
         <router-outlet></router-outlet>
     </div>
 
-    <graceful-florist-footer class="z-50 bottom-0" />
+    <div class="container mx-auto">
+        <graceful-florist-footer class="z-50 bottom-0" />
+    </div>
 </div>
