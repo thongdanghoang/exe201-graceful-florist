@@ -3,6 +3,7 @@ import {ThemePalette} from '@angular/material/core';
 import {MatChipListboxChange} from '@angular/material/chips';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatExpansionPanel} from '@angular/material/expansion';
+import {MatSelectChange} from '@angular/material/select';
 
 export interface ChipColor {
   name: string;
@@ -26,12 +27,22 @@ export class GracefulFloristDateTimePickerComponent {
     {name: 'Tùy Chọn', color: 'primary'}
   ];
   hours: number[] = Array.from({length: 24}, (_, i) => i);
+  selectedHour: number | null = null;
   minutes: number[] = Array.from({length: 60}, (_, i) => i);
+  selectedMinute: number | null = null;
   readonly range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null)
   });
   selectedChip: string | null = null;
+
+  selectHour(hour: MatSelectChange): void {
+    this.selectedHour = hour.value;
+  }
+
+  selectMinute(minute: MatSelectChange): void {
+    this.selectedMinute = minute.value;
+  }
 
   selectChip(chip: MatChipListboxChange): void {
     this.selectedChip = chip.value;
