@@ -1,0 +1,68 @@
+<div
+    class="flex flex-col gap-4 p-4"
+    style="border-radius: 6px; background: rgba(0, 0, 0, 0.05)"
+>
+    <div class="flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <img [src]="avatar_url" alt="avatar" />
+            <div
+                style="
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 20px; /* 125% */
+                "
+            >
+                {{ name }}
+            </div>
+        </div>
+        <div class="flex">
+            <mat-icon
+                class="!text-yellow-500"
+                aria-hidden="false"
+                aria-label="Example star icon"
+                fontIcon="star"
+            ></mat-icon>
+            <mat-icon
+                class="!text-yellow-500"
+                aria-hidden="false"
+                aria-label="Example star icon"
+                fontIcon="star"
+            ></mat-icon>
+            <mat-icon
+                class="!text-yellow-500"
+                aria-hidden="false"
+                aria-label="Example star icon"
+                fontIcon="star"
+            ></mat-icon>
+            <mat-icon
+                class="!text-yellow-500"
+                aria-hidden="false"
+                aria-label="Example star icon"
+                fontIcon="star_half"
+            ></mat-icon>
+            <mat-icon
+                class="!text-yellow-500"
+                aria-hidden="false"
+                aria-label="Example star icon"
+                fontIcon="star_outline"
+            ></mat-icon>
+        </div>
+    </div>
+    <div
+        style="
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px; /* 150% */
+            max-width: 308px;
+        "
+    >
+        {{ comment }}
+    </div>
+</div>

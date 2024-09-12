@@ -1,47 +1,53 @@
 <div class="flex flex-col">
     <!--  Dịch vụ Thiết Kế và Tùy Chỉnh-->
-    <div
-        class="flex justify-between"
-        style="background-color: #f6f2efff; padding-left: 170px; gap: 60px"
-    >
-        <div class="flex flex-col py-16 gap-6">
-            <div class="flex flex-col *:uppercase *:text-5xl *:font-medium">
-                <div style="line-height: 75px">Dịch vụ</div>
-                <div style="line-height: 75px; color: #ff6f91">Thiết Kế và</div>
-                <div style="line-height: 75px; color: #ff6f91">Tùy Chỉnh</div>
+    <div style="background-color: #f6f2efff; gap: 60px">
+        <div class="container mx-auto flex justify-around">
+            <div class="flex flex-col py-16 gap-6">
+                <div class="flex flex-col *:uppercase *:text-5xl *:font-medium">
+                    <div style="line-height: 75px">Dịch vụ</div>
+                    <div style="line-height: 75px; color: #ff6f91">
+                        Thiết Kế và
+                    </div>
+                    <div style="line-height: 75px; color: #ff6f91">
+                        Tùy Chỉnh
+                    </div>
+                </div>
+                <div
+                    style="
+                        font-size: 20px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 24px;
+                    "
+                >
+                    Thể hiện tình cảm theo cách của bạn
+                </div>
+                <button
+                    style="width: 245px; height: 60px"
+                    mat-flat-button
+                    color="primary"
+                >
+                    Đi vào khám phá
+                </button>
             </div>
-            <div
-                style="
-                    font-size: 20px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: 24px;
-                "
-            >
-                Thể hiện tình cảm theo cách của bạn
+            <div>
+                <img
+                    ngSrc="assets/image-container.png"
+                    priority
+                    width="828"
+                    height="485"
+                    alt="flowers"
+                />
             </div>
-            <button
-                style="width: 245px; height: 60px"
-                mat-flat-button
-                color="primary"
-            >
-                Đi vào khám phá
-            </button>
-        </div>
-        <div>
-            <img
-                ngSrc="assets/image-container.png"
-                priority
-                width="828"
-                height="485"
-                alt="flowers"
-            />
         </div>
     </div>
 
-    <div class="flex" style="padding: 60px 0 60px 170px">
-        <!--  Khám phá các tùy chọn Đa Dạng-->
-        <div class="flex" style="gap: 60px">
+    <!--  Khám phá các tùy chọn Đa Dạng-->
+    <div
+        class="container mx-auto flex flex-col"
+        style="gap: 60px; padding: 60px 0"
+    >
+        <div class="flex justify-around" style="gap: 60px">
             <img
                 ngSrc="assets/image-0.png"
                 priority
@@ -65,6 +71,809 @@
                     "
                 >
                     Thiết kế Bó Hoa Theo Ý Thích của Bạn
+                </div>
+            </div>
+        </div>
+        <div
+            class="mx-auto"
+            style="background: #000; width: 720px; height: 1px"
+        ></div>
+        <div class="flex flex-row gap-10 justify-center">
+            <graceful-florist-image-card
+                title="Loại Hoa"
+                imageUrl="assets/image-3.png"
+                description="Tùy chỉnh hoa theo sở thích cá nhân"
+            />
+            <graceful-florist-image-card
+                title="Giấy Gói"
+                imageUrl="assets/image-4.png"
+                description="Thêm nét tinh tế cho bó hoa với giấy gói cao cấp"
+            />
+            <graceful-florist-image-card
+                title="Thông Điệp"
+                imageUrl="assets/image-5.png"
+                description="Biến bó hoa thành món quà ý nghĩa hơn với lời nhắn nhủ đặc biệt"
+            />
+        </div>
+    </div>
+
+    <!--  TẠI SAO BẠN NÊN DÙNG DỊCH VỤ CỦA CHÚNG TÔI?-->
+    <div style="padding: 60px 170px; background-color: #f6f2efff">
+        <div
+            class="container mx-auto flex flex-row justify-around"
+            style="gap: 60px"
+        >
+            <div class="relative">
+                <img
+                    class="absolute bottom-0 right-0"
+                    ngSrc="assets/image-6.png"
+                    priority
+                    width="520"
+                    height="684"
+                    alt="flowers"
+                />
+                <img
+                    ngSrc="assets/Frame-427319104.png"
+                    priority
+                    width="579"
+                    height="728"
+                    alt="flowers"
+                />
+            </div>
+            <div class="flex flex-col gap-6">
+                <p
+                    style="
+                        font-size: 26px;
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: 48px; /* 184.615% */
+                    "
+                >
+                    TẠI SAO BẠN NÊN DÙNG DỊCH VỤ CỦA CHÚNG TÔI?
+                </p>
+                <p
+                    style="
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 24px; /* 150% */
+                    "
+                >
+                    Tại sao bạn nên sáng tạo nên bó hoa của bạn
+                </p>
+                <div class="flex flex-col gap-10 py-5">
+                    <graceful-florist-image-card-horizontal
+                        title="Đừng chỉ tặng hoa, hãy tặng cả một câu chuyện"
+                        imageUrl="assets/image-7.png"
+                        description="Nói lên tiếng lòng qua sắc hoa muôn màu"
+                    />
+                    <graceful-florist-image-card-horizontal
+                        title="Giao hàng tươi mới"
+                        imageUrl="assets/image-8.png"
+                        description="Giao hoa tươi đẹp tận nơi "
+                    />
+                    <graceful-florist-image-card-horizontal
+                        title="Phù hợp mọi dịp"
+                        imageUrl="assets/image-9.png"
+                        description="Biến hóa hoa theo ý, phù hợp mọi lễ"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Sản phẩm phổ biến-->
+    <div style="padding: 60px 170px">
+        <div class="flex flex-col items-center" style="gap: 60px">
+            <div
+                style="
+                    text-align: center;
+                    font-size: 40px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 48px; /* 120% */
+                "
+            >
+                Sản phẩm phổ biến
+            </div>
+            <div class="flex flex-row gap-10">
+                <!--Lời Thì Thầm của Trái Tim-->
+                <div
+                    class="flex flex-col"
+                    style="
+                        border-radius: 20px;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                        max-width: 340px;
+                    "
+                >
+                    <img src="assets/image-10.png" alt="flower" />
+
+                    <div class="flex flex-col items-center gap-1 p-3">
+                        <div
+                            style="
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 150%; /* 24px */
+                            "
+                        >
+                            Lời Thì Thầm của Trái Tim
+                        </div>
+                        <div
+                            style="
+                                font-size: 15px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 186.667% */
+                            "
+                        >
+                            600.000 VNĐ
+                        </div>
+                    </div>
+                </div>
+                <!--Dịu Dàng Yêu Thương-->
+                <div
+                    class="flex flex-col"
+                    style="
+                        border-radius: 20px;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                        max-width: 340px;
+                    "
+                >
+                    <img src="assets/image-11.png" alt="flower" />
+
+                    <div class="flex flex-col items-center gap-1 p-3">
+                        <div
+                            style="
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 150%; /* 24px */
+                            "
+                        >
+                            Dịu Dàng Yêu Thương
+                        </div>
+                        <div
+                            style="
+                                font-size: 15px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 186.667% */
+                            "
+                        >
+                            900.000 VNĐ
+                        </div>
+                    </div>
+                </div>
+                <!--Vườn Mơ Tình Yêu-->
+                <div
+                    class="flex flex-col"
+                    style="
+                        border-radius: 20px;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                        max-width: 340px;
+                    "
+                >
+                    <img src="assets/image-12.png" alt="flower" />
+
+                    <div class="flex flex-col items-center gap-1 p-3">
+                        <div
+                            style="
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 150%; /* 24px */
+                            "
+                        >
+                            Vườn Mơ Tình Yêu
+                        </div>
+                        <div
+                            style="
+                                font-size: 15px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 186.667% */
+                            "
+                        >
+                            1.200.000 VNĐ
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Hoa dành cho các cặp đôi-->
+    <div style="padding: 60px 170px; background-color: #f6f2efff">
+        <div class="flex flex-col" style="gap: 60px">
+            <div class="flex justify-center relative">
+                <div class="flex flex-col just items-center gap-4">
+                    <div
+                        style="
+                            font-size: 40px;
+                            font-style: normal;
+                            font-weight: 600;
+                            line-height: 16px; /* 40% */
+                        "
+                    >
+                        Hoa dành cho các cặp đôi
+                    </div>
+                    <div
+                        style="
+                            font-size: 20px;
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: 16px; /* 80% */
+                        "
+                    >
+                        Gửi đến người làm trái tim bạn rung động
+                    </div>
+                </div>
+                <button
+                    mat-flat-button
+                    color="primary"
+                    class="!absolute !right-0"
+                    style="
+                        border-radius: 125px !important;
+                        width: 155px !important;
+                        height: 48px !important;
+                        padding: 4px 8px !important;
+                    "
+                >
+                    Xem thêm
+                </button>
+            </div>
+            <div class="flex justify-center flex-row gap-10">
+                <!--Nụ hôn Nồng Nàn-->
+                <div
+                    class="flex flex-col"
+                    style="
+                        border-radius: 20px;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                        max-width: 340px;
+                    "
+                >
+                    <img src="assets/image-13.png" alt="flower" />
+
+                    <div class="flex flex-col items-center gap-1 p-3">
+                        <div
+                            style="
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 150%; /* 24px */
+                            "
+                        >
+                            Nụ hôn Nồng Nàn
+                        </div>
+                        <div
+                            style="
+                                font-size: 15px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 186.667% */
+                            "
+                        >
+                            600.000 VNĐ
+                        </div>
+                    </div>
+                </div>
+                <!--Lời Thì Thầm của Trái Tim-->
+                <div
+                    class="flex flex-col"
+                    style="
+                        border-radius: 20px;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                        max-width: 340px;
+                    "
+                >
+                    <img src="assets/image-14.png" alt="flower" />
+
+                    <div class="flex flex-col items-center gap-1 p-3">
+                        <div
+                            style="
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 150%; /* 24px */
+                            "
+                        >
+                            Lời Thì Thầm của Trái Tim
+                        </div>
+                        <div
+                            style="
+                                font-size: 15px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 186.667% */
+                            "
+                        >
+                            600.000 VNĐ
+                        </div>
+                    </div>
+                </div>
+                <!--Vũ Điệu Tình Yêu-->
+                <div
+                    class="flex flex-col"
+                    style="
+                        border-radius: 20px;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                        max-width: 340px;
+                    "
+                >
+                    <img src="assets/image-15.png" alt="flower" />
+
+                    <div class="flex flex-col items-center gap-1 p-3">
+                        <div
+                            style="
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 150%; /* 24px */
+                            "
+                        >
+                            Vũ Điệu Tình Yêu
+                        </div>
+                        <div
+                            style="
+                                font-size: 15px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 186.667% */
+                            "
+                        >
+                            800.000 VNĐ
+                        </div>
+                    </div>
+                </div>
+                <!--Vẻ đẹp Vĩnh Cửu-->
+                <div
+                    class="flex flex-col"
+                    style="
+                        border-radius: 20px;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                        max-width: 340px;
+                    "
+                >
+                    <img src="assets/image-16.png" alt="flower" />
+
+                    <div class="flex flex-col items-center gap-1 p-3">
+                        <div
+                            style="
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 150%; /* 24px */
+                            "
+                        >
+                            Vẻ đẹp Vĩnh Cửu
+                        </div>
+                        <div
+                            style="
+                                font-size: 15px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 186.667% */
+                            "
+                        >
+                            260.000 VNĐ
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Hoa dành cho gia đình-->
+    <div style="padding: 60px 170px">
+        <div class="flex flex-col" style="gap: 60px">
+            <div class="flex justify-center relative">
+                <div class="flex flex-col just items-center gap-4">
+                    <div
+                        style="
+                            font-size: 40px;
+                            font-style: normal;
+                            font-weight: 600;
+                            line-height: 16px; /* 40% */
+                        "
+                    >
+                        Hoa dành cho gia đình
+                    </div>
+                    <div
+                        style="
+                            font-size: 20px;
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: 16px; /* 80% */
+                        "
+                    >
+                        Lời cảm ơn chân thành từ trái tim
+                    </div>
+                </div>
+                <button
+                    mat-flat-button
+                    color="primary"
+                    class="!absolute !right-0"
+                    style="
+                        border-radius: 125px !important;
+                        width: 155px !important;
+                        height: 48px !important;
+                        padding: 4px 8px !important;
+                    "
+                >
+                    Xem thêm
+                </button>
+            </div>
+            <div class="flex justify-center flex-row gap-10">
+                <!--Vĩnh Cửu An Khang-->
+                <div
+                    class="flex flex-col"
+                    style="
+                        border-radius: 20px;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                        max-width: 340px;
+                    "
+                >
+                    <img src="assets/image-17.png" alt="flower" />
+
+                    <div class="flex flex-col items-center gap-1 p-3">
+                        <div
+                            style="
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 150%; /* 24px */
+                            "
+                        >
+                            Vĩnh Cửu An Khang
+                        </div>
+                        <div
+                            style="
+                                font-size: 15px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 186.667% */
+                            "
+                        >
+                            600.000 VNĐ
+                        </div>
+                    </div>
+                </div>
+                <!--Bình Yên Vô Tận-->
+                <div
+                    class="flex flex-col"
+                    style="
+                        border-radius: 20px;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                        max-width: 340px;
+                    "
+                >
+                    <img src="assets/image-18.png" alt="flower" />
+
+                    <div class="flex flex-col items-center gap-1 p-3">
+                        <div
+                            style="
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 150%; /* 24px */
+                            "
+                        >
+                            Bình Yên Vô Tận
+                        </div>
+                        <div
+                            style="
+                                font-size: 15px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 186.667% */
+                            "
+                        >
+                            600.000 VNĐ
+                        </div>
+                    </div>
+                </div>
+                <!--Tình Yêu Vòng Tay Gia Đình-->
+                <div
+                    class="flex flex-col"
+                    style="
+                        border-radius: 20px;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                        max-width: 340px;
+                    "
+                >
+                    <img src="assets/image-19.png" alt="flower" />
+
+                    <div class="flex flex-col items-center gap-1 p-3">
+                        <div
+                            style="
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 150%; /* 24px */
+                            "
+                        >
+                            Tình Yêu Vòng Tay Gia Đình
+                        </div>
+                        <div
+                            style="
+                                font-size: 15px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 186.667% */
+                            "
+                        >
+                            800.000 VNĐ
+                        </div>
+                    </div>
+                </div>
+                <!--Vườn Mơ Tình Yêu-->
+                <div
+                    class="flex flex-col"
+                    style="
+                        border-radius: 20px;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                        max-width: 340px;
+                    "
+                >
+                    <img src="assets/image-20.png" alt="flower" />
+
+                    <div class="flex flex-col items-center gap-1 p-3">
+                        <div
+                            style="
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 700;
+                                line-height: 150%; /* 24px */
+                            "
+                        >
+                            Vườn Mơ Tình Yêu
+                        </div>
+                        <div
+                            style="
+                                font-size: 15px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 186.667% */
+                            "
+                        >
+                            260.000 VNĐ
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Hàng Mới Về Gần Đây-->
+    <div style="padding: 60px 170px; background-color: #f6f2efff">
+        <div class="flex items-center flex-col" style="gap: 60px">
+            <div
+                style="
+                    text-align: center;
+                    font-size: 40px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 48px; /* 120% */
+                    text-transform: uppercase;
+                "
+            >
+                Hàng Mới Về Gần Đây
+            </div>
+            <div class="flex gap-10">
+                <graceful-florist-image-card-horizontal
+                    title="Hoa hồng"
+                    imageUrl="assets/image-21.png"
+                    description="Khám phá những giống hoa hồng xinh đẹp của chúng tôi với nhiều màu sắc khác nhau."
+                    [tags]="['New']"
+                />
+                <graceful-florist-image-card-horizontal
+                    title="Hoa Hướng Dương"
+                    imageUrl="assets/image-22.png"
+                    description="Khám phá thế giới hoa hướng dương rực rỡ với muôn vàn sắc màu"
+                    [tags]="['New']"
+                />
+            </div>
+        </div>
+    </div>
+
+    <!--  Đánh Giá Khách Hàng-->
+    <div style="padding: 60px 170px">
+        <div class="flex items-center flex-col" style="gap: 60px">
+            <div
+                style="
+                    text-align: center;
+                    font-size: 40px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 48px; /* 120% */
+                    text-transform: uppercase;
+                "
+            >
+                Đánh Giá Khách Hàng
+            </div>
+            <div class="flex gap-10">
+                <graceful-florist-comment-card
+                    avatar_url="assets/avatar.png"
+                    name="Nguyễn Công"
+                    comment="Hoa đẹp tuyệt vời, phục vụ cũng chu đáo hết sức."
+                ></graceful-florist-comment-card
+                ><graceful-florist-comment-card
+                    avatar_url="assets/huu-son.png"
+                    name="Hữu Sơn"
+                    comment="Rất khuyến khích cửa hàng hoa này cho bất cứ dịp nào."
+                ></graceful-florist-comment-card
+                ><graceful-florist-comment-card
+                    avatar_url="assets/duc-minh.png"
+                    name="Đức Minh"
+                    comment="Tuyển chọn hoa đẹp, giao hàng nhanh chóng. Chắc chắn sẽ đặt lại!"
+                ></graceful-florist-comment-card>
+            </div>
+        </div>
+    </div>
+
+    <!--  Các Dịch Vụ Đặc Biệt-->
+    <div style="padding: 60px 170px; background-color: #f6f2efff">
+        <div class="flex items-center flex-col" style="gap: 60px">
+            <div
+                style="
+                    text-align: center;
+                    font-size: 40px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 48px; /* 120% */
+                    text-transform: uppercase;
+                "
+            >
+                Các Dịch Vụ Đặc Biệt
+            </div>
+            <div class="flex gap-10">
+                <div class="flex flex-col gap-5">
+                    <div class="flex justify-center">
+                        <div
+                            style="
+                                border-radius: 50px;
+                                background: rgba(0, 0, 0, 0.15);
+                                width: 100px;
+                                height: 100px;
+                            "
+                        >
+                            <div
+                                style="
+                                    overflow: hidden;
+                                    color: #000;
+                                    text-align: center;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                    font-size: 62.5px;
+                                    font-style: normal;
+                                    font-weight: 400;
+                                    line-height: 100px; /* 160% */
+                                "
+                            >
+                                💐
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <div
+                            style="
+                                text-align: center;
+                                font-size: 20px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 140% */
+                            "
+                        >
+                            Cắm Hoa Theo Yêu Cầu
+                        </div>
+                        <div
+                            style="
+                                text-align: center;
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 300;
+                                line-height: 24px; /* 150% */
+                                max-width: 340px;
+                            "
+                        >
+                            Phù hợp với sở thích của bạn
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-5">
+                    <div class="flex justify-center">
+                        <div
+                            style="
+                                border-radius: 50px;
+                                background: rgba(0, 0, 0, 0.15);
+                                width: 100px;
+                                height: 100px;
+                            "
+                        >
+                            <div
+                                style="
+                                    overflow: hidden;
+                                    color: #000;
+                                    text-align: center;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                    font-size: 62.5px;
+                                    font-style: normal;
+                                    font-weight: 400;
+                                    line-height: 100px; /* 160% */
+                                "
+                            >
+                                🌷
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <div
+                            style="
+                                text-align: center;
+                                font-size: 20px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 140% */
+                            "
+                        >
+                            Hoa cho những dịp quan trọng
+                        </div>
+                        <div
+                            style="
+                                text-align: center;
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 300;
+                                line-height: 24px; /* 150% */
+                                max-width: 340px;
+                            "
+                        >
+                            Hoàn hảo cho mọi dịp vui
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-5">
+                    <div class="flex justify-center items-center">
+                        <img
+                            style="
+                                border-radius: 50px;
+                                background: rgba(0, 0, 0, 0.15);
+                            "
+                            ngSrc="assets/handshake for a good deal.png"
+                            alt="handshake"
+                            height="100"
+                            width="100"
+                            priority
+                        />
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <div
+                            style="
+                                text-align: center;
+                                font-size: 20px;
+                                font-style: normal;
+                                font-weight: 500;
+                                line-height: 28px; /* 140% */
+                            "
+                        >
+                            Trở thành đối tác của chúng tôi
+                        </div>
+                        <div
+                            style="
+                                text-align: center;
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 300;
+                                line-height: 24px; /* 150% */
+                                max-width: 340px;
+                            "
+                        >
+                            Nâng tầm không gian văn phòng với hoa tươi mỗi tháng
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

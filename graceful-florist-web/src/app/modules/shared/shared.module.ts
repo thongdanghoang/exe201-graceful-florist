@@ -20,7 +20,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {AsyncPipe, CommonModule} from '@angular/common';
+import {AsyncPipe, CommonModule, NgOptimizedImage} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -28,12 +28,18 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {TabCategoryComponent} from './components/tab-category/tab-category.component';
 import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
 import {GracefulFloristDateTimePickerComponent} from './components/date-time-picker/graceful-florist-date-time-picker.component';
+import {ImageCardComponent} from './components/image-card/image-card.component';
+import {ImageCardHorizontalComponent} from './components/image-card-horizontal/image-card-horizontal.component';
+import {CommentCardComponent} from './components/comment-card/comment-card.component';
 
 @NgModule({
   declarations: [
     TabCategoryComponent,
     AutocompleteComponent,
-    GracefulFloristDateTimePickerComponent
+    GracefulFloristDateTimePickerComponent,
+    ImageCardComponent,
+    ImageCardHorizontalComponent,
+    CommentCardComponent
   ],
   imports: [
     AsyncPipe,
@@ -64,7 +70,8 @@ import {GracefulFloristDateTimePickerComponent} from './components/date-time-pic
     MatIconModule,
     MatChipsModule,
     MatCardModule,
-    MatTabsModule
+    MatTabsModule,
+    NgOptimizedImage
   ],
   exports: [
     AutocompleteComponent,
@@ -96,7 +103,10 @@ import {GracefulFloristDateTimePickerComponent} from './components/date-time-pic
     MatIconModule,
     MatChipsModule,
     MatCardModule,
-    MatTabsModule
+    MatTabsModule,
+    ImageCardComponent,
+    ImageCardHorizontalComponent,
+    CommentCardComponent
   ]
 })
 export class SharedModule {}
