@@ -4,4 +4,6 @@ export class AppRoutingConstants {
   public static readonly FORBIDDEN = 'forbidden';
   public static readonly DEV_PATH = 'dev';
   public static readonly HOME_PATH = 'home';
+  public static readonly ORDER_TRACKING_PATH = 'order-tracking';
+  public static readonly ORDERS = 'orders';
 }

@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomepageComponent} from './homepage/homepage.component';
 import {AppRoutingConstants} from './app-routing-constants';
+import {OrderTrackingComponent} from './order-tracking/order-tracking.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: AppRoutingConstants.HOME_PATH,
     component: HomepageComponent
+  },
+  {
+    path: AppRoutingConstants.ORDER_TRACKING_PATH,
+    component: OrderTrackingComponent
   },
   {
     path: AppRoutingConstants.FORBIDDEN,
