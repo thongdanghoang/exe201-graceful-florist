@@ -1,58 +1,51 @@
-<div class="relative h-screen">
-    <img
-        class="object-cover"
-        ngSrc="https://cdn.firstcry.com/education/2022/12/12101916/Flower-Names-In-English-For-Kids.jpg"
-        fill
-        alt="background"
-    />
-    <div class="absolute top-0 left-0 w-screen">
+<div
+    class="min-h-fit bg-gray-200 bg-cover bg-repeat-y"
+    [ngStyle]="{
+        'background-image': 'url(' + 'assets/427318924.png' + ')',
+    }"
+>
+    <div class="container mx-auto" style="padding: 120px 120px">
+        <!--Tra cứu đơn hàng-->
         <div
-            class="container mx-auto"
-            style="padding: 120px 120px; height: 1241px"
+            class="flex flex-col gap-6 bg-white"
+            style="border-radius: 40px; padding: 47px 52px; width: 560px"
         >
-            <!--Tra cứu đơn hàng-->
             <div
-                class="flex flex-col gap-6 w-fit bg-white"
-                style="border-radius: 40px; padding: 47px 52px; width: 560px"
+                style="
+                    text-align: center;
+                    font-size: 32px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                "
             >
+                Tra cứu đơn hàng
+            </div>
+            <div class="flex flex-col gap-2">
                 <div
                     style="
-                        text-align: center;
-                        font-size: 32px;
+                        color: #4f566b;
+                        font-size: 18px;
                         font-style: normal;
                         font-weight: 400;
                         line-height: normal;
+                        letter-spacing: 0.18px;
                     "
                 >
-                    Tra cứu đơn hàng
+                    Mã đơn hàng / Số điện thoại
                 </div>
-                <div class="flex flex-col gap-2">
-                    <div
-                        style="
-                            color: #4f566b;
-                            font-size: 18px;
-                            font-style: normal;
-                            font-weight: 400;
-                            line-height: normal;
-                            letter-spacing: 0.18px;
-                        "
-                    >
-                        Mã đơn hàng / Số điện thoại
-                    </div>
-                    <div
-                        class="flex items-center rounded-lg bg-gray-200 h-16 px-3"
-                    >
-                        <input class="!outline-none w-full bg-gray-200" />
-                    </div>
+                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
+                    <input class="!outline-none w-full bg-gray-100" />
                 </div>
-                <button
-                    mat-flat-button
-                    color="primary"
-                    class="!rounded-2xl !h-14"
-                >
-                    Kiểm tra
-                </button>
             </div>
+            <button
+                mat-flat-button
+                color="primary"
+                class="!rounded-2xl !h-14"
+                (click)="navigateToOrderDetail()"
+            >
+                Kiểm tra
+            </button>
         </div>
     </div>
 </div>

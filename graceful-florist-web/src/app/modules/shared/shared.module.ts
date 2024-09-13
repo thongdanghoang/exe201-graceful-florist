@@ -31,6 +31,7 @@ import {GracefulFloristDateTimePickerComponent} from './components/date-time-pic
 import {ImageCardComponent} from './components/image-card/image-card.component';
 import {ImageCardHorizontalComponent} from './components/image-card-horizontal/image-card-horizontal.component';
 import {CommentCardComponent} from './components/comment-card/comment-card.component';
+import {VndCurrencyPipe} from './pipes/vnd-currency.pipe';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {CommentCardComponent} from './components/comment-card/comment-card.compo
     GracefulFloristDateTimePickerComponent,
     ImageCardComponent,
     ImageCardHorizontalComponent,
-    CommentCardComponent
+    CommentCardComponent,
+    VndCurrencyPipe
   ],
   imports: [
     AsyncPipe,
@@ -77,6 +79,10 @@ import {CommentCardComponent} from './components/comment-card/comment-card.compo
     AutocompleteComponent,
     TabCategoryComponent,
     GracefulFloristDateTimePickerComponent,
+    ImageCardComponent,
+    ImageCardHorizontalComponent,
+    VndCurrencyPipe,
+    CommentCardComponent,
     HttpClientModule,
     RouterModule,
     FormsModule,
@@ -104,9 +110,7 @@ import {CommentCardComponent} from './components/comment-card/comment-card.compo
     MatChipsModule,
     MatCardModule,
     MatTabsModule,
-    ImageCardComponent,
-    ImageCardHorizontalComponent,
-    CommentCardComponent
+    NgOptimizedImage
   ]
 })
 export class SharedModule {}

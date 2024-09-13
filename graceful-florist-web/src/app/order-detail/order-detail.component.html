@@ -1,0 +1,180 @@
+<div
+    class="min-h-fit bg-gray-200 bg-cover bg-repeat-y"
+    [ngStyle]="{
+        'background-image': 'url(' + 'assets/427318924.png' + ')',
+    }"
+>
+    <div class="container mx-auto" style="padding: 120px 120px">
+        <!--Chi tiết đơn hàng-->
+        <div
+            class="flex flex-col gap-6 bg-white"
+            style="border-radius: 40px; padding: 47px 52px; width: 1041px"
+        >
+            <div
+                style="
+                    text-align: left;
+                    font-size: 32px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                "
+            >
+                Chi tiết đơn hàng [{{ orderDto.id }}]
+            </div>
+            <div class="grid grid-cols-2 gap-5">
+                <div class="flex justify-between items-center w-full gap-4">
+                    <div class="min-w-32 label-typo">Họ Tên</div>
+                    <div
+                        class="flex items-center rounded-lg bg-gray-200 h-16 px-3 w-full"
+                    >
+                        <input
+                            class="!outline-none w-full bg-gray-200 input-typo"
+                            disabled
+                            value="{{ orderDto.name }}"
+                        />
+                    </div>
+                </div>
+                <div class="flex justify-between items-center w-full gap-4">
+                    <div class="min-w-32 label-typo">Địa Chỉ</div>
+                    <div
+                        class="flex items-center rounded-lg bg-gray-200 h-16 px-3 w-full"
+                    >
+                        <input
+                            class="!outline-none w-full bg-gray-200 input-typo"
+                            disabled
+                            value="{{ orderDto.address }}"
+                        />
+                    </div>
+                </div>
+                <div class="flex justify-between items-center w-full gap-4">
+                    <div class="min-w-32 label-typo">Số Điện Thoại</div>
+                    <div
+                        class="flex items-center rounded-lg bg-gray-200 h-16 px-3 w-full"
+                    >
+                        <input
+                            class="!outline-none w-full bg-gray-200 input-typo"
+                            disabled
+                            value="{{ orderDto.phone }}"
+                        />
+                    </div>
+                </div>
+                <div class="flex justify-between items-center w-full gap-4">
+                    <div class="min-w-32 label-typo">Tình Trạng</div>
+                    <div
+                        class="flex items-center rounded-lg bg-gray-200 h-16 px-3 w-full"
+                    >
+                        <input
+                            class="!outline-none w-full bg-gray-200 text-primary input-typo"
+                            disabled
+                            value="{{ orderDto.status }}"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div
+                class="flex flex-col *:text-lg *:italic *:font-light *:text-gray-400 *:font-sans"
+            >
+                <p>
+                    - Giá trên chưa bao gồm phí vận chuyển. Phí vận chuyển sẽ
+                    được nhân viên báo khi xác nhận đơn hàng.
+                </p>
+                <p>
+                    - Thời gian xử lý đơn hàng: Từ 8h00- 17h thứ 2 đến thứ 7.
+                    Các đơn hàng sau thời gian này sẽ được xử lý vào ngày làm
+                    việc tiếp theo.
+                </p>
+                <p>
+                    - Mọi thắc mắc mắc liên hệ hotline:
+                    <strong class="text-primary font-medium">0913588206</strong>
+                </p>
+            </div>
+            <table
+                mat-table
+                [dataSource]="dataSource"
+                class="mat-elevation-z8 !shadow-none"
+            >
+                <!--- Note that these columns can be defined in any order.
+                      The actual rendered columns are set as a property on the row definition" -->
+
+                <!-- Tên sản phẩm -->
+                <ng-container matColumnDef="name">
+                    <th class="!font-bold" mat-header-cell *matHeaderCellDef>
+                        Tên sản phẩm
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="flex gap-2 w-fit bg">
+                            <img
+                                alt="{{ element.name }}"
+                                ngSrc="{{ element.image_url }}"
+                                width="100"
+                                height="100"
+                                priority
+                            />
+                            <div class="flex flex-col justify-center gap-1">
+                                <div
+                                    style="
+                                        font-size: 14px;
+                                        font-style: normal;
+                                        font-weight: 400;
+                                        line-height: 20px; /* 142.857% */
+                                        letter-spacing: 0.1px;
+                                    "
+                                >
+                                    {{ element.name }}
+                                </div>
+                                <div
+                                    style="
+                                        overflow: hidden;
+                                        color: rgba(0, 0, 0, 0.5);
+                                        text-overflow: ellipsis;
+                                        white-space: nowrap;
+                                        font-size: 12px;
+                                        font-style: normal;
+                                        font-weight: 400;
+                                        line-height: 16px; /* 133.333% */
+                                        letter-spacing: 0.1px;
+                                    "
+                                >
+                                    {{ element.detail }}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <!-- Giá đặt hàng -->
+                <ng-container matColumnDef="price">
+                    <th class="!font-bold" mat-header-cell *matHeaderCellDef>
+                        Giá đặt hàng
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.price }}
+                    </td>
+                </ng-container>
+
+                <!-- Số lượng -->
+                <ng-container matColumnDef="quantity">
+                    <th class="!font-bold" mat-header-cell *matHeaderCellDef>
+                        Số lượng
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.quantity }}
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+            </table>
+            <mat-divider></mat-divider>
+            <div class="flex justify-end items-center gap-1">
+                <p class="text-sm leading-5 font-normal">Số tiền phải trả:</p>
+                <strong class="text-sm leading-5 text-primary">{{
+                    orderDto.total | vndCurrency
+                }}</strong>
+            </div>
+        </div>
+    </div>
+</div>
