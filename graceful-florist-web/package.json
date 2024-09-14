@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng lint && ng serve",
-    "build": "ng build",
+    "build": "ng lint && ng build",
+    "release": "ng lint && ng build --configuration=production --base-href https://thongdanghoang.github.io/exe201-graceful-florist/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
