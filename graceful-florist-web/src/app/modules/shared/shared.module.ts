@@ -32,6 +32,7 @@ import {ImageCardComponent} from './components/image-card/image-card.component';
 import {ImageCardHorizontalComponent} from './components/image-card-horizontal/image-card-horizontal.component';
 import {CommentCardComponent} from './components/comment-card/comment-card.component';
 import {VndCurrencyPipe} from './pipes/vnd-currency.pipe';
+import {SvgIconComponent} from 'angular-svg-icon';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {VndCurrencyPipe} from './pipes/vnd-currency.pipe';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    SvgIconComponent,
     MatTableModule,
     MatCheckboxModule,
     MatTooltipModule,
@@ -87,6 +89,7 @@ import {VndCurrencyPipe} from './pipes/vnd-currency.pipe';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    SvgIconComponent,
     MatTableModule,
     MatCheckboxModule,
     MatTooltipModule,

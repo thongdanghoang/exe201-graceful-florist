@@ -11,6 +11,7 @@ import {SharedModule} from './modules/shared/shared.module';
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import {HomepageComponent} from './homepage/homepage.component';
+import {AngularSvgIconModule} from 'angular-svg-icon';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,13 @@ import {HomepageComponent} from './homepage/homepage.component';
     HomepageComponent,
     FooterComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, CoreModule, SharedModule],
+  imports: [
+    AngularSvgIconModule.forRoot(),
+    BrowserModule,
+    AppRoutingModule,
+    CoreModule,
+    SharedModule
+  ],
   providers: [provideAnimationsAsync(), provideNativeDateAdapter()],
   bootstrap: [AppComponent]
 })
