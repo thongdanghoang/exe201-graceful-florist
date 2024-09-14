@@ -1,0 +1,1 @@
+var c=class c{};c.BASE_URL="",c.BACKEND_API_URL=`${c.BASE_URL}/api`,c.HOME_PATH="home",c.FORBIDDEN_PATH="forbidden",c.ORDERS_PATH="orders",c.ORDER_TRACKING_PATH="order-tracking",c.AUTH_PATH="auth",c.DEV_PATH="dev";var h=c;export{h as a};
