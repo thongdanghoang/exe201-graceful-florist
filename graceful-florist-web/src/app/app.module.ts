@@ -11,26 +11,15 @@ import {SharedModule} from './modules/shared/shared.module';
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import {HomepageComponent} from './homepage/homepage.component';
-import {NgOptimizedImage} from '@angular/common';
-import {OrderTrackingComponent} from './order-tracking/order-tracking.component';
-import {OrderDetailComponent} from './order-detail/order-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomepageComponent,
-    FooterComponent,
-    OrderTrackingComponent,
-    OrderDetailComponent
+    FooterComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    CoreModule,
-    SharedModule,
-    NgOptimizedImage
-  ],
+  imports: [BrowserModule, AppRoutingModule, CoreModule, SharedModule],
   providers: [provideAnimationsAsync(), provideNativeDateAdapter()],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,8 @@
 import {Injectable} from '@angular/core';
-import {OrderDto, ProductDto} from './order-detail/order-detail.component';
+import {
+  OrderDto,
+  ProductDto
+} from '../components/order-detail/order-detail.component';
 
 @Injectable({
   providedIn: 'root'

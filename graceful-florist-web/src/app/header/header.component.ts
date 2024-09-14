@@ -11,7 +11,13 @@ export class HeaderComponent {
   protected readonly AppRoutingConstants = AppRoutingConstants;
   constructor(private readonly router: Router) {}
 
-  navigate(path: string): void {
-    void this.router.navigate([path]);
+  protected navigateToHomepage(): void {
+    void this.router.navigate([AppRoutingConstants.HOME_PATH]);
+  }
+
+  protected navigateToOrdersTracking(): void {
+    void this.router.navigate([
+      `${AppRoutingConstants.ORDERS}/${AppRoutingConstants.ORDER_TRACKING_PATH}`
+    ]);
   }
 }

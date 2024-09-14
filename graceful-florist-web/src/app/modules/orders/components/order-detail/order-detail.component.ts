@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {SubscriptionAwareComponent} from '../modules/core/subscription-aware.component';
+import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 
 export interface OrderDto {
   id: string;

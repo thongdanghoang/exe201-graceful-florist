@@ -2,7 +2,7 @@
     <!--  Logo  -->
     <div
         class="flex flex-col items-center justify-around hover:cursor-pointer"
-        (click)="navigate(AppRoutingConstants.HOME_PATH)"
+        (click)="navigateToHomepage()"
     >
         <div
             style="
@@ -31,10 +31,7 @@
     </div>
     <!--  Navigations  -->
     <div class="flex flex-row justify-between items-center gap-1">
-        <button
-            mat-button
-            (click)="navigate(AppRoutingConstants.ORDER_TRACKING_PATH)"
-        >
+        <button mat-button (click)="navigateToOrdersTracking()">
             Tra Cứu Đơn Hàng
         </button>
         <button mat-button>Sản Phẩm</button>

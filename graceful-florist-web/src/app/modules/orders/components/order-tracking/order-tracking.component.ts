@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {AppRoutingConstants} from '../app-routing-constants';
+import {AppRoutingConstants} from '../../../../app-routing-constants';
 
 @Component({
   selector: 'graceful-florist-order-tracking',
