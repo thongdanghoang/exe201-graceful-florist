@@ -1,16 +1,16 @@
 <div class="container mx-auto">
   <graceful-florist-tab-category />
-  <br/>
+  <br />
   <graceful-florist-date-time-picker />
-  <br/>
+  <br />
   <graceful-florist-image-card title="Loại Hoa"
                                imageUrl="assets/image-3.png"
                                description="Tùy chỉnh hoa theo sở thích cá nhân" />
-  <br/>
+  <br />
   <graceful-florist-image-card-horizontal title="Đừng chỉ tặng hoa, hãy tặng cả một câu chuyện"
                                           imageUrl="assets/image-7.png"
                                           description="Nói lên tiếng lòng qua sắc hoa muôn màu" />
-  <br/>
+  <br />
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <!--- Note that these columns can be defined in any order.
@@ -18,34 +18,34 @@
 
     <!-- Position Column -->
     <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef> No. </th>
-      <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+      <th mat-header-cell *matHeaderCellDef> No.</th>
+      <td mat-cell *matCellDef="let element"> {{ element.position }}</td>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      <th mat-header-cell *matHeaderCellDef> Name</th>
+      <td mat-cell *matCellDef="let element"> {{ element.name }}</td>
     </ng-container>
 
     <!-- Weight Column -->
     <ng-container matColumnDef="weight">
-      <th mat-header-cell *matHeaderCellDef> Weight </th>
-      <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+      <th mat-header-cell *matHeaderCellDef> Weight</th>
+      <td mat-cell *matCellDef="let element"> {{ element.weight }}</td>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="symbol">
-      <th mat-header-cell *matHeaderCellDef> Symbol </th>
-      <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+      <th mat-header-cell *matHeaderCellDef> Symbol</th>
+      <td mat-cell *matCellDef="let element"> {{ element.symbol }}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <br/>
+  <br />
   <button mat-button color="primary">Click me!</button>
-  <br/>
+  <br />
   <section>
     <div class="example-label">Basic</div>
     <div class="example-button-row">
@@ -98,6 +98,9 @@
     <div class="example-label">Icon</div>
     <div class="example-button-row">
       <div class="example-flex-container">
+        <button mat-icon-button aria-label="Back">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
         <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
           <mat-icon>more_vert</mat-icon>
         </button>

@@ -1,0 +1,351 @@
+<div
+    class="min-h-fit bg-gray-200 bg-cover bg-repeat-y"
+    [ngStyle]="{
+        'background-image': 'url(' + 'assets/427318924.png' + ')',
+    }"
+>
+    <div class="container mx-auto" style="padding: 120px 0">
+        <div
+            class="flex flex-col gap-6 bg-white max-w-xl w-full"
+            style="border-radius: 40px; padding: 47px 52px"
+        >
+            <ng-container *ngTemplateOutlet="currentTemplate"></ng-container>
+        </div>
+    </div>
+
+    <ng-template #loginTemplate>
+        <div
+            style="
+                text-align: left;
+                font-size: 32px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+            "
+        >
+            Đăng Nhập
+        </div>
+        <form
+            class="flex flex-col gap-6"
+            [formGroup]="loginForm"
+            (ngSubmit)="onLogin()"
+        >
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-500 text-lg" [for]="username"
+                    >Tài Khoản</label
+                >
+                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
+                    <input
+                        class="!outline-none w-full bg-gray-100"
+                        autofocus
+                        [id]="username"
+                        type="text"
+                        placeholder="Tài Khoản"
+                        formControlName="username"
+                        required
+                    />
+                </div>
+            </div>
+            <div class="flex flex-col gap-2">
+                <div class="flex justify-between items-center">
+                    <label class="text-slate-500 text-lg" [for]="password"
+                        >Mật Khẩu</label
+                    >
+                    <button
+                        class="!text-slate-500 !font-sans !text-base"
+                        mat-button
+                        (click)="switchTemplate('forgotPassword')"
+                    >
+                        Quên Mật Khẩu?
+                    </button>
+                </div>
+                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
+                    <input
+                        class="!outline-none w-full bg-gray-100"
+                        [id]="password"
+                        type="password"
+                        placeholder="Mật Khẩu"
+                        formControlName="password"
+                        required
+                    />
+                </div>
+            </div>
+            <button
+                class="!rounded-2xl min-h-14"
+                mat-flat-button
+                color="primary"
+            >
+                Đăng Nhập
+            </button>
+        </form>
+        <mat-divider />
+        <div class="flex justify-between items-center">
+            <div class="text-lg font-medium text-slate-500">
+                Chưa có tài khoản?
+            </div>
+            <button
+                class="!border-slate-500 !border-solid !border !rounded-2xl !min-h-12 !min-w-32 !text-slate-600"
+                mat-flat-button
+                (click)="switchTemplate('signup')"
+            >
+                Đăng Ký
+            </button>
+        </div>
+        <button
+            class="bg-white hover:bg-gray-100 !text-slate-500 !font-sans !text-base flex justify-center gap-5 items-center py-4 !border-slate-500 !border-solid !border !rounded-2xl"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="27"
+                height="26"
+                viewBox="0 0 27 26"
+                fill="none"
+            >
+                <path
+                    d="M24.8753 13.2533C24.8753 12.318 24.7978 11.6355 24.6302 10.9277H13.7324V15.1491H20.1292C20.0003 16.1981 19.3038 17.778 17.7562 18.8396L17.7345 18.9809L21.1802 21.5969L21.4189 21.6202C23.6113 19.6359 24.8753 16.7163 24.8753 13.2533Z"
+                    fill="#4285F4"
+                />
+                <path
+                    d="M13.7323 24.3754C16.8662 24.3754 19.4971 23.3642 21.4188 21.6201L17.7561 18.8394C16.7759 19.5093 15.4604 19.9769 13.7323 19.9769C10.6629 19.9769 8.05778 17.9927 7.12912 15.25L6.993 15.2613L3.41014 17.9787L3.36328 18.1064C5.27198 21.8222 9.19261 24.3754 13.7323 24.3754Z"
+                    fill="#34A853"
+                />
+                <path
+                    d="M7.13087 15.2491C6.88583 14.5413 6.74402 13.783 6.74402 12.9994C6.74402 12.2157 6.88583 11.4574 7.11797 10.7496L7.11148 10.5989L3.48371 7.83789L3.36502 7.89322C2.57835 9.43518 2.12695 11.1667 2.12695 12.9994C2.12695 14.832 2.57835 16.5635 3.36502 18.1055L7.13087 15.2491Z"
+                    fill="#FBBC05"
+                />
+                <path
+                    d="M13.7324 6.0233C15.9119 6.0233 17.3821 6.94594 18.2204 7.71696L21.4962 4.5825C19.4844 2.74987 16.8663 1.625 13.7324 1.625C9.19265 1.625 5.27199 4.17804 3.36328 7.89384L7.11625 10.7503C8.0578 8.00763 10.6629 6.0233 13.7324 6.0233Z"
+                    fill="#EB4335"
+                />
+            </svg>
+            Đăng nhập với Google
+        </button>
+        <button
+            class="bg-white hover:bg-gray-100 !text-slate-500 !font-sans !text-base flex justify-center gap-5 items-center py-4 !border-slate-500 !border-solid !border !rounded-2xl"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="29"
+                height="29"
+                viewBox="0 0 29 29"
+                fill="none"
+            >
+                <ellipse
+                    cx="14.5"
+                    cy="13.3398"
+                    rx="12.6875"
+                    ry="12.6875"
+                    fill="url(#paint0_linear_580_18005)"
+                />
+                <path
+                    d="M19.2249 18.3802L19.7885 14.7992H16.2629V12.4763C16.2629 11.4964 16.7544 10.5407 18.3336 10.5407H19.9375V7.49196C19.9375 7.49196 18.4825 7.25 17.0921 7.25C14.1872 7.25 12.2903 8.96548 12.2903 12.0698V14.7992H9.0625V18.3802H12.2903V27.0375C12.9383 27.1367 13.6012 27.1875 14.2766 27.1875C14.9519 27.1875 15.6148 27.1367 16.2629 27.0375V18.3802H19.2249Z"
+                    fill="white"
+                />
+                <defs>
+                    <linearGradient
+                        id="paint0_linear_580_18005"
+                        x1="14.5"
+                        y1="0.652344"
+                        x2="14.5"
+                        y2="25.9521"
+                        gradientUnits="userSpaceOnUse"
+                    >
+                        <stop stop-color="#18ACFE" />
+                        <stop offset="1" stop-color="#0163E0" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            Đăng nhập với Facebook
+        </button>
+    </ng-template>
+
+    <ng-template #signupTemplate>
+        <div
+            style="
+                text-align: left;
+                font-size: 32px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+            "
+        >
+            Đăng Ký
+        </div>
+        <form
+            class="flex flex-col gap-6"
+            [formGroup]="registerForm"
+            (ngSubmit)="onSignUp()"
+        >
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-500 text-lg" [for]="fullName"
+                    >Họ Tên</label
+                >
+                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
+                    <input
+                        class="!outline-none w-full bg-gray-100"
+                        autofocus
+                        [id]="fullName"
+                        type="text"
+                        formControlName="fullName"
+                        placeholder="Họ Tên"
+                        required
+                    />
+                </div>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-500 text-lg" [for]="username"
+                    >Tài Khoản</label
+                >
+                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
+                    <input
+                        class="!outline-none w-full bg-gray-100"
+                        [id]="username"
+                        type="text"
+                        formControlName="username"
+                        placeholder="Tài Khoản"
+                        required
+                    />
+                </div>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-500 text-lg" [for]="password"
+                    >Mật Khẩu</label
+                >
+                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
+                    <input
+                        class="!outline-none w-full bg-gray-100"
+                        [id]="password"
+                        [type]="showPassword ? 'text' : 'password'"
+                        placeholder="Mật Khẩu"
+                        formControlName="password"
+                        required
+                    />
+                    <button
+                        mat-icon-button
+                        (click)="toggleShowPassword()"
+                        aria-label="password visibility"
+                    >
+                        <mat-icon class="!text-slate-400">{{
+                            getShowPasswordIcon()
+                        }}</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-500 text-lg" [for]="confirmPassword"
+                    >Xác Thực Mật Khẩu</label
+                >
+                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
+                    <input
+                        class="!outline-none w-full bg-gray-100"
+                        [id]="confirmPassword"
+                        [type]="showConfirmPassword ? 'text' : 'password'"
+                        formControlName="confirmPassword"
+                        placeholder="Xác Thực Mật Khẩu"
+                        required
+                    />
+                    <button
+                        mat-icon-button
+                        (click)="toggleConfirmPassword()"
+                        aria-label="password visibility"
+                    >
+                        <mat-icon class="!text-slate-400">{{
+                            getShowConfirmPasswordIcon()
+                        }}</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <button
+                class="!rounded-2xl min-h-14"
+                mat-flat-button
+                color="primary"
+            >
+                Đăng Ký
+            </button>
+        </form>
+        <mat-divider />
+        <div class="flex justify-between items-center">
+            <div class="text-lg font-medium text-slate-500">
+                Đã có tài khoản?
+            </div>
+            <button
+                class="!border-slate-500 !border-solid !border !rounded-2xl !min-h-12 !min-w-32 !text-slate-600"
+                mat-flat-button
+                (click)="switchTemplate('login')"
+            >
+                Đăng Nhập
+            </button>
+        </div>
+    </ng-template>
+
+    <ng-template #forgotPasswordTemplate>
+        <div class="flex">
+            <button
+                mat-icon-button
+                aria-label="Back"
+                (click)="switchTemplate('login')"
+            >
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div
+                style="
+                    text-align: left;
+                    font-size: 32px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                "
+            >
+                Lấy lại mật khẩu
+            </div>
+        </div>
+        <form
+            class="flex flex-col gap-6"
+            [formGroup]="forgotPasswordForm"
+            (ngSubmit)="onForgotPassword()"
+        >
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-500 text-lg" [for]="username"
+                    >Tài Khoản</label
+                >
+                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
+                    <input
+                        class="!outline-none w-full bg-gray-100"
+                        [id]="username"
+                        type="text"
+                        formControlName="username"
+                        placeholder="Tài Khoản"
+                        required
+                    />
+                </div>
+            </div>
+            <ng-container *ngIf="!otpSent; else otpTemplate"></ng-container>
+            <ng-template #otpTemplate>
+                <div class="flex flex-col gap-2">
+                    <label class="text-slate-500 text-lg" [for]="otp"
+                        >OTP</label
+                    >
+                    <div
+                        class="flex items-center rounded-lg bg-gray-100 h-16 px-3"
+                    >
+                        <input
+                            class="!outline-none w-full bg-gray-100"
+                            [id]="otp"
+                            type="text"
+                            formControlName="otp"
+                            placeholder="OTP"
+                            required
+                        />
+                    </div>
+                </div>
+            </ng-template>
+            <button
+                class="!rounded-2xl min-h-14"
+                mat-flat-button
+                color="primary"
+            >
+                Lấy lại mật khẩu
+            </button>
+        </form>
+    </ng-template>
+</div>
