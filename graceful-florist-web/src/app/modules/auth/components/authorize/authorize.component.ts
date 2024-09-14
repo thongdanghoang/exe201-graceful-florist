@@ -21,12 +21,6 @@ export class AuthorizeComponent
   showConfirmPassword = false;
   otpSent = false;
 
-  username: string = 'username';
-  password: string = 'password';
-  fullName: string = 'fullName';
-  confirmPassword: string = 'confirmPassword';
-  otp: string = 'otp';
-
   loginForm: FormGroup;
   registerForm: FormGroup;
   forgotPasswordForm: FormGroup;

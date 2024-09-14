@@ -31,14 +31,14 @@
             (ngSubmit)="onLogin()"
         >
             <div class="flex flex-col gap-2">
-                <label class="text-slate-500 text-lg" [for]="username"
+                <label class="text-slate-500 text-lg" for="username"
                     >Tài Khoản</label
                 >
                 <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
                     <input
                         class="!outline-none w-full bg-gray-100"
                         autofocus
-                        [id]="username"
+                        id="username"
                         type="text"
                         placeholder="Tài Khoản"
                         formControlName="username"
@@ -48,7 +48,7 @@
             </div>
             <div class="flex flex-col gap-2">
                 <div class="flex justify-between items-center">
-                    <label class="text-slate-500 text-lg" [for]="password"
+                    <label class="text-slate-500 text-lg" for="password"
                         >Mật Khẩu</label
                     >
                     <button
@@ -62,7 +62,7 @@
                 <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
                     <input
                         class="!outline-none w-full bg-gray-100"
-                        [id]="password"
+                        id="password"
                         type="password"
                         placeholder="Mật Khẩu"
                         formControlName="password"
@@ -123,14 +123,13 @@
             (ngSubmit)="onSignUp()"
         >
             <div class="flex flex-col gap-2">
-                <label class="text-slate-500 text-lg" [for]="fullName"
+                <label class="text-slate-500 text-lg" for="fullName"
                     >Họ Tên</label
                 >
                 <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
                     <input
                         class="!outline-none w-full bg-gray-100"
-                        autofocus
-                        [id]="fullName"
+                        id="fullName"
                         type="text"
                         formControlName="fullName"
                         placeholder="Họ Tên"
@@ -139,13 +138,13 @@
                 </div>
             </div>
             <div class="flex flex-col gap-2">
-                <label class="text-slate-500 text-lg" [for]="username"
+                <label class="text-slate-500 text-lg" for="usernameRegister"
                     >Tài Khoản</label
                 >
                 <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
                     <input
                         class="!outline-none w-full bg-gray-100"
-                        [id]="username"
+                        id="usernameRegister"
                         type="text"
                         formControlName="username"
                         placeholder="Tài Khoản"
@@ -154,13 +153,13 @@
                 </div>
             </div>
             <div class="flex flex-col gap-2">
-                <label class="text-slate-500 text-lg" [for]="password"
+                <label class="text-slate-500 text-lg" for="passwordRegister"
                     >Mật Khẩu</label
                 >
                 <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
                     <input
                         class="!outline-none w-full bg-gray-100"
-                        [id]="password"
+                        id="passwordRegister"
                         [type]="showPassword ? 'text' : 'password'"
                         placeholder="Mật Khẩu"
                         formControlName="password"
@@ -178,13 +177,13 @@
                 </div>
             </div>
             <div class="flex flex-col gap-2">
-                <label class="text-slate-500 text-lg" [for]="confirmPassword"
+                <label class="text-slate-500 text-lg" for="confirmPassword"
                     >Xác Thực Mật Khẩu</label
                 >
                 <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
                     <input
                         class="!outline-none w-full bg-gray-100"
-                        [id]="confirmPassword"
+                        id="confirmPassword"
                         [type]="showConfirmPassword ? 'text' : 'password'"
                         formControlName="confirmPassword"
                         placeholder="Xác Thực Mật Khẩu"
@@ -251,13 +250,13 @@
             (ngSubmit)="onForgotPassword()"
         >
             <div class="flex flex-col gap-2">
-                <label class="text-slate-500 text-lg" [for]="username"
+                <label class="text-slate-500 text-lg" for="usernameForgotPw"
                     >Tài Khoản</label
                 >
                 <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
                     <input
                         class="!outline-none w-full bg-gray-100"
-                        [id]="username"
+                        id="usernameForgotPw"
                         type="text"
                         formControlName="username"
                         placeholder="Tài Khoản"
@@ -268,15 +267,13 @@
             <ng-container *ngIf="!otpSent; else otpTemplate"></ng-container>
             <ng-template #otpTemplate>
                 <div class="flex flex-col gap-2">
-                    <label class="text-slate-500 text-lg" [for]="otp"
-                        >OTP</label
-                    >
+                    <label class="text-slate-500 text-lg" for="otp">OTP</label>
                     <div
                         class="flex items-center rounded-lg bg-gray-100 h-16 px-3"
                     >
                         <input
                             class="!outline-none w-full bg-gray-100"
-                            [id]="otp"
+                            id="otp"
                             type="text"
                             formControlName="otp"
                             placeholder="OTP"
