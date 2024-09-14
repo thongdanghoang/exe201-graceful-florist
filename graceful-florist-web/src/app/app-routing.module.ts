@@ -14,6 +14,7 @@ const routes: Routes = [
     component: HomepageComponent
   },
   {
+    // TODO: Add a 403 page instead homepage
     path: AppRoutingConstants.FORBIDDEN_PATH,
     component: HomepageComponent
   },
@@ -33,11 +34,9 @@ const routes: Routes = [
       import('./modules/auth/auth.module').then(m => m.AuthModule)
   },
   {
-    // TODO: Add a 404 page instead dev module in development
-    // NOTE: ** must be the last route
+    // TODO: Add a 404 page instead homepage
     path: '**',
-    loadChildren: () =>
-      import('./modules/dev/dev.module').then(m => m.DevModule)
+    component: HomepageComponent
   }
 ];
 

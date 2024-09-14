@@ -1,33 +1,7 @@
 <div class="flex justify-between my-2.5">
     <!--  Logo  -->
-    <div
-        class="flex flex-col items-center justify-around hover:cursor-pointer"
-        (click)="navigateToHomepage()"
-    >
-        <div
-            style="
-                color: #ff6f91;
-                font-size: 32px;
-                font-style: normal;
-                font-weight: 900;
-                line-height: 150%; /* 48px */
-                text-transform: uppercase;
-            "
-        >
-            Graceful Florist
-        </div>
-        <div
-            style="
-                color: #ff6f91;
-                font-size: 15px;
-                font-style: normal;
-                font-weight: 900;
-                line-height: 150%; /* 22.5px */
-                text-transform: uppercase;
-            "
-        >
-            Flower Speak Your Language
-        </div>
+    <div class="hover:cursor-pointer" (click)="navigateToHomepage()">
+        <svg-icon src="assets/Logo.svg"></svg-icon>
     </div>
     <!--  Navigations  -->
     <div class="flex flex-row justify-between items-center gap-1">
@@ -36,6 +10,14 @@
         </button>
         <button mat-button>Sản Phẩm</button>
         <button mat-button>Thiết Kế Hoa</button>
+        <button mat-button>Hợp tác với chúng tôi</button>
+        <button
+            mat-button
+            matTooltip="Sẽ bị xoá sau khi go live"
+            (click)="navigateToDevMode()"
+        >
+            Dev Mode
+        </button>
     </div>
     <!--  Search, User & Cart  -->
     <div class="flex flex-row justify-center items-center gap-1">
