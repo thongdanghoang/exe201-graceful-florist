@@ -6,8 +6,7 @@ import {AppRoutingConstants} from './app-routing-constants';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () =>
-      import('./modules/dev/dev.module').then(m => m.DevModule)
+    redirectTo: AppRoutingConstants.HOME_PATH
   },
   {
     path: AppRoutingConstants.HOME_PATH,
