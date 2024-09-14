@@ -17,7 +17,7 @@ export class HeaderComponent {
 
   protected navigateToOrdersTracking(): void {
     void this.router.navigate([
-      `${AppRoutingConstants.ORDERS}/${AppRoutingConstants.ORDER_TRACKING_PATH}`
+      `${AppRoutingConstants.ORDERS_PATH}/${AppRoutingConstants.ORDER_TRACKING_PATH}`
     ]);
   }
 }

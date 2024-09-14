@@ -14,7 +14,7 @@ const routes: Routes = [
     component: HomepageComponent
   },
   {
-    path: AppRoutingConstants.FORBIDDEN,
+    path: AppRoutingConstants.FORBIDDEN_PATH,
     component: HomepageComponent
   },
   {
@@ -23,11 +23,18 @@ const routes: Routes = [
       import('./modules/dev/dev.module').then(m => m.DevModule)
   },
   {
-    path: AppRoutingConstants.ORDERS,
+    path: AppRoutingConstants.ORDERS_PATH,
     loadChildren: () =>
       import('./modules/orders/orders.module').then(m => m.OrdersModule)
   },
   {
+    path: AppRoutingConstants.AUTH_PATH,
+    loadChildren: () =>
+      import('./modules/auth/auth.module').then(m => m.AuthModule)
+  },
+  {
+    // TODO: Add a 404 page instead dev module in development
+    // NOTE: ** must be the last route
     path: '**',
     loadChildren: () =>
       import('./modules/dev/dev.module').then(m => m.DevModule)

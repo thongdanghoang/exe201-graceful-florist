@@ -14,7 +14,7 @@ export class OrderTrackingComponent {
     const params = {
       id: '2024020827709_134533'
     };
-    void this.route.navigate([`${AppRoutingConstants.ORDERS}`, params]);
+    void this.route.navigate([`${AppRoutingConstants.ORDERS_PATH}`, params]);
   }
 
   private navigate(path: string): void {
