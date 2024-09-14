@@ -6,7 +6,7 @@ import {AppRoutingConstants} from './app-routing-constants';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: AppRoutingConstants.HOME_PATH
+    component: HomepageComponent
   },
   {
     path: AppRoutingConstants.HOME_PATH,
