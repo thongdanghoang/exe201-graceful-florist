@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { BreadcrumbItem } from "../../../shared/components/breadcrumb/breadcrumb.component";
+import { AppRoutingConstants } from "../../../../app-routing-constants";
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -26,4 +28,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class ToolboxComponent {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
+  breadcrumbs : BreadcrumbItem[] = [
+    {label: 'Trang chủ', path: AppRoutingConstants.HOME_PATH},
+    {label: 'Dev Mode', path: AppRoutingConstants.DEV_PATH}
+  ];
 }

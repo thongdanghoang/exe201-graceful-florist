@@ -33,6 +33,8 @@ import {ImageCardHorizontalComponent} from './components/image-card-horizontal/i
 import {CommentCardComponent} from './components/comment-card/comment-card.component';
 import {VndCurrencyPipe} from './pipes/vnd-currency.pipe';
 import {SvgIconComponent} from 'angular-svg-icon';
+import {BreadcrumbComponent} from './components/breadcrumb/breadcrumb.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import {SvgIconComponent} from 'angular-svg-icon';
     ImageCardComponent,
     ImageCardHorizontalComponent,
     CommentCardComponent,
-    VndCurrencyPipe
+    VndCurrencyPipe,
+    BreadcrumbComponent
   ],
   imports: [
     AsyncPipe,
@@ -75,7 +78,8 @@ import {SvgIconComponent} from 'angular-svg-icon';
     MatChipsModule,
     MatCardModule,
     MatTabsModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatButtonToggleModule
   ],
   exports: [
     AutocompleteComponent,
@@ -84,6 +88,7 @@ import {SvgIconComponent} from 'angular-svg-icon';
     ImageCardComponent,
     ImageCardHorizontalComponent,
     VndCurrencyPipe,
+    BreadcrumbComponent,
     CommentCardComponent,
     HttpClientModule,
     RouterModule,
@@ -113,7 +118,8 @@ import {SvgIconComponent} from 'angular-svg-icon';
     MatChipsModule,
     MatCardModule,
     MatTabsModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatButtonToggleModule
   ]
 })
 export class SharedModule {}
