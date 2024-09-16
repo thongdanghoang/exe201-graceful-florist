@@ -3,8 +3,11 @@ export class AppRoutingConstants {
   public static readonly BACKEND_API_URL = `${AppRoutingConstants.BASE_URL}/api`;
 
   // app module
-  public static readonly HOME_PATH = 'home';
+  public static readonly HOME_PATH = 'homepage';
   public static readonly FORBIDDEN_PATH = 'forbidden';
+
+  // Products module
+  public static readonly PRODUCTS_PATH = 'products';
 
   // orders module
   public static readonly ORDERS_PATH = 'orders';

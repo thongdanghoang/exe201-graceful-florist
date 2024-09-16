@@ -15,6 +15,10 @@ export class HeaderComponent {
     void this.router.navigate([AppRoutingConstants.AUTH_PATH]);
   }
 
+  protected navigateToProducts(): void {
+    void this.router.navigate([AppRoutingConstants.PRODUCTS_PATH]);
+  }
+
   protected navigateToDevMode(): void {
     void this.router.navigate([AppRoutingConstants.DEV_PATH]);
   }
