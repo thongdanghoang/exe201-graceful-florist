@@ -11,10 +11,8 @@ export class OrderTrackingComponent {
   constructor(private readonly route: Router) {}
 
   protected navigateToOrderDetail(): void {
-    const params = {
-      id: '2024020827709_134533'
-    };
-    void this.route.navigate([`${AppRoutingConstants.ORDERS_PATH}`, params]);
+    const id = '2024020827709_134533';
+    void this.route.navigate([`${AppRoutingConstants.ORDERS_PATH}/${id}`]);
   }
 
   private navigate(path: string): void {
