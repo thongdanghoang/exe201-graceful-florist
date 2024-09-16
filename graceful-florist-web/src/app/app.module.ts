@@ -12,6 +12,8 @@ import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import {HomepageComponent} from './homepage/homepage.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
+import {MatPaginatorIntl} from '@angular/material/paginator';
+import {MatPaginatorIntlImpl} from './modules/shared/components/mat-paginator-intl-impl/mat-paginator-intl-impl';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,11 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
     CoreModule,
     SharedModule
   ],
-  providers: [provideAnimationsAsync(), provideNativeDateAdapter()],
+  providers: [
+    provideAnimationsAsync(),
+    provideNativeDateAdapter(),
+    {provide: MatPaginatorIntl, useValue: MatPaginatorIntlImpl()}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
