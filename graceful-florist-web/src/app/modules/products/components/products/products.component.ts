@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {ProductService} from '../../services/product.service';
 import {PageEvent} from '@angular/material/paginator';
 import {
@@ -25,6 +25,24 @@ export class ProductsComponent
     {label: 'Trang chủ', path: AppRoutingConstants.HOME_PATH},
     {label: 'Sản Phẩm', path: AppRoutingConstants.DEV_PATH}
   ];
+  protected readonly panelOpenState = signal(false);
+  protected readonly flowersByTheme: string[] = [
+    'Hoa cho cặp đôi',
+    'Hoa Xin Lỗi',
+    'Hoa Sinh Nhật',
+    'Hoa Chúc Mừng',
+    'Hoa kỷ niệm ngày cưới',
+    'Hoa chia buồn'
+  ];
+  protected readonly decorators: string[] = [
+    'Giỏ hoa để bàn',
+    'Bó hoa',
+    'Bình hoa',
+    'Giỏ hoa',
+    'Trái cây',
+    'Hộp hoa'
+  ];
+  protected readonly selectedFilters: string[] = ['Hoa cho cặp đôi'];
 
   constructor(private readonly productService: ProductService) {
     super();

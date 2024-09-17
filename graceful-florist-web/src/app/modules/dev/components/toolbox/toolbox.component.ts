@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from "@angular/core";
 import { BreadcrumbItem } from "../../../shared/components/breadcrumb/breadcrumb.component";
 import { AppRoutingConstants } from "../../../../app-routing-constants";
 export interface PeriodicElement {
@@ -32,4 +32,5 @@ export class ToolboxComponent {
     {label: 'Trang chủ', path: AppRoutingConstants.HOME_PATH},
     {label: 'Dev Mode', path: AppRoutingConstants.DEV_PATH}
   ];
+  readonly panelOpenState = signal(false);
 }

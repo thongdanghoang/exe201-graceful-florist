@@ -35,6 +35,7 @@ import {VndCurrencyPipe} from './pipes/vnd-currency.pipe';
 import {SvgIconComponent} from 'angular-svg-icon';
 import {BreadcrumbComponent} from './components/breadcrumb/breadcrumb.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatCardModule,
     MatTabsModule,
     NgOptimizedImage,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatMenuModule
   ],
   exports: [
     AutocompleteComponent,
@@ -119,7 +121,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatCardModule,
     MatTabsModule,
     NgOptimizedImage,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatMenuModule
   ]
 })
 export class SharedModule {}
