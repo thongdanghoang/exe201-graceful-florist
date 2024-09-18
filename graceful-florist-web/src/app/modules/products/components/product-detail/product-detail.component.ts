@@ -1,10 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
-import {ProductDetailDto, ProductDto} from '../../models/product.dto';
+import {
+  CommentDto,
+  CommentSearchCriteriaDto,
+  ProductDetailDto,
+  ProductDto
+} from '../../models/product.dto';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {ProductService} from '../../services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {
+  SearchCriteriaDto,
+  SearchResultDto
+} from '../../../shared/models/abstract-base-dto';
+import {PageEvent} from '@angular/material/paginator';
+import {Observable, switchMap} from 'rxjs';
 
 @Component({
   selector: 'graceful-florist-product-detail',
@@ -16,6 +27,7 @@ export class ProductDetailComponent
   implements OnInit
 {
   protected productDto: ProductDetailDto;
+  protected commentCriteria: SearchCriteriaDto<CommentSearchCriteriaDto>;
   protected recommendedProducts: ProductDto[];
   protected mainImage: string;
   protected breadcrumbs: BreadcrumbItem[] = [
@@ -32,6 +44,19 @@ export class ProductDetailComponent
   ) {
     super();
     this.productDto = {} as ProductDetailDto;
+    this.commentCriteria = {
+      page: {
+        limit: 5,
+        offset: 0
+      },
+      sort: {
+        column: 'name',
+        direction: 'asc'
+      },
+      criteria: {
+        productId: this.route.snapshot.paramMap.get('id') as string
+      } as CommentSearchCriteriaDto
+    };
     this.recommendedProducts = [];
     this.mainImage = '';
   }
@@ -40,9 +65,22 @@ export class ProductDetailComponent
     this.registerSubscriptions([
       this.productService
         .getProductById(this.route.snapshot.paramMap.get('id') as string)
-        .subscribe((productDto: ProductDetailDto): void => {
-          this.productDto = productDto;
-          this.mainImage = productDto.image_url;
+        .pipe(
+          switchMap(
+            (
+              productDto: ProductDetailDto
+            ): Observable<SearchResultDto<CommentDto>> => {
+              this.productDto = productDto;
+              this.mainImage = productDto.image_url;
+              this.commentCriteria.criteria.productId = productDto.id;
+              return this.productService.getProductComment(
+                this.commentCriteria
+              );
+            }
+          )
+        )
+        .subscribe((comments: SearchResultDto<CommentDto>): void => {
+          this.productDto.comments = comments;
         }),
       this.productService
         .getRecommendedProducts()
@@ -64,5 +102,18 @@ export class ProductDetailComponent
 
   protected changeMainImage(imageUrl: string): void {
     this.mainImage = imageUrl;
+  }
+
+  protected onCommentPageChange(pageEvent: PageEvent): void {
+    this.commentCriteria.page.limit = pageEvent.pageSize;
+    this.commentCriteria.page.offset =
+      pageEvent.pageIndex * this.commentCriteria.page.limit;
+    this.registerSubscription(
+      this.productService
+        .getProductComment(this.commentCriteria)
+        .subscribe((comments: SearchResultDto<CommentDto>): void => {
+          this.productDto.comments = comments;
+        })
+    );
   }
 }

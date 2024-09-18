@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import {
+  CommentDto,
+  CommentSearchCriteriaDto,
   ProductCriteriaDto,
   ProductDetailDto,
   ProductDto
@@ -59,7 +61,17 @@ export class ProductService {
           image_url: 'assets/hoa-baby-trang.png'
         }
       ],
-      comments: [
+      comments: {results: [], total: 0}
+    } as ProductDetailDto);
+  }
+
+  // eslint-disable-next-line max-lines-per-function
+  getProductComment(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _criteria: SearchCriteriaDto<CommentSearchCriteriaDto>
+  ): Observable<SearchResultDto<CommentDto>> {
+    return of({
+      results: [
         {
           id: '',
           rating: 5,
@@ -186,8 +198,9 @@ export class ProductService {
               'assets/421095852_789063679905778_600418982112123023_n_2.svg'
           }
         }
-      ]
-    } as ProductDetailDto);
+      ],
+      total: 9
+    });
   }
 
   // eslint-disable-next-line max-lines-per-function

@@ -1,3 +1,5 @@
+import {SearchResultDto} from '../../shared/models/abstract-base-dto';
+
 export interface ProductDto {
   id: string;
   name: string;
@@ -12,7 +14,7 @@ export interface ProductDetailDto extends ProductDto {
   images: string[];
   ingredients: IngredientDto[];
   description: any;
-  comments: CommentDto[];
+  comments: SearchResultDto<CommentDto>;
 }
 
 export interface IngredientDto {
@@ -29,6 +31,10 @@ export interface CommentDto {
   address: string;
   createdDate: string;
   user: UserDto;
+}
+
+export interface CommentSearchCriteriaDto {
+  productId: string;
 }
 
 export interface UserDto {

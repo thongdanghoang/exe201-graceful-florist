@@ -80,7 +80,13 @@ export class ProductsComponent
   onPageChange(pageEvent: PageEvent): void {
     this.criteria.page.limit = pageEvent.pageSize;
     this.criteria.page.offset = pageEvent.pageIndex * this.criteria.page.limit;
-    this.productService.searchProducts(this.criteria).subscribe();
+    this.registerSubscription(
+      this.productService
+        .searchProducts(this.criteria)
+        .subscribe((results: SearchResultDto<ProductDto>): void => {
+          this.results = results;
+        })
+    );
   }
 
   onProductClick(product: ProductDto): void {
