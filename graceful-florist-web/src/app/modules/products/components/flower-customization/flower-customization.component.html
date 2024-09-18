@@ -1,0 +1,148 @@
+<div class="container mx-auto flex flex-col gap-6 py-6" [formGroup]="form">
+    <graceful-florist-breadcrumb [breadcrumbs]="breadcrumbs" />
+    <graceful-florist-tab-category />
+    <div class="flex flex-col bg-white gap-2 py-3 px-4 rounded-lg">
+        <div class="font-sans text-2xl font-semibold leading-normal">
+            Tông màu chủ đạo
+        </div>
+        <div class="flex gap-2.5">
+            <button
+                *ngFor="let item of mainColors"
+                (click)="selectColor(item.color)"
+                [ngClass]="{
+                    '': form.get('selectedMainColor')?.value === item.color,
+                }"
+                class="flex items-center p-2 gap-2 border-slate-500 border"
+                style="border-radius: 32px"
+            >
+                <svg-icon
+                    [src]="'assets/circle-' + item.color + '.svg'"
+                ></svg-icon>
+                <span class="font-sans text-base leading-normal">{{
+                    item.label
+                }}</span>
+            </button>
+        </div>
+    </div>
+    <div class="flex gap-2.5">
+        <div class="flex flex-col w-full px-4 py-3 gap-4 bg-white rounded-lg">
+            <div class="flex items-center">
+                <mat-checkbox
+                    [checked]="
+                        selectedFlowersToBeRemovedFromForm.length > 0 &&
+                        selectedFlowersToBeRemovedFromForm.length ===
+                            selectedFlowers.length
+                    "
+                    (change)="onSelectAllFlowers($event.checked)"
+                    class=""
+                    color="primary"
+                ></mat-checkbox>
+                <div
+                    class="px-6 py-2 font-sans text-2xl font-semibold leading-normal"
+                >
+                    Hoa đã chọn ({{
+                        selectedFlowersToBeRemovedFromForm.length
+                    }})
+                </div>
+                <button
+                    (click)="removeAllFlowers()"
+                    *ngIf="selectedFlowersToBeRemovedFromForm.length > 0"
+                    mat-flat-button
+                    color="primary"
+                >
+                    Xóa hết các lựa chọn
+                </button>
+            </div>
+            <ng-container
+                *ngIf="selectedFlowers.length; else noSelectedFlowers"
+            >
+                <div
+                    *ngFor="
+                        let flower of selectedFlowers.controls;
+                        let i = index
+                    "
+                    class="flex py-4 px-6 gap-6 items-center"
+                >
+                    <mat-checkbox
+                        [checked]="isSelectedInFlowerList(flower)"
+                        (change)="onSelectFlower(flower, $event.checked)"
+                        class=""
+                        color="primary"
+                    ></mat-checkbox>
+                    <div class="flex gap-4 items-center">
+                        <img
+                            class="w-24 h-24 object-cover"
+                            [src]="flower.value.image"
+                            [alt]="flower.value.name"
+                        />
+                        <div class="flex gap-7 items-center">
+                            <div class="flex flex-col">
+                                <div class="font-sans text-lg font-medium">
+                                    {{ flower.value.name }}
+                                </div>
+                                <div class="font-sans text-base font-normal">
+                                    {{ flower.value.detail }}
+                                </div>
+                            </div>
+                            <div class="flex gap-1.5 items-center">
+                                <graceful-florist-counter
+                                    [count]="1"
+                                ></graceful-florist-counter>
+                                <button
+                                    mat-icon-button
+                                    color="primary"
+                                    (click)="removeFlower(i)"
+                                >
+                                    <mat-icon>delete_forever</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-template #noSelectedFlowers>
+                <div class="mx-auto flex flex-col gap-4 items-center">
+                    <img
+                        class="w-64 h-64 object-cover"
+                        src="assets/no-flowers-selected.png"
+                        alt="no-flowers-selected"
+                    />
+                    <div class="font-sans text-2xl leading-normal font-bold">
+                        Hãy lựa chọn loại hoa bạn mong muốn !
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+        <div
+            class="flex flex-col min-w-fit px-4 py-3 bg-white rounded-lg gap-4"
+        >
+            <div
+                class="px-6 py-2 font-sans text-2xl font-semibold leading-normal"
+            >
+                Loại hoa
+            </div>
+            <div class="grid grid-cols-2 gap-6 py-4 px-6">
+                <div
+                    *ngFor="let flower of flowers"
+                    class="flex flex-col items-center"
+                    (click)="selectFlower(flower)"
+                >
+                    <img
+                        [ngClass]="{
+                            'border-4 border-primary': isSelectedFlower(flower),
+                        }"
+                        src="{{ flower.image }}"
+                        alt="{{ flower.name }}"
+                        class="object-cover rounded-full"
+                        style="width: 60px; height: 60px"
+                    />
+                    <div
+                        class="font-sans text-xs font-bold leading-normal whitespace-nowrap"
+                    >
+                        {{ flower.name }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

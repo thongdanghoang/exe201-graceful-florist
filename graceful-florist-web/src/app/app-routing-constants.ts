@@ -8,6 +8,7 @@ export class AppRoutingConstants {
 
   // Products module
   public static readonly PRODUCTS_PATH = 'products';
+  public static readonly CUSTOMIZE_FLOWER_PATH = 'customization';
 
   // orders module
   public static readonly ORDERS_PATH = 'orders';

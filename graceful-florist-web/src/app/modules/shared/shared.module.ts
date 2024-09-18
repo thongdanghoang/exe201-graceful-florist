@@ -37,6 +37,7 @@ import {BreadcrumbComponent} from './components/breadcrumb/breadcrumb.component'
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatMenuModule} from '@angular/material/menu';
 import {PaginatorLabelDirective} from './directives/paginator-label.directive';
+import {CounterComponent} from './components/counter/counter.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import {PaginatorLabelDirective} from './directives/paginator-label.directive';
     CommentCardComponent,
     VndCurrencyPipe,
     BreadcrumbComponent,
-    PaginatorLabelDirective
+    PaginatorLabelDirective,
+    CounterComponent
   ],
   imports: [
     AsyncPipe,
@@ -125,7 +127,8 @@ import {PaginatorLabelDirective} from './directives/paginator-label.directive';
     NgOptimizedImage,
     MatButtonToggleModule,
     MatMenuModule,
-    PaginatorLabelDirective
+    PaginatorLabelDirective,
+    CounterComponent
   ]
 })
 export class SharedModule {}

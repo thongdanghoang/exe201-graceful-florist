@@ -5,9 +5,14 @@ import {SharedModule} from '../shared/shared.module';
 import {ProductDetailComponent} from './components/product-detail/product-detail.component';
 import {ProductsComponent} from './components/products/products.component';
 import {ProductService} from './services/product.service';
+import {FlowerCustomizationComponent} from './components/flower-customization/flower-customization.component';
 
 @NgModule({
-  declarations: [ProductDetailComponent, ProductsComponent],
+  declarations: [
+    ProductDetailComponent,
+    ProductsComponent,
+    FlowerCustomizationComponent
+  ],
   imports: [SharedModule, CommonModule, ProductsRoutingModule],
   providers: [ProductService]
 })
