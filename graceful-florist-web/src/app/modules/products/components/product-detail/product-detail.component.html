@@ -1,1 +1,266 @@
-<p>product-detail works!</p>
+<div style="background-color: #f6f2efff">
+    <div class="container mx-auto flex flex-col py-5 gap-5">
+        <graceful-florist-breadcrumb [breadcrumbs]="breadcrumbs" />
+        <graceful-florist-tab-category />
+        <div
+            class="flex flex-col rounded-lg gap-5 py-8 px-6 sm:flex-row bg-white"
+        >
+            <div
+                class="flex flex-col gap-2.5 max-w-sm lg:max-w-xl 2xl:max-w-screen-md"
+            >
+                <img [src]="mainImage" [alt]="productDto.name" />
+                <div class="flex gap-6 overflow-x-scroll w-full">
+                    <img
+                        *ngFor="let image of productDto.images"
+                        [src]="image"
+                        [alt]="productDto.name"
+                        class="object-cover max-w-28 max-h-28"
+                        (mouseenter)="changeMainImage(image)"
+                    />
+                </div>
+            </div>
+            <div class="flex flex-col gap-2.5 w-full">
+                <!--     Name, detail, reviews, purchase     -->
+                <div class="flex flex-col">
+                    <div class="font-sans text-xl font-bold leading-normal">
+                        {{ productDto.name }}
+                    </div>
+                    <div class="flex gap-2">
+                        <div
+                            class="font-sans text-sm font-normal leading-normal text-slate-500"
+                        >
+                            {{ productDto.detail }}
+                        </div>
+                        <mat-divider [vertical]="true"></mat-divider>
+                        <div
+                            class="flex gap-1 font-sans text-sm font-normal leading-normal text-slate-500"
+                        >
+                            <strong class="text-slate-900">{{
+                                productDto.purchaseCount
+                            }}</strong
+                            >Lượt Mua
+                        </div>
+                        <mat-divider [vertical]="true"></mat-divider>
+                        <div
+                            class="flex gap-1 font-sans text-sm font-normal leading-normal text-slate-500"
+                        >
+                            <strong class="text-slate-900">{{
+                                productDto.reviewCount
+                            }}</strong
+                            >Lượt đánh giá
+                        </div>
+                    </div>
+                </div>
+                <!--     Price     -->
+                <div
+                    class="font-sans text-xl font-extrabold leading-normal text-primary"
+                >
+                    {{ productDto.price | vndCurrency }}
+                </div>
+                <mat-divider />
+                <!--     Ingredients Title    -->
+                <div class="font-sans text-base font-semibold leading-normal">
+                    Thành Phần
+                </div>
+                <!--     Ingredients Detail    -->
+                <div class="flex gap-2 5 items-center">
+                    @for (
+                        ingredient of productDto.ingredients;
+                        track ingredient
+                    ) {
+                        <div
+                            class="flex flex-col gap-2 5 justify-between items-center"
+                        >
+                            <img
+                                [src]="ingredient.image_url"
+                                [alt]="ingredient.name"
+                            />
+                            <div
+                                class="font-sans text-xs font-normal leading-normal text-slate-700"
+                            >
+                                {{ ingredient.name }}
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!--     Description Title    -->
+                <div class="font-sans text-base font-semibold leading-normal">
+                    Mô Tả
+                </div>
+                <!--     Description Detail    -->
+                <ul
+                    class="list-disc *:text-sm *:font-sans *:font-normal *:leading-normal pl-3"
+                >
+                    <li>
+                        Bó hoa được kết từ những bông hoa tươi mới nhất, đảm bảo
+                        chất lượng cao.
+                    </li>
+                    <li>
+                        Thiết kế tinh tế, sang trọng, phù hợp với mọi không
+                        gian.
+                    </li>
+                    <li>
+                        Mang ý nghĩa sâu sắc về tình yêu nồng nàn và say đắm.
+                    </li>
+                    <li>Là món quà hoàn hảo để dành tặng cho người ấy.</li>
+                </ul>
+                <!--     Actions    -->
+                <div class="flex gap-8">
+                    <button mat-raised-button (click)="addToCart()">
+                        Thêm vào giỏ hàng
+                    </button>
+                    <button
+                        mat-raised-button
+                        color="primary"
+                        (click)="buyNow()"
+                    >
+                        Mua ngay
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="flex gap-8">
+            <div class="flex flex-col rounded-lg gap-3.5 py-8 px-6 bg-white">
+                <div class="font-sans text-base font-extrabold">Đề Xuất</div>
+                @for (recommend of recommendedProducts; track recommend) {
+                    <div
+                        class="flex flex-col gap-3 max-w-sm cursor-pointer hover:shadow p-2 rounded-lg"
+                        (click)="onProductClick(recommend)"
+                    >
+                        <img
+                            src="{{ recommend.image_url }}"
+                            alt="{{ recommend.name }}"
+                        />
+                        <div class="flex flex-col">
+                            <div
+                                class="font-sans text-xl font-bold overflow-ellipsis leading-normal"
+                            >
+                                {{ recommend.name }}
+                            </div>
+                            <div
+                                class="font-sans text-base font-medium overflow-ellipsis leading-normal text-slate-600"
+                            >
+                                {{ recommend.price | vndCurrency }}
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="rounded-lg py-8 px-6 bg-white w-full">
+                <mat-tab-group>
+                    <mat-tab label="Đánh Giá Khách Hàng (50)">
+                        <!-- Comments container -->
+                        <div class="flex flex-col w-full">
+                            @for (
+                                comment of productDto.comments;
+                                track comment
+                            ) {
+                                <div class="flex gap-2.5 p-5">
+                                    <!-- User's avatar -->
+                                    <img
+                                        style="
+                                            max-width: 60px;
+                                            max-height: 60px;
+                                        "
+                                        [src]="comment.user.avatar"
+                                        [alt]="comment.user.name"
+                                    />
+                                    <div class="flex flex-col gap-2.5">
+                                        <!-- User's full name, rating, comment -->
+                                        <div class="flex flex-col">
+                                            <div
+                                                class="font-sans text-base font-semibold leading-normal"
+                                            >
+                                                {{ comment.user.name }}
+                                            </div>
+                                            <!-- TODO: Render rating based on user's rating -->
+                                            <div class="flex">
+                                                <mat-icon
+                                                    class="!text-primary"
+                                                    aria-hidden="false"
+                                                    aria-label="Example star icon"
+                                                    fontIcon="star"
+                                                ></mat-icon>
+                                                <mat-icon
+                                                    class="!text-primary"
+                                                    aria-hidden="false"
+                                                    aria-label="Example star icon"
+                                                    fontIcon="star"
+                                                ></mat-icon>
+                                                <mat-icon
+                                                    class="!text-primary"
+                                                    aria-hidden="false"
+                                                    aria-label="Example star icon"
+                                                    fontIcon="star"
+                                                ></mat-icon>
+                                                <mat-icon
+                                                    class="!text-primary"
+                                                    aria-hidden="false"
+                                                    aria-label="Example star icon"
+                                                    fontIcon="star_half"
+                                                ></mat-icon>
+                                                <mat-icon
+                                                    class="!text-primary"
+                                                    aria-hidden="false"
+                                                    aria-label="Example star icon"
+                                                    fontIcon="star_outline"
+                                                ></mat-icon>
+                                            </div>
+                                            <div
+                                                class="font-sans text-base font-semibold leading-normal"
+                                            >
+                                                {{ comment.content }}
+                                            </div>
+                                        </div>
+                                        <!-- Images -->
+                                        <div class="flex">
+                                            @for (
+                                                image of comment.images;
+                                                track image
+                                            ) {
+                                                <img
+                                                    [src]="image"
+                                                    [alt]="comment.user.name"
+                                                    class="object-cover max-w-28 max-h-28"
+                                                />
+                                            }
+                                        </div>
+                                        <!-- Address and created date -->
+                                        <div class="flex gap-2.5">
+                                            <div
+                                                class="font-sans text-sm font-normal leading-normal text-slate-600"
+                                            >
+                                                {{ comment.address }}
+                                            </div>
+                                            <div
+                                                class="font-sans text-sm font-normal leading-normal text-slate-600"
+                                            >
+                                                {{ comment.createdDate }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <mat-paginator
+                                [length]="50"
+                                [pageSize]="5"
+                                [pageSizeOptions]="[5, 10, 25, 100]"
+                                [showFirstLastButtons]="true"
+                                [hidePageSize]="false"
+                                aria-label="Chọn trang"
+                                customPaginatorLabel
+                                itemsPerPageLabel="Tổng số đánh giá:"
+                                nextPageLabel="Trang tiếp"
+                                previousPageLabel="Trang trước"
+                                firstPageLabel="Trang đầu"
+                                lastPageLabel="Trang cuối"
+                            >
+                            </mat-paginator>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Vấn Đề Thường Gặp"></mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>

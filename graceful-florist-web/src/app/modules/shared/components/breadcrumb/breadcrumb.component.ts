@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 export interface BreadcrumbItem {
   label: string;
-  path: string;
+  path?: string;
 }
 
 @Component({

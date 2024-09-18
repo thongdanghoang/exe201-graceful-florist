@@ -36,6 +36,7 @@ import {SvgIconComponent} from 'angular-svg-icon';
 import {BreadcrumbComponent} from './components/breadcrumb/breadcrumb.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatMenuModule} from '@angular/material/menu';
+import {PaginatorLabelDirective} from './directives/paginator-label.directive';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {MatMenuModule} from '@angular/material/menu';
     ImageCardHorizontalComponent,
     CommentCardComponent,
     VndCurrencyPipe,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    PaginatorLabelDirective
   ],
   imports: [
     AsyncPipe,
@@ -122,7 +124,8 @@ import {MatMenuModule} from '@angular/material/menu';
     MatTabsModule,
     NgOptimizedImage,
     MatButtonToggleModule,
-    MatMenuModule
+    MatMenuModule,
+    PaginatorLabelDirective
   ]
 })
 export class SharedModule {}

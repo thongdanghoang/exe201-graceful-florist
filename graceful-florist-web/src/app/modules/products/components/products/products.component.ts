@@ -9,6 +9,7 @@ import {ProductCriteriaDto, ProductDto} from '../../models/product.dto';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'graceful-florist-products',
@@ -44,7 +45,10 @@ export class ProductsComponent
   ];
   protected readonly selectedFilters: string[] = ['Hoa cho cặp đôi'];
 
-  constructor(private readonly productService: ProductService) {
+  constructor(
+    private readonly productService: ProductService,
+    private readonly router: Router
+  ) {
     super();
     this.criteria = {
       page: {
@@ -77,5 +81,11 @@ export class ProductsComponent
     this.criteria.page.limit = pageEvent.pageSize;
     this.criteria.page.offset = pageEvent.pageIndex * this.criteria.page.limit;
     this.productService.searchProducts(this.criteria).subscribe();
+  }
+
+  onProductClick(product: ProductDto): void {
+    void this.router.navigate([
+      `${AppRoutingConstants.PRODUCTS_PATH}/${product.id}`
+    ]);
   }
 }

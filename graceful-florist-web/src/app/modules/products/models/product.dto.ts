@@ -7,7 +7,34 @@ export interface ProductDto {
 
 export interface ProductDetailDto extends ProductDto {
   detail: string;
-  quantity: number;
+  reviewCount: number;
+  purchaseCount: number;
+  images: string[];
+  ingredients: IngredientDto[];
+  description: any;
+  comments: CommentDto[];
+}
+
+export interface IngredientDto {
+  id: string;
+  name: string;
+  image_url: string;
+}
+
+export interface CommentDto {
+  id: string;
+  content: string;
+  rating: number;
+  images: string[];
+  address: string;
+  createdDate: string;
+  user: UserDto;
+}
+
+export interface UserDto {
+  id: string;
+  name: string;
+  avatar: string;
 }
 
 export interface ProductCriteriaDto {}
