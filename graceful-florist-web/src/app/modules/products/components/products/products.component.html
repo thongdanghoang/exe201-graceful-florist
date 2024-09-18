@@ -1,7 +1,7 @@
 <div class="container mx-auto flex flex-col pt-5 gap-5">
     <graceful-florist-breadcrumb [breadcrumbs]="breadcrumbs" />
     <graceful-florist-tab-category />
-    <div class="flex flex-col gap-3.5 lg:flex-row">
+    <div class="flex flex-col gap-3.5 sm:flex-row">
         <div class="w-full flex flex-col gap-3.5 p-4">
             <div class="flex gap-1 py-2">
                 <mat-icon>filter_alt</mat-icon>
@@ -119,14 +119,17 @@
         </div>
         <div class="min-w-fit gap-3.5 flex flex-col">
             <img
+                class="hidden sm:block"
                 ngSrc="assets/products.png"
                 alt="products"
                 width="766"
                 height="265"
                 priority
             />
-            <div class="flex justify-between items-center">
-                <div class="flex gap-2">
+            <div
+                class="flex flex-col sm:flex-row sm:justify-between sm:items-center"
+            >
+                <div class="flex gap-2 flex-col sm:flex-row">
                     <button class="!rounded-lg" mat-flat-button color="primary">
                         Tất Cả
                     </button>
@@ -181,14 +184,15 @@
                 </mat-paginator>
             </div>
             <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-0"
             >
                 @for (product of results.results; track product) {
                     <div
-                        class="flex flex-col gap-3 max-w-sm cursor-pointer hover:shadow p-2 rounded-lg"
+                        class="flex flex-col gap-3 cursor-pointer hover:shadow p-2 rounded-lg"
                         (click)="onProductClick(product)"
                     >
                         <img
+                            class="object-cover"
                             src="{{ product.image_url }}"
                             alt="{{ product.name }}"
                         />
