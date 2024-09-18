@@ -1,253 +1,265 @@
-<div class="container mx-auto flex flex-col pt-5 gap-5">
-    <graceful-florist-breadcrumb [breadcrumbs]="breadcrumbs" />
-    <graceful-florist-tab-category />
-    <div class="flex flex-col gap-3.5 sm:flex-row">
-        <div class="w-full flex flex-col gap-3.5 p-4">
-            <div class="flex gap-1 py-2">
-                <mat-icon>filter_alt</mat-icon>
-                <div class="font-sans text-base leading-normal font-bold">
-                    BỘ LỌC TÌM KIẾM
+<div class="" style="background-color: #f6f2efff">
+    <div class="container mx-auto flex flex-col py-5 gap-5">
+        <graceful-florist-breadcrumb [breadcrumbs]="breadcrumbs" />
+        <graceful-florist-tab-category />
+        <div class="flex flex-col gap-3.5 sm:flex-row">
+            <div class="w-full flex flex-col gap-3.5 p-4 h-fit bg-white">
+                <div class="flex gap-1 py-2">
+                    <mat-icon>filter_alt</mat-icon>
+                    <div class="font-sans text-base leading-normal font-bold">
+                        BỘ LỌC TÌM KIẾM
+                    </div>
                 </div>
-            </div>
-            <mat-divider />
-            <div class="flex justify-between items-center pr-3">
-                <div class="font-base text-base font-normal leading-normal">
-                    Bộ lọc đang chọn
+                <mat-divider />
+                <div class="flex justify-between items-center pr-3">
+                    <div class="font-base text-base font-normal leading-normal">
+                        Bộ lọc đang chọn
+                    </div>
+                    <button class="!text-gray-500" mat-button>
+                        xóa bộ lọc
+                        <mat-icon iconPositionEnd>close</mat-icon>
+                    </button>
                 </div>
-                <button class="!text-gray-500" mat-button>
-                    xóa bộ lọc
-                    <mat-icon iconPositionEnd>close</mat-icon>
-                </button>
-            </div>
-            <mat-chip-set aria-label="Bộ lọc đang chọn">
-                @for (selected of selectedFilters; track selected) {
-                    <mat-chip-row class="!rounded-lg !bg-primary">
-                        <div
-                            class="font-sans text-white font-bold text-xs leading-normal"
-                        >
-                            {{ selected }}
-                        </div>
-                        <button
-                            class="!text-white"
-                            matChipRemove
-                            [attr.aria-label]="'remove ' + selected"
-                        >
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                    </mat-chip-row>
-                }
-            </mat-chip-set>
-            <mat-divider />
-            <mat-accordion class="*:!shadow-none" displayMode="flat">
-                <mat-expansion-panel
-                    class="*:!pl-0"
-                    (opened)="panelOpenState.set(true)"
-                    (closed)="panelOpenState.set(false)"
-                >
-                    <mat-expansion-panel-header>
-                        <mat-panel-title class="!flex !gap-1 items-center">
-                            <svg-icon src="assets/chu-de.svg" />
+                <mat-chip-set aria-label="Bộ lọc đang chọn">
+                    @for (selected of selectedFilters; track selected) {
+                        <mat-chip-row class="!rounded-lg !bg-primary">
                             <div
-                                class="font-base text-base font-normal leading-normal"
+                                class="font-sans text-white font-bold text-xs leading-normal"
                             >
-                                Hoa theo chủ đề
+                                {{ selected }}
                             </div>
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <mat-chip-listbox aria-label="Hoa theo chủ đề">
-                        @for (theme of flowersByTheme; track theme) {
-                            <mat-chip-option>{{ theme }}</mat-chip-option>
-                        }
-                    </mat-chip-listbox>
-                </mat-expansion-panel>
-                <mat-expansion-panel
-                    class="*:!pl-0"
-                    (opened)="panelOpenState.set(true)"
-                    (closed)="panelOpenState.set(false)"
-                >
-                    <mat-expansion-panel-header>
-                        <mat-panel-title class="!flex !gap-1 items-center"
-                            ><svg-icon src="assets/flowers-category.svg" />
-                            <div
-                                class="font-base text-base font-normal leading-normal"
+                            <button
+                                class="!text-white"
+                                matChipRemove
+                                [attr.aria-label]="'remove ' + selected"
                             >
-                                Loại hoa
-                            </div>
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <p>I'm visible because I am open</p>
-                </mat-expansion-panel>
-                <mat-expansion-panel
-                    class="*:!pl-0"
-                    (opened)="panelOpenState.set(true)"
-                    (closed)="panelOpenState.set(false)"
-                >
-                    <mat-expansion-panel-header>
-                        <mat-panel-title class="!flex !gap-1 items-center"
-                            ><svg-icon src="assets/flowers-color.svg" />
-                            <div
-                                class="font-base text-base font-normal leading-normal"
-                            >
-                                Màu hoa
-                            </div>
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <p>I'm visible because I am open</p>
-                </mat-expansion-panel>
-                <mat-expansion-panel
-                    class="*:!pl-0"
-                    (opened)="panelOpenState.set(true)"
-                    (closed)="panelOpenState.set(false)"
-                >
-                    <mat-expansion-panel-header>
-                        <mat-panel-title class="!flex !gap-1 items-center"
-                            ><svg-icon src="assets/decorator.svg" />
-                            <div
-                                class="font-base text-base font-normal leading-normal"
-                            >
-                                Trang trí
-                            </div>
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <mat-chip-listbox aria-label="Trang trí">
-                        @for (decorator of decorators; track decorator) {
-                            <mat-chip-option>{{ decorator }}</mat-chip-option>
-                        }
-                    </mat-chip-listbox>
-                </mat-expansion-panel>
-            </mat-accordion>
-        </div>
-        <div class="min-w-fit gap-3.5 flex flex-col">
-            <img
-                class="hidden sm:block"
-                ngSrc="assets/products.png"
-                alt="products"
-                width="766"
-                height="265"
-                priority
-            />
-            <div
-                class="flex flex-col sm:flex-row sm:justify-between sm:items-center"
-            >
-                <div class="flex gap-2 flex-col sm:flex-row">
-                    <button class="!rounded-lg" mat-flat-button color="primary">
-                        Tất Cả
-                    </button>
-                    <button
-                        class="!rounded-lg"
-                        mat-flat-button
-                        [matMenuTriggerFor]="purchases"
-                        aria-label="Lượt Mua"
-                    >
-                        Lượt Mua
-                        <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
-                    </button>
-                    <mat-menu #purchases="matMenu">
-                        <button mat-menu-item>Item 1</button>
-                        <button mat-menu-item>Item 2</button>
-                    </mat-menu>
-                    <button
-                        class="!rounded-lg"
-                        mat-flat-button
-                        [matMenuTriggerFor]="price"
-                        aria-label="Giá"
-                    >
-                        Giá
-                        <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
-                    </button>
-                    <mat-menu #price="matMenu">
-                        <button mat-menu-item>Item 1</button>
-                        <button mat-menu-item>Item 2</button>
-                    </mat-menu>
-                    <button
-                        class="!rounded-lg"
-                        mat-flat-button
-                        [matMenuTriggerFor]="modificationDate"
-                        aria-label="Ngày Cập Nhật"
-                    >
-                        Ngày Cập Nhật
-                        <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
-                    </button>
-                    <mat-menu #modificationDate="matMenu">
-                        <button mat-menu-item>Item 1</button>
-                        <button mat-menu-item>Item 2</button>
-                    </mat-menu>
-                </div>
-                <mat-paginator
-                    [length]="products?.total ?? 0"
-                    [pageSize]="criteria.page.limit"
-                    (page)="onPageChange($event)"
-                    [showFirstLastButtons]="false"
-                    [hidePageSize]="true"
-                    aria-label="Chọn trang"
-                >
-                </mat-paginator>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 2xl:grid-cols-4 gap-6">
-                <ng-template #productSkeletonLoading>
-                    <ng-template ngFor [ngForOf]="generateRange(12)">
-                        <div
-                            class="animate-pulse flex flex-col gap-3 cursor-pointer hover:shadow p-2 rounded-lg"
-                        >
-                            <div
-                                class="w-60 h-60 rounded-lg bg-neutral-200"
-                            ></div>
-                            <div class="flex flex-col">
-                                <div
-                                    class="w-3/4 h-4 rounded-lg bg-neutral-200"
-                                ></div>
-                                <div
-                                    class="w-1/2 h-4 rounded-lg bg-neutral-200"
-                                ></div>
-                            </div>
-                        </div>
-                    </ng-template>
-                </ng-template>
-                <ng-container
-                    *ngIf="
-                        products && products.results.length;
-                        else productSkeletonLoading
-                    "
-                >
-                    @for (product of products.results; track product) {
-                        <div
-                            class="flex flex-col gap-3 cursor-pointer hover:shadow p-2 rounded-lg"
-                            (click)="onProductClick(product)"
-                        >
-                            <img
-                                class="object-cover"
-                                src="{{ product.image_url }}"
-                                alt="{{ product.name }}"
-                            />
-                            <div class="flex flex-col">
-                                <div
-                                    class="font-sans text-xl font-bold leading-normal whitespace-nowrap"
-                                >
-                                    {{ product.name }}
-                                </div>
-                                <div
-                                    class="font-sans text-base font-medium leading-normal text-slate-600"
-                                >
-                                    {{ product.price | vndCurrency }}
-                                </div>
-                            </div>
-                        </div>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip-row>
                     }
-                </ng-container>
+                </mat-chip-set>
+                <mat-divider />
+                <mat-accordion class="*:!shadow-none" displayMode="flat">
+                    <mat-expansion-panel
+                        class="*:!pl-0"
+                        (opened)="panelOpenState.set(true)"
+                        (closed)="panelOpenState.set(false)"
+                    >
+                        <mat-expansion-panel-header>
+                            <mat-panel-title class="!flex !gap-1 items-center">
+                                <svg-icon src="assets/chu-de.svg" />
+                                <div
+                                    class="font-base text-base font-normal leading-normal"
+                                >
+                                    Hoa theo chủ đề
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-chip-listbox aria-label="Hoa theo chủ đề">
+                            @for (theme of flowersByTheme; track theme) {
+                                <mat-chip-option>{{ theme }}</mat-chip-option>
+                            }
+                        </mat-chip-listbox>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel
+                        class="*:!pl-0"
+                        (opened)="panelOpenState.set(true)"
+                        (closed)="panelOpenState.set(false)"
+                    >
+                        <mat-expansion-panel-header>
+                            <mat-panel-title class="!flex !gap-1 items-center"
+                                ><svg-icon src="assets/flowers-category.svg" />
+                                <div
+                                    class="font-base text-base font-normal leading-normal"
+                                >
+                                    Loại hoa
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>I'm visible because I am open</p>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel
+                        class="*:!pl-0"
+                        (opened)="panelOpenState.set(true)"
+                        (closed)="panelOpenState.set(false)"
+                    >
+                        <mat-expansion-panel-header>
+                            <mat-panel-title class="!flex !gap-1 items-center"
+                                ><svg-icon src="assets/flowers-color.svg" />
+                                <div
+                                    class="font-base text-base font-normal leading-normal"
+                                >
+                                    Màu hoa
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>I'm visible because I am open</p>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel
+                        class="*:!pl-0"
+                        (opened)="panelOpenState.set(true)"
+                        (closed)="panelOpenState.set(false)"
+                    >
+                        <mat-expansion-panel-header>
+                            <mat-panel-title class="!flex !gap-1 items-center"
+                                ><svg-icon src="assets/decorator.svg" />
+                                <div
+                                    class="font-base text-base font-normal leading-normal"
+                                >
+                                    Trang trí
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-chip-listbox aria-label="Trang trí">
+                            @for (decorator of decorators; track decorator) {
+                                <mat-chip-option>{{
+                                    decorator
+                                }}</mat-chip-option>
+                            }
+                        </mat-chip-listbox>
+                    </mat-expansion-panel>
+                </mat-accordion>
             </div>
-            <ng-template #productSkeletonLoading></ng-template>
-            <div class="flex flex-col">
-                <mat-divider />
-                <mat-paginator
-                    [length]="products?.total"
-                    [pageSize]="criteria.page.limit"
-                    (page)="onPageChange($event)"
-                    [showFirstLastButtons]="true"
-                    [hidePageSize]="true"
-                    aria-label="Chọn trang"
+            <div class="min-w-fit gap-3.5 flex flex-col">
+                <img
+                    class="hidden sm:block"
+                    ngSrc="assets/products.png"
+                    alt="products"
+                    width="766"
+                    height="265"
+                    priority
+                />
+                <div
+                    class="flex flex-col sm:flex-row sm:justify-between sm:items-center"
                 >
-                </mat-paginator>
-                <mat-divider />
+                    <div class="flex gap-2 flex-col sm:flex-row">
+                        <button
+                            class="!rounded-lg"
+                            mat-flat-button
+                            color="primary"
+                        >
+                            Tất Cả
+                        </button>
+                        <button
+                            class="!rounded-lg"
+                            mat-flat-button
+                            [matMenuTriggerFor]="purchases"
+                            aria-label="Lượt Mua"
+                        >
+                            Lượt Mua
+                            <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
+                        </button>
+                        <mat-menu #purchases="matMenu">
+                            <button mat-menu-item>Item 1</button>
+                            <button mat-menu-item>Item 2</button>
+                        </mat-menu>
+                        <button
+                            class="!rounded-lg"
+                            mat-flat-button
+                            [matMenuTriggerFor]="price"
+                            aria-label="Giá"
+                        >
+                            Giá
+                            <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
+                        </button>
+                        <mat-menu #price="matMenu">
+                            <button mat-menu-item>Item 1</button>
+                            <button mat-menu-item>Item 2</button>
+                        </mat-menu>
+                        <button
+                            class="!rounded-lg"
+                            mat-flat-button
+                            [matMenuTriggerFor]="modificationDate"
+                            aria-label="Ngày Cập Nhật"
+                        >
+                            Ngày Cập Nhật
+                            <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
+                        </button>
+                        <mat-menu #modificationDate="matMenu">
+                            <button mat-menu-item>Item 1</button>
+                            <button mat-menu-item>Item 2</button>
+                        </mat-menu>
+                    </div>
+                    <mat-paginator
+                        class="!bg-transparent"
+                        [length]="products?.total ?? 0"
+                        [pageSize]="criteria.page.limit"
+                        (page)="onPageChange($event)"
+                        [showFirstLastButtons]="false"
+                        [hidePageSize]="true"
+                        aria-label="Chọn trang"
+                    >
+                    </mat-paginator>
+                </div>
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-3 2xl:grid-cols-4 gap-6"
+                >
+                    <ng-template #productSkeletonLoading>
+                        <ng-template ngFor [ngForOf]="generateRange(12)">
+                            <div
+                                class="animate-pulse flex flex-col gap-3 cursor-pointer hover:shadow p-2 rounded-lg"
+                            >
+                                <div
+                                    class="w-60 h-60 rounded-lg bg-neutral-200"
+                                ></div>
+                                <div class="flex flex-col">
+                                    <div
+                                        class="w-3/4 h-4 rounded-lg bg-neutral-200"
+                                    ></div>
+                                    <div
+                                        class="w-1/2 h-4 rounded-lg bg-neutral-200"
+                                    ></div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ng-template>
+                    <ng-container
+                        *ngIf="
+                            products && products.results.length;
+                            else productSkeletonLoading
+                        "
+                    >
+                        @for (product of products.results; track product) {
+                            <div
+                                class="flex flex-col gap-3 cursor-pointer hover:shadow hover:bg-white p-2 rounded-lg"
+                                (click)="onProductClick(product)"
+                            >
+                                <img
+                                    class="object-cover"
+                                    src="{{ product.image_url }}"
+                                    alt="{{ product.name }}"
+                                />
+                                <div class="flex flex-col">
+                                    <div
+                                        class="font-sans text-xl font-bold leading-normal whitespace-nowrap"
+                                    >
+                                        {{ product.name }}
+                                    </div>
+                                    <div
+                                        class="font-sans text-base font-medium leading-normal text-slate-600"
+                                    >
+                                        {{ product.price | vndCurrency }}
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </ng-container>
+                </div>
+                <ng-template #productSkeletonLoading></ng-template>
+                <div class="flex flex-col">
+                    <mat-divider />
+                    <mat-paginator
+                        class="!bg-transparent"
+                        [length]="products?.total"
+                        [pageSize]="criteria.page.limit"
+                        (page)="onPageChange($event)"
+                        [showFirstLastButtons]="true"
+                        [hidePageSize]="true"
+                        aria-label="Chọn trang"
+                    >
+                    </mat-paginator>
+                    <mat-divider />
+                </div>
             </div>
         </div>
     </div>
