@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {
@@ -26,24 +26,22 @@ export class ProductDetailComponent
   extends SubscriptionAwareComponent
   implements OnInit
 {
-  protected productDto: ProductDetailDto;
+  protected productDto: ProductDetailDto | undefined;
   protected commentCriteria: SearchCriteriaDto<CommentSearchCriteriaDto>;
-  protected recommendedProducts: ProductDto[];
-  protected mainImage: string;
+  protected recommendedProducts: ProductDto[] = [];
+  protected mainImage: string | undefined;
   protected breadcrumbs: BreadcrumbItem[] = [
     {label: 'Trang chủ', path: AppRoutingConstants.HOME_PATH},
     {label: 'Sản Phẩm', path: AppRoutingConstants.PRODUCTS_PATH},
     {label: 'Hoa cho cặp đôi'}
   ];
   protected currentSlide = 0;
+  private readonly productService: ProductService = inject(ProductService);
+  private readonly route: ActivatedRoute = inject(ActivatedRoute);
+  private readonly router: Router = inject(Router);
 
-  constructor(
-    private readonly productService: ProductService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
-  ) {
+  constructor() {
     super();
-    this.productDto = {} as ProductDetailDto;
     this.commentCriteria = {
       page: {
         limit: 5,
@@ -57,8 +55,6 @@ export class ProductDetailComponent
         productId: this.route.snapshot.paramMap.get('id') as string
       } as CommentSearchCriteriaDto
     };
-    this.recommendedProducts = [];
-    this.mainImage = '';
   }
 
   ngOnInit(): void {
@@ -80,7 +76,7 @@ export class ProductDetailComponent
           )
         )
         .subscribe((comments: SearchResultDto<CommentDto>): void => {
-          this.productDto.comments = comments;
+          if (this.productDto) this.productDto.comments = comments;
         }),
       this.productService
         .getRecommendedProducts()
@@ -112,7 +108,7 @@ export class ProductDetailComponent
       this.productService
         .getProductComment(this.commentCriteria)
         .subscribe((comments: SearchResultDto<CommentDto>): void => {
-          this.productDto.comments = comments;
+          if (this.productDto) this.productDto.comments = comments;
         })
     );
   }

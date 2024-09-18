@@ -11,7 +11,7 @@ import {
   SearchCriteriaDto,
   SearchResultDto
 } from '../../shared/models/abstract-base-dto';
-import {Observable, of} from 'rxjs';
+import {Observable, delay, of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -62,7 +62,7 @@ export class ProductService {
         }
       ],
       comments: {results: [], total: 0}
-    } as ProductDetailDto);
+    } as ProductDetailDto).pipe(delay(1000));
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -200,7 +200,7 @@ export class ProductService {
         }
       ],
       total: 9
-    });
+    }).pipe(delay(1000));
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -320,7 +320,7 @@ export class ProductService {
         }
       ],
       total: 18
-    });
+    }).pipe(delay(1000));
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -350,6 +350,6 @@ export class ProductService {
         price: 600000,
         image_url: 'assets/nu-hon-nong-nan.png'
       }
-    ]);
+    ]).pipe(delay(1000));
   }
 }
