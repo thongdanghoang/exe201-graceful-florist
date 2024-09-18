@@ -1,7 +1,7 @@
 <div class="container mx-auto flex flex-col pt-5 gap-5">
     <graceful-florist-breadcrumb [breadcrumbs]="breadcrumbs" />
     <graceful-florist-tab-category />
-    <div class="flex gap-3.5">
+    <div class="flex flex-col gap-3.5 lg:flex-row">
         <div class="w-full flex flex-col gap-3.5 p-4">
             <div class="flex gap-1 py-2">
                 <mat-icon>filter_alt</mat-icon>
@@ -180,7 +180,9 @@
                 >
                 </mat-paginator>
             </div>
-            <div class="grid grid-cols-3 gap-6">
+            <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            >
                 @for (product of results.results; track product) {
                     <div class="flex flex-col gap-3 max-w-sm">
                         <img
@@ -203,15 +205,19 @@
                 }
             </div>
             <ng-template #productSkeletonLoading></ng-template>
-            <mat-paginator
-                [length]="results.total"
-                [pageSize]="criteria.page.limit"
-                (page)="onPageChange($event)"
-                [showFirstLastButtons]="true"
-                [hidePageSize]="true"
-                aria-label="Chọn trang"
-            >
-            </mat-paginator>
+            <div class="flex flex-col">
+                <mat-divider />
+                <mat-paginator
+                    [length]="results.total"
+                    [pageSize]="criteria.page.limit"
+                    (page)="onPageChange($event)"
+                    [showFirstLastButtons]="true"
+                    [hidePageSize]="true"
+                    aria-label="Chọn trang"
+                >
+                </mat-paginator>
+                <mat-divider />
+            </div>
         </div>
     </div>
 </div>
