@@ -21,7 +21,7 @@ export class ProductsComponent
   implements OnInit
 {
   protected criteria: SearchCriteriaDto<ProductCriteriaDto>;
-  protected results: SearchResultDto<ProductDto>;
+  protected products: SearchResultDto<ProductDto> | undefined;
   protected breadcrumbs: BreadcrumbItem[] = [
     {label: 'Trang chủ', path: AppRoutingConstants.HOME_PATH},
     {label: 'Sản Phẩm', path: AppRoutingConstants.DEV_PATH}
@@ -61,10 +61,6 @@ export class ProductsComponent
       },
       criteria: {} as ProductCriteriaDto
     };
-    this.results = {
-      results: [],
-      total: 0
-    };
   }
 
   ngOnInit(): void {
@@ -72,9 +68,13 @@ export class ProductsComponent
       this.productService
         .searchProducts(this.criteria)
         .subscribe((results: SearchResultDto<ProductDto>): void => {
-          this.results = results;
+          this.products = results;
         })
     );
+  }
+
+  generateRange(count: number): number[] {
+    return Array.from({length: count}, (_, i) => i + 1);
   }
 
   onPageChange(pageEvent: PageEvent): void {
@@ -84,7 +84,7 @@ export class ProductsComponent
       this.productService
         .searchProducts(this.criteria)
         .subscribe((results: SearchResultDto<ProductDto>): void => {
-          this.results = results;
+          this.products = results;
         })
     );
   }
