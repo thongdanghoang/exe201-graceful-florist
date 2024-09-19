@@ -183,6 +183,74 @@
             </mat-radio-group>
         </div>
     </div>
+    <!-- Thẻ và lời nhắn -->
+    <div class="flex flex-col bg-white gap-5 py-8 px-6 rounded-lg">
+        <div class="font-sans text-2xl font-semibold leading-loose">
+            Thẻ và lời nhắn
+        </div>
+        <div class="flex flex-col sm:flex-row gap-8">
+            <div class="flex flex-col gap-8 w-full sm:w-1/2">
+                <mat-radio-group
+                    class="flex flex-col sm:flex-row gap-8"
+                    aria-label="Lời nhắn"
+                    formControlName="selectedMessageCard"
+                >
+                    <mat-radio-button
+                        *ngFor="let option of messageCardOptions"
+                        color="primary"
+                        [value]="option.value"
+                    >
+                        <div
+                            class="font-base text-xs font-normal capitalize"
+                            [ngClass]="{
+                                'text-primary':
+                                    form.get('selectedMessageCard')?.value ===
+                                    option.value,
+                            }"
+                        >
+                            {{ option.label }}
+                        </div>
+                    </mat-radio-button>
+                </mat-radio-group>
+                <div
+                    class="*:text-sm *:font-sans *:font-normal *:text-neutral-400 *:leading-relaxed"
+                >
+                    <p>Phù hợp cho: Sinh nhật, ngày lễ, sự kiện đặc biệt.</p>
+                    <p>Ví dụ:</p>
+                    <ul class="list-inside flex flex-col gap-5">
+                        <li class="list-disc">
+                            Chúc mừng sinh nhật [Tên người nhận]! Chúc bạn luôn
+                            vui vẻ, hạnh phúc và thành công trong cuộc sống.
+                        </li>
+                        <li class="list-disc">
+                            Chúc mừng [Tên người nhận] ngày [Tên ngày lễ]! Chúc
+                            bạn có một ngày thật ý nghĩa bên gia đình và bạn bè.
+                        </li>
+                        <li class="list-disc">
+                            Chúc mừng [Tên người nhận] [Sự kiện đặc biệt]! Chúc
+                            bạn luôn gặt hái được nhiều thành công trong tương
+                            lai.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="w-ful sm:w-1/2 flex items-center">
+                <mat-form-field class="mx-auto h-44 w-full *:!bg-transparent">
+                    <mat-label class="!font-sans">Lời nhắn</mat-label>
+                    <textarea
+                        class="!font-sans"
+                        formControlName="message"
+                        placeholder="Thêm lời nhắn vào thiệp"
+                        rows="4"
+                        cols="50"
+                        matInput
+                    ></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <!-- Giấy gói -->
+    <!-- Chọn kiểu nơ -->
 </div>
 <ng-template #noSelectedFlowers>
     <div class="mx-auto flex flex-col gap-4 items-center">

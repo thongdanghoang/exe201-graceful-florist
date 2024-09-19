@@ -30,6 +30,11 @@ export interface FlowerAndGreenLeaf {
   image: string;
 }
 
+export interface MessageCardOption {
+  value: string;
+  label: string;
+}
+
 @Component({
   selector: 'graceful-florist-flower-customization',
   templateUrl: './flower-customization.component.html',
@@ -142,6 +147,12 @@ export class FlowerCustomizationComponent implements OnInit {
       image: 'assets/bach-dan.png'
     }
   ];
+  protected messageCardOptions: MessageCardOption[] = [
+    {value: '1', label: 'Lời chúc mừng'},
+    {value: '2', label: 'Lời cảm ơn'},
+    {value: '3', label: 'Lời xin lỗi'},
+    {value: '4', label: 'Lời yêu thương'}
+  ];
 
   constructor(private readonly fb: FormBuilder) {}
 
@@ -150,7 +161,9 @@ export class FlowerCustomizationComponent implements OnInit {
       selectedMainColor: ['', Validators.required],
       selectedFlowers: this.fb.array([], Validators.required),
       selectedLayoutStyle: ['', Validators.required],
-      selectedFlowerAndGreenLeaf: ['', Validators.required]
+      selectedFlowerAndGreenLeaf: ['', Validators.required],
+      selectedMessageCard: ['', Validators.required],
+      message: ['', Validators.required]
     });
   }
 
