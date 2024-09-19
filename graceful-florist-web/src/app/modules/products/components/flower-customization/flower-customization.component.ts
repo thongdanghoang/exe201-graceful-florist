@@ -3,10 +3,32 @@ import {
   AbstractControl,
   FormArray,
   FormBuilder,
-  FormGroup
+  FormGroup,
+  Validators
 } from '@angular/forms';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
+
+export interface Flower {
+  name: string;
+  image: string;
+  detail: string;
+}
+
+export interface MainColor {
+  color: string;
+  label: string;
+}
+
+export interface LayoutStyle {
+  name: string;
+  image: string;
+}
+
+export interface FlowerAndGreenLeaf {
+  name: string;
+  image: string;
+}
 
 @Component({
   selector: 'graceful-florist-flower-customization',
@@ -19,19 +41,20 @@ export class FlowerCustomizationComponent implements OnInit {
     {label: 'Trang chủ', path: AppRoutingConstants.HOME_PATH},
     {label: 'Thiết Kế Hoa'}
   ];
-  protected mainColors = [
+  protected mainColors: MainColor[] = [
     {color: 'red', label: 'Màu đỏ'},
     {color: 'white', label: 'Màu trắng'},
     {color: 'orange', label: 'Màu cam'},
     {color: 'pink', label: 'Màu hồng'},
     {color: 'yellow', label: 'Màu vàng'}
   ];
+
   /**
    * @description: we mainly work on form control,
    * this array just use for quickly remove selected flower from form group
    */
   protected selectedFlowersToBeRemovedFromForm: string[] = [];
-  protected flowers = [
+  protected flowers: Flower[] = [
     {
       name: 'Hoa Hồng',
       image: 'assets/hoa-hong.png',
@@ -83,20 +106,58 @@ export class FlowerCustomizationComponent implements OnInit {
       detail: '10.000 - 30.000 VNĐ / 1 bông'
     }
   ];
+  protected layoutStyles: LayoutStyle[] = [
+    {
+      name: 'Truyền Thống',
+      image: 'assets/truyen-thong.png'
+    },
+    {
+      name: 'Mộc Mạc/Đơn Giản',
+      image: 'assets/moc-mac-don-gian.png'
+    },
+    {
+      name: 'Hiện Đại',
+      image: 'assets/hien-dai.png'
+    },
+    {
+      name: 'Hàn Quốc',
+      image: 'assets/han-quoc.png'
+    }
+  ];
+  protected flowersAndGreenLeaves: FlowerAndGreenLeaf[] = [
+    {
+      name: 'Hoa Baby',
+      image: 'assets/hoa-baby.png'
+    },
+    {
+      name: 'Dương Xỉ',
+      image: 'assets/duong-xi.png'
+    },
+    {
+      name: 'Quả Mọng',
+      image: 'assets/qua-mong.png'
+    },
+    {
+      name: 'Bạch Đàn',
+      image: 'assets/bach-dan.png'
+    }
+  ];
 
   constructor(private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      selectedMainColor: [''],
-      selectedFlowers: this.fb.array([])
+      selectedMainColor: ['', Validators.required],
+      selectedFlowers: this.fb.array([], Validators.required),
+      selectedLayoutStyle: ['', Validators.required],
+      selectedFlowerAndGreenLeaf: ['', Validators.required]
     });
   }
 
   onSelectAllFlowers(isChecked: boolean): void {
     if (isChecked) {
       this.selectedFlowersToBeRemovedFromForm = this.selectedFlowers.value.map(
-        (flower: any): string => flower.name
+        (flower: Flower): string => flower.name
       );
     } else {
       this.selectedFlowersToBeRemovedFromForm = [];
@@ -110,7 +171,7 @@ export class FlowerCustomizationComponent implements OnInit {
   removeAllFlowers(): void {
     this.selectedFlowersToBeRemovedFromForm.forEach((name: string): void => {
       const index = this.selectedFlowers.value.findIndex(
-        (flower: any): boolean => flower.name === name
+        (flower: Flower): boolean => flower.name === name
       );
       this.removeFlower(index);
     });
@@ -128,6 +189,15 @@ export class FlowerCustomizationComponent implements OnInit {
     }
   }
 
+  removeFlower(index: number): void {
+    this.selectedFlowersToBeRemovedFromForm =
+      this.selectedFlowersToBeRemovedFromForm.filter(
+        (name: string): boolean =>
+          name !== this.selectedFlowers.at(index).value.name
+      );
+    this.selectedFlowers.removeAt(index);
+  }
+
   get selectedFlowers(): FormArray {
     return this.form.get('selectedFlowers') as FormArray;
   }
@@ -136,10 +206,10 @@ export class FlowerCustomizationComponent implements OnInit {
     this.form.get('selectedMainColor')?.setValue(color);
   }
 
-  selectFlower(flower: any): void {
+  selectFlower(flower: Flower): void {
     const selectedFlowers = this.selectedFlowers;
     const index = selectedFlowers.value.findIndex(
-      (f: any): boolean => f.name === flower.name
+      (f: Flower): boolean => f.name === flower.name
     );
     if (index === -1) {
       selectedFlowers.push(this.fb.control(flower));
@@ -148,18 +218,13 @@ export class FlowerCustomizationComponent implements OnInit {
     }
   }
 
-  isSelectedFlower(flower: any): boolean {
+  isSelectedFlower(flower: Flower): boolean {
     return this.selectedFlowers.value.some(
-      (f: any): boolean => f.name === flower.name
+      (f: Flower): boolean => f.name === flower.name
     );
   }
 
-  removeFlower(index: number): void {
-    this.selectedFlowersToBeRemovedFromForm =
-      this.selectedFlowersToBeRemovedFromForm.filter(
-        (name: string): boolean =>
-          name !== this.selectedFlowers.at(index).value.name
-      );
-    this.selectedFlowers.removeAt(index);
+  selectRadioButton(value: string, group: string): void {
+    this.form.get(group)?.setValue(value);
   }
 }

@@ -1,11 +1,12 @@
 <div class="container mx-auto flex flex-col gap-6 py-6" [formGroup]="form">
     <graceful-florist-breadcrumb [breadcrumbs]="breadcrumbs" />
     <graceful-florist-tab-category />
+    <!-- Tông màu chủ đạo -->
     <div class="flex flex-col bg-white gap-2 py-3 px-4 rounded-lg">
         <div class="font-sans text-2xl font-semibold leading-normal">
             Tông màu chủ đạo
         </div>
-        <div class="flex gap-2.5">
+        <div class="flex flex-col sm:flex-row gap-2.5">
             <button
                 *ngFor="let item of mainColors"
                 (click)="selectColor(item.color)"
@@ -24,7 +25,8 @@
             </button>
         </div>
     </div>
-    <div class="flex gap-2.5">
+    <!-- Loại hoa -->
+    <div class="flex flex-col sm:flex-row gap-2.5">
         <div class="flex flex-col w-full px-4 py-3 gap-4 bg-white rounded-lg">
             <div class="flex items-center">
                 <mat-checkbox
@@ -100,18 +102,6 @@
                     </div>
                 </div>
             </ng-container>
-            <ng-template #noSelectedFlowers>
-                <div class="mx-auto flex flex-col gap-4 items-center">
-                    <img
-                        class="w-64 h-64 object-cover"
-                        src="assets/no-flowers-selected.png"
-                        alt="no-flowers-selected"
-                    />
-                    <div class="font-sans text-2xl leading-normal font-bold">
-                        Hãy lựa chọn loại hoa bạn mong muốn !
-                    </div>
-                </div>
-            </ng-template>
         </div>
         <div
             class="flex flex-col min-w-fit px-4 py-3 bg-white rounded-lg gap-4"
@@ -145,4 +135,79 @@
             </div>
         </div>
     </div>
+    <div class="flex flex-col sm:flex-row gap-8">
+        <!-- Phong cách bố cục -->
+        <div
+            class="flex flex-col w-full sm:w-1/2 px-4 py-3 bg-white rounded-lg gap-5"
+        >
+            <div
+                class="px-6 py-2 font-sans text-2xl font-semibold leading-normal"
+            >
+                Phong cách bố cục
+            </div>
+            <mat-radio-group
+                class="grid grid-cols-3 gap-10"
+                formControlName="selectedLayoutStyle"
+            >
+                <div *ngFor="let item of layoutStyles">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            flowerRadioCardTemplate;
+                            context: { item, group: 'layoutStyles' }
+                        "
+                    ></ng-container>
+                </div>
+            </mat-radio-group>
+        </div>
+        <!-- Hoa phụ và lá xanh  -->
+        <div
+            class="flex flex-col w-full sm:w-1/2 px-4 py-3 bg-white rounded-lg gap-5"
+        >
+            <div
+                class="px-6 py-2 font-sans text-2xl font-semibold leading-normal"
+            >
+                Hoa phụ và lá xanh
+            </div>
+            <mat-radio-group
+                class="grid grid-cols-3 gap-10"
+                formControlName="selectedFlowerAndGreenLeaf"
+            >
+                <div *ngFor="let item of flowersAndGreenLeaves">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            flowerRadioCardTemplate;
+                            context: { item, group: 'flowersAndGreenLeaves' }
+                        "
+                    ></ng-container>
+                </div>
+            </mat-radio-group>
+        </div>
+    </div>
 </div>
+<ng-template #noSelectedFlowers>
+    <div class="mx-auto flex flex-col gap-4 items-center">
+        <img
+            class="w-64 h-64 object-cover"
+            src="assets/no-flowers-selected.png"
+            alt="no-flowers-selected"
+        />
+        <div class="font-sans text-2xl leading-normal font-bold">
+            Hãy lựa chọn loại hoa bạn mong muốn !
+        </div>
+    </div>
+</ng-template>
+<ng-template #flowerRadioCardTemplate let-item="item" let-group="group">
+    <label
+        class="flex flex-col items-center justify-start gap-5"
+        (click)="selectRadioButton(item.name, group)"
+    >
+        <img
+            class="object-cover w-24 h-24"
+            [src]="item.image"
+            [alt]="item.name"
+        />
+        <mat-radio-button color="primary" [name]="group" [value]="item.name">{{
+            item.name
+        }}</mat-radio-button>
+    </label>
+</ng-template>
