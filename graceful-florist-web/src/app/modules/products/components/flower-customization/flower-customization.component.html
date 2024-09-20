@@ -249,8 +249,51 @@
             </div>
         </div>
     </div>
-    <!-- Giấy gói -->
-    <!-- Chọn kiểu nơ -->
+    <div class="flex flex-col sm:flex-row gap-8">
+        <!-- Giấy gói -->
+        <div
+            class="flex flex-col w-full sm:w-1/2 bg-white gap-3 py-8 px-6 rounded-lg"
+        >
+            <div class="font-sans text-2xl font-semibold leading-loose">
+                Giấy gói
+            </div>
+            <mat-radio-group
+                class="grid grid-cols-3 gap-10"
+                formControlName="selectedWrappingPaper"
+            >
+                <div *ngFor="let item of wrappingPaper">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            flowerRadioCardTemplate;
+                            context: { item, group: 'wrappingPaper' }
+                        "
+                    ></ng-container>
+                </div>
+            </mat-radio-group>
+        </div>
+        <!-- Chọn kiểu nơ -->
+        <div
+            class="flex flex-col w-full sm:w-1/2 bg-white gap-3 py-8 px-6 rounded-lg"
+        >
+            <div class="font-sans text-2xl font-semibold leading-loose">
+                Chọn kiểu nơ
+            </div>
+            <mat-radio-group
+                class="grid grid-cols-3 gap-10"
+                formControlName="selectedBowStyle"
+            >
+                <div *ngFor="let item of bowStyle">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            flowerRadioCardTemplate;
+                            context: { item, group: 'bowStyle' }
+                        "
+                    ></ng-container>
+                </div>
+            </mat-radio-group>
+        </div>
+    </div>
+    <button mat-flat-button color="primary">Tiếp Theo</button>
 </div>
 <ng-template #noSelectedFlowers>
     <div class="mx-auto flex flex-col gap-4 items-center">

@@ -35,6 +35,16 @@ export interface MessageCardOption {
   label: string;
 }
 
+export interface WrappingPaper {
+  name: string;
+  image: string;
+}
+
+export interface BowStyle {
+  name: string;
+  image: string;
+}
+
 @Component({
   selector: 'graceful-florist-flower-customization',
   templateUrl: './flower-customization.component.html',
@@ -153,6 +163,38 @@ export class FlowerCustomizationComponent implements OnInit {
     {value: '3', label: 'Lời xin lỗi'},
     {value: '4', label: 'Lời yêu thương'}
   ];
+  protected wrappingPaper: WrappingPaper[] = [
+    {
+      name: 'Giấy Lụa',
+      image: 'assets/giay-lua.png'
+    },
+    {
+      name: 'Giấy Kính',
+      image: 'assets/giay-kinh.png'
+    },
+    {
+      name: 'Giấy Kraft',
+      image: 'assets/giay-kraft.png'
+    },
+    {
+      name: 'Giấy Crepe',
+      image: 'assets/giay-crepe.png'
+    }
+  ];
+  protected bowStyle: BowStyle[] = [
+    {
+      name: 'Nơ Trơn',
+      image: 'assets/no-tron.png'
+    },
+    {
+      name: 'Nơ có họa tiết',
+      image: 'assets/no-co-hoa-tiet.png'
+    },
+    {
+      name: 'Nơ tua rua',
+      image: 'assets/no-tua-rua.png'
+    }
+  ];
 
   constructor(private readonly fb: FormBuilder) {}
 
@@ -163,6 +205,8 @@ export class FlowerCustomizationComponent implements OnInit {
       selectedLayoutStyle: ['', Validators.required],
       selectedFlowerAndGreenLeaf: ['', Validators.required],
       selectedMessageCard: ['', Validators.required],
+      selectedWrappingPaper: ['', Validators.required],
+      selectedBowStyle: ['', Validators.required],
       message: ['', Validators.required]
     });
   }
