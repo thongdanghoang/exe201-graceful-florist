@@ -12,283 +12,248 @@
             <ng-container *ngTemplateOutlet="currentTemplate"></ng-container>
         </div>
     </div>
-
-    <ng-template #loginTemplate>
-        <div
-            style="
-                text-align: left;
-                font-size: 32px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: normal;
-            "
+</div>
+<ng-template #loginTemplate>
+    <div class="font-sans text-2xl font-bold text-left">Đăng Nhập</div>
+    <form
+        class="flex flex-col gap-6"
+        [formGroup]="loginForm"
+        (ngSubmit)="onLogin()"
+    >
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Tài Khoản</mat-label>
+            <input
+                matInput
+                id="username"
+                type="text"
+                formControlName="username"
+                required
+            />
+            <mat-error> </mat-error>
+        </mat-form-field>
+        <div class="flex flex-col">
+            <div class="flex justify-end items-center">
+                <button
+                    class="!text-slate-500 !font-sans !text-base"
+                    mat-button
+                    (click)="switchTemplate('forgotPassword')"
+                >
+                    Quên Mật Khẩu?
+                </button>
+            </div>
+            <mat-form-field
+                appearance="fill"
+                subscriptSizing="dynamic"
+                gracefulFloristErrorMessage
+            >
+                <mat-label>Mật Khẩu</mat-label>
+                <input
+                    matInput
+                    id="password"
+                    [type]="showPassword ? 'text' : 'password'"
+                    formControlName="password"
+                    required
+                />
+                <button
+                    mat-icon-button
+                    matSuffix
+                    (click)="toggleShowPassword()"
+                    aria-label="password visibility"
+                >
+                    <mat-icon>{{
+                        showPassword ? "visibility" : "visibility_off"
+                    }}</mat-icon>
+                </button>
+                <mat-error> </mat-error>
+            </mat-form-field>
+        </div>
+        <button
+            [disabled]="!loginForm.valid"
+            class="!rounded-2xl min-h-14"
+            mat-flat-button
+            color="primary"
         >
             Đăng Nhập
-        </div>
-        <form
-            class="flex flex-col gap-6"
-            [formGroup]="loginForm"
-            (ngSubmit)="onLogin()"
-        >
-            <div class="flex flex-col gap-2">
-                <label class="text-slate-500 text-lg" for="username"
-                    >Tài Khoản</label
-                >
-                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
-                    <input
-                        class="!outline-none w-full bg-gray-100"
-                        autofocus
-                        id="username"
-                        type="text"
-                        placeholder="Tài Khoản"
-                        formControlName="username"
-                        required
-                    />
-                </div>
-            </div>
-            <div class="flex flex-col gap-2">
-                <div class="flex justify-between items-center">
-                    <label class="text-slate-500 text-lg" for="password"
-                        >Mật Khẩu</label
-                    >
-                    <button
-                        class="!text-slate-500 !font-sans !text-base"
-                        mat-button
-                        (click)="switchTemplate('forgotPassword')"
-                    >
-                        Quên Mật Khẩu?
-                    </button>
-                </div>
-                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
-                    <input
-                        class="!outline-none w-full bg-gray-100"
-                        id="password"
-                        type="password"
-                        placeholder="Mật Khẩu"
-                        formControlName="password"
-                        required
-                    />
-                </div>
-            </div>
-            <button
-                class="!rounded-2xl min-h-14"
-                mat-flat-button
-                color="primary"
-            >
-                Đăng Nhập
-            </button>
-        </form>
-        <mat-divider />
-        <div class="flex justify-between items-center">
-            <div class="text-lg font-medium text-slate-500">
-                Chưa có tài khoản?
-            </div>
-            <button
-                class="!border-slate-500 !border-solid !border !rounded-2xl !min-h-12 !min-w-32 !text-slate-600"
-                mat-flat-button
-                (click)="switchTemplate('signup')"
-            >
-                Đăng Ký
-            </button>
-        </div>
-        <button
-            class="bg-white hover:bg-gray-100 !text-slate-500 !font-sans !text-base flex justify-center gap-5 items-center py-4 !border-slate-500 !border-solid !border !rounded-2xl"
-        >
-            <svg-icon src="assets/google-colorful.svg"></svg-icon>
-            Đăng nhập với Google
         </button>
+    </form>
+    <mat-divider />
+    <div class="flex justify-between items-center">
+        <div class="text-lg font-medium text-slate-500">Chưa có tài khoản?</div>
         <button
-            class="bg-white hover:bg-gray-100 !text-slate-500 !font-sans !text-base flex justify-center gap-5 items-center py-4 !border-slate-500 !border-solid !border !rounded-2xl"
-        >
-            <svg-icon src="assets/facebook-colorful.svg"></svg-icon>
-            Đăng nhập với Facebook
-        </button>
-    </ng-template>
-
-    <ng-template #signupTemplate>
-        <div
-            style="
-                text-align: left;
-                font-size: 32px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: normal;
-            "
+            class="!border-slate-500 !border-solid !border !rounded-2xl !min-h-12 !min-w-32 !text-slate-600"
+            mat-flat-button
+            (click)="switchTemplate('signup')"
         >
             Đăng Ký
+        </button>
+    </div>
+    <button
+        class="bg-white hover:bg-gray-100 !text-slate-500 !font-sans !text-base flex justify-center gap-5 items-center py-4 !border-slate-500 !border-solid !border !rounded-2xl"
+    >
+        <svg-icon src="assets/google-colorful.svg"></svg-icon>
+        Đăng nhập với Google
+    </button>
+    <button
+        class="bg-white hover:bg-gray-100 !text-slate-500 !font-sans !text-base flex justify-center gap-5 items-center py-4 !border-slate-500 !border-solid !border !rounded-2xl"
+    >
+        <svg-icon src="assets/facebook-colorful.svg"></svg-icon>
+        Đăng nhập với Facebook
+    </button>
+</ng-template>
+<ng-template #signupTemplate>
+    <div class="font-sans text-2xl font-bold text-left">Đăng Ký</div>
+    <form
+        class="flex flex-col gap-6"
+        [formGroup]="registerForm"
+        (ngSubmit)="onSignUp()"
+    >
+        <div class="flex flex-col gap-2">
+            <label class="text-slate-500 text-lg" for="fullName">Họ Tên</label>
+            <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
+                <input
+                    class="!outline-none w-full bg-gray-100"
+                    id="fullName"
+                    type="text"
+                    formControlName="fullName"
+                    placeholder="Họ Tên"
+                    required
+                />
+            </div>
         </div>
-        <form
-            class="flex flex-col gap-6"
-            [formGroup]="registerForm"
-            (ngSubmit)="onSignUp()"
+        <div class="flex flex-col gap-2">
+            <label class="text-slate-500 text-lg" for="usernameRegister"
+                >Tài Khoản</label
+            >
+            <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
+                <input
+                    class="!outline-none w-full bg-gray-100"
+                    id="usernameRegister"
+                    type="text"
+                    formControlName="username"
+                    placeholder="Tài Khoản"
+                    required
+                />
+            </div>
+        </div>
+        <div class="flex flex-col gap-2">
+            <label class="text-slate-500 text-lg" for="passwordRegister"
+                >Mật Khẩu</label
+            >
+            <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
+                <input
+                    class="!outline-none w-full bg-gray-100"
+                    id="passwordRegister"
+                    [type]="showPassword ? 'text' : 'password'"
+                    placeholder="Mật Khẩu"
+                    formControlName="password"
+                    required
+                />
+                <button
+                    mat-icon-button
+                    (click)="toggleShowPassword()"
+                    aria-label="password visibility"
+                >
+                    <mat-icon class="!text-slate-400">{{
+                        getShowPasswordIcon()
+                    }}</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="flex flex-col gap-2">
+            <label class="text-slate-500 text-lg" for="confirmPassword"
+                >Xác Thực Mật Khẩu</label
+            >
+            <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
+                <input
+                    class="!outline-none w-full bg-gray-100"
+                    id="confirmPassword"
+                    [type]="showConfirmPassword ? 'text' : 'password'"
+                    formControlName="confirmPassword"
+                    placeholder="Xác Thực Mật Khẩu"
+                    required
+                />
+                <button
+                    mat-icon-button
+                    (click)="toggleConfirmPassword()"
+                    aria-label="password visibility"
+                >
+                    <mat-icon class="!text-slate-400">{{
+                        getShowConfirmPasswordIcon()
+                    }}</mat-icon>
+                </button>
+            </div>
+        </div>
+        <button class="!rounded-2xl min-h-14" mat-flat-button color="primary">
+            Đăng Ký
+        </button>
+    </form>
+    <mat-divider />
+    <div class="flex justify-between items-center">
+        <div class="text-lg font-medium text-slate-500">Đã có tài khoản?</div>
+        <button
+            class="!border-slate-500 !border-solid !border !rounded-2xl !min-h-12 !min-w-32 !text-slate-600"
+            mat-flat-button
+            (click)="switchTemplate('login')"
         >
-            <div class="flex flex-col gap-2">
-                <label class="text-slate-500 text-lg" for="fullName"
-                    >Họ Tên</label
-                >
-                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
-                    <input
-                        class="!outline-none w-full bg-gray-100"
-                        id="fullName"
-                        type="text"
-                        formControlName="fullName"
-                        placeholder="Họ Tên"
-                        required
-                    />
-                </div>
-            </div>
-            <div class="flex flex-col gap-2">
-                <label class="text-slate-500 text-lg" for="usernameRegister"
-                    >Tài Khoản</label
-                >
-                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
-                    <input
-                        class="!outline-none w-full bg-gray-100"
-                        id="usernameRegister"
-                        type="text"
-                        formControlName="username"
-                        placeholder="Tài Khoản"
-                        required
-                    />
-                </div>
-            </div>
-            <div class="flex flex-col gap-2">
-                <label class="text-slate-500 text-lg" for="passwordRegister"
-                    >Mật Khẩu</label
-                >
-                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
-                    <input
-                        class="!outline-none w-full bg-gray-100"
-                        id="passwordRegister"
-                        [type]="showPassword ? 'text' : 'password'"
-                        placeholder="Mật Khẩu"
-                        formControlName="password"
-                        required
-                    />
-                    <button
-                        mat-icon-button
-                        (click)="toggleShowPassword()"
-                        aria-label="password visibility"
-                    >
-                        <mat-icon class="!text-slate-400">{{
-                            getShowPasswordIcon()
-                        }}</mat-icon>
-                    </button>
-                </div>
-            </div>
-            <div class="flex flex-col gap-2">
-                <label class="text-slate-500 text-lg" for="confirmPassword"
-                    >Xác Thực Mật Khẩu</label
-                >
-                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
-                    <input
-                        class="!outline-none w-full bg-gray-100"
-                        id="confirmPassword"
-                        [type]="showConfirmPassword ? 'text' : 'password'"
-                        formControlName="confirmPassword"
-                        placeholder="Xác Thực Mật Khẩu"
-                        required
-                    />
-                    <button
-                        mat-icon-button
-                        (click)="toggleConfirmPassword()"
-                        aria-label="password visibility"
-                    >
-                        <mat-icon class="!text-slate-400">{{
-                            getShowConfirmPasswordIcon()
-                        }}</mat-icon>
-                    </button>
-                </div>
-            </div>
-            <button
-                class="!rounded-2xl min-h-14"
-                mat-flat-button
-                color="primary"
-            >
-                Đăng Ký
-            </button>
-        </form>
-        <mat-divider />
-        <div class="flex justify-between items-center">
-            <div class="text-lg font-medium text-slate-500">
-                Đã có tài khoản?
-            </div>
-            <button
-                class="!border-slate-500 !border-solid !border !rounded-2xl !min-h-12 !min-w-32 !text-slate-600"
-                mat-flat-button
-                (click)="switchTemplate('login')"
-            >
-                Đăng Nhập
-            </button>
-        </div>
-    </ng-template>
-
-    <ng-template #forgotPasswordTemplate>
-        <div class="flex">
-            <button
-                mat-icon-button
-                aria-label="Back"
-                (click)="switchTemplate('login')"
-            >
-                <mat-icon>arrow_back</mat-icon>
-            </button>
-            <div
-                style="
-                    text-align: left;
-                    font-size: 32px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: normal;
-                "
-            >
-                Lấy lại mật khẩu
-            </div>
-        </div>
-        <form
-            class="flex flex-col gap-6"
-            [formGroup]="forgotPasswordForm"
-            (ngSubmit)="onForgotPassword()"
+            Đăng Nhập
+        </button>
+    </div>
+</ng-template>
+<ng-template #forgotPasswordTemplate>
+    <div class="flex">
+        <button
+            mat-icon-button
+            aria-label="Back"
+            (click)="switchTemplate('login')"
         >
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="font-sans text-2xl font-bold text-left">
+            Lấy lại mật khẩu
+        </div>
+    </div>
+    <form
+        class="flex flex-col gap-6"
+        [formGroup]="forgotPasswordForm"
+        (ngSubmit)="onForgotPassword()"
+    >
+        <div class="flex flex-col gap-2">
+            <label class="text-slate-500 text-lg" for="usernameForgotPw"
+                >Tài Khoản</label
+            >
+            <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
+                <input
+                    class="!outline-none w-full bg-gray-100"
+                    id="usernameForgotPw"
+                    type="text"
+                    formControlName="username"
+                    placeholder="Tài Khoản"
+                    required
+                />
+            </div>
+        </div>
+        <ng-container *ngIf="!otpSent; else otpTemplate"></ng-container>
+        <ng-template #otpTemplate>
             <div class="flex flex-col gap-2">
-                <label class="text-slate-500 text-lg" for="usernameForgotPw"
-                    >Tài Khoản</label
-                >
+                <label class="text-slate-500 text-lg" for="otp">OTP</label>
                 <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
                     <input
                         class="!outline-none w-full bg-gray-100"
-                        id="usernameForgotPw"
+                        id="otp"
                         type="text"
-                        formControlName="username"
-                        placeholder="Tài Khoản"
+                        formControlName="otp"
+                        placeholder="OTP"
                         required
                     />
                 </div>
             </div>
-            <ng-container *ngIf="!otpSent; else otpTemplate"></ng-container>
-            <ng-template #otpTemplate>
-                <div class="flex flex-col gap-2">
-                    <label class="text-slate-500 text-lg" for="otp">OTP</label>
-                    <div
-                        class="flex items-center rounded-lg bg-gray-100 h-16 px-3"
-                    >
-                        <input
-                            class="!outline-none w-full bg-gray-100"
-                            id="otp"
-                            type="text"
-                            formControlName="otp"
-                            placeholder="OTP"
-                            required
-                        />
-                    </div>
-                </div>
-            </ng-template>
-            <button
-                class="!rounded-2xl min-h-14"
-                mat-flat-button
-                color="primary"
-            >
-                Lấy lại mật khẩu
-            </button>
-        </form>
-    </ng-template>
-</div>
+        </ng-template>
+        <button class="!rounded-2xl min-h-14" mat-flat-button color="primary">
+            Lấy lại mật khẩu
+        </button>
+    </form>
+</ng-template>

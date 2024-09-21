@@ -9,14 +9,15 @@ export class AppRoutingConstants {
   // Products module
   public static readonly PRODUCTS_PATH = 'products';
   public static readonly CUSTOMIZE_FLOWER_PATH = 'customization';
-  public static readonly CART_PATH = 'cart';
+
+  // Cart module
+  public static readonly CART_PATH = 'carts';
 
   // Payment module
-  public static readonly PAYMENT_PATH = 'payment';
+  public static readonly PAYMENT_PATH = 'payments';
 
   // orders module
   public static readonly ORDERS_PATH = 'orders';
-  public static readonly ORDER_TRACKING_PATH = 'order-tracking';
 
   // auth module
   public static readonly AUTH_PATH = 'auth';

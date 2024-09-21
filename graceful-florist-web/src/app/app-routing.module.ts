@@ -38,6 +38,11 @@ const routes: Routes = [
       import('./modules/products/products.module').then(m => m.ProductsModule)
   },
   {
+    path: AppRoutingConstants.CART_PATH,
+    loadChildren: () =>
+      import('./modules/cart/cart.module').then(m => m.CartModule)
+  },
+  {
     path: AppRoutingConstants.AUTH_PATH,
     loadChildren: () =>
       import('./modules/auth/auth.module').then(m => m.AuthModule)

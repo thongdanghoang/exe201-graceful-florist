@@ -30,8 +30,8 @@ export class AuthorizeComponent
     // NOTE: Avoid complex logic or operations that depend on Angular bindings or lifecycle hooks
     super();
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      username: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]]
     });
 
     this.registerForm = this.fb.group({

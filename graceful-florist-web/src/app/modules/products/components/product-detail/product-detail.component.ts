@@ -15,7 +15,7 @@ import {
   SearchResultDto
 } from '../../../shared/models/abstract-base-dto';
 import {PageEvent} from '@angular/material/paginator';
-import {Observable, switchMap} from 'rxjs';
+import {CartService} from '../../../cart/services/cart.service';
 
 @Component({
   selector: 'graceful-florist-product-detail',
@@ -28,14 +28,14 @@ export class ProductDetailComponent
 {
   protected productDto: ProductDetailDto | undefined;
   protected commentCriteria: SearchCriteriaDto<CommentSearchCriteriaDto>;
-  protected recommendedProducts: ProductDto[] = [];
   protected mainImage: string | undefined;
+  protected recommendedProducts: ProductDto[] = [];
   protected breadcrumbs: BreadcrumbItem[] = [
     {label: 'Trang chủ', path: AppRoutingConstants.HOME_PATH},
     {label: 'Sản Phẩm', path: AppRoutingConstants.PRODUCTS_PATH},
     {label: 'Hoa cho cặp đôi'}
   ];
-  protected currentSlide = 0;
+  private readonly cartService: CartService = inject(CartService);
   private readonly productService: ProductService = inject(ProductService);
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
   private readonly router: Router = inject(Router);
@@ -61,20 +61,12 @@ export class ProductDetailComponent
     this.registerSubscriptions([
       this.productService
         .getProductById(this.route.snapshot.paramMap.get('id') as string)
-        .pipe(
-          switchMap(
-            (
-              productDto: ProductDetailDto
-            ): Observable<SearchResultDto<CommentDto>> => {
-              this.productDto = productDto;
-              this.mainImage = productDto.image_url;
-              this.commentCriteria.criteria.productId = productDto.id;
-              return this.productService.getProductComment(
-                this.commentCriteria
-              );
-            }
-          )
-        )
+        .subscribe((productDto: ProductDetailDto): void => {
+          this.productDto = productDto;
+          this.mainImage = productDto.image_url;
+        }),
+      this.productService
+        .getProductComment(this.commentCriteria)
         .subscribe((comments: SearchResultDto<CommentDto>): void => {
           if (this.productDto) this.productDto.comments = comments;
         }),
@@ -87,7 +79,7 @@ export class ProductDetailComponent
   }
 
   protected addToCart(): void {
-    this.productService.addToCart([
+    this.cartService.addToCart([
       {
         ...(this.productDto as ProductDto),
         quantity: 1

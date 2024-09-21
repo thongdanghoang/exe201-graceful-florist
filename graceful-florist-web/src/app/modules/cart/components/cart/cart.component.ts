@@ -1,10 +1,10 @@
 import {Component, OnInit, inject} from '@angular/core';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
-import {CartItemDto} from '../../models/product.dto';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
-import {ProductService} from '../../services/product.service';
 import {Router} from '@angular/router';
+import {CartItemDto} from '../../models/cart.dto';
+import {CartService} from '../../services/cart.service';
 
 @Component({
   selector: 'graceful-florist-cart',
@@ -29,17 +29,15 @@ export class CartComponent
   protected loading: boolean = true;
   protected cartItems: CartItemDto[] = [];
   protected selectedCartItems: CartItemDto[] = [];
-  protected productService: ProductService = inject(ProductService);
+  private readonly cartService: CartService = inject(CartService);
   private readonly router: Router = inject(Router);
 
   ngOnInit(): void {
     this.registerSubscriptions([
-      this.productService
-        .getCart()
-        .subscribe((products: CartItemDto[]): void => {
-          this.cartItems = products;
-          this.loading = false;
-        })
+      this.cartService.getCart().subscribe((products: CartItemDto[]): void => {
+        this.cartItems = products;
+        this.loading = false;
+      })
     ]);
   }
 
@@ -80,7 +78,7 @@ export class CartComponent
   }
 
   protected removeFromCart(item: CartItemDto): void {
-    this.productService.removeFromCart(item.id);
+    this.cartService.removeFromCart(item.id);
     this.cartItems = this.cartItems.filter(
       (cartItem: CartItemDto): boolean => cartItem.id !== item.id
     );
@@ -95,7 +93,7 @@ export class CartComponent
     quantity: number,
     item: CartItemDto
   ): void {
-    this.productService.changeCartItemQuantity(item.id, quantity);
+    this.cartService.changeCartItemQuantity(item.id, quantity);
     this.cartItems = this.cartItems.map(
       (cartItem: CartItemDto): CartItemDto => {
         if (cartItem.id === item.id) {

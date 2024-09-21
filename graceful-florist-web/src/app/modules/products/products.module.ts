@@ -6,14 +6,12 @@ import {ProductDetailComponent} from './components/product-detail/product-detail
 import {ProductsComponent} from './components/products/products.component';
 import {ProductService} from './services/product.service';
 import {FlowerCustomizationComponent} from './components/flower-customization/flower-customization.component';
-import {CartComponent} from './components/cart/cart.component';
 
 @NgModule({
   declarations: [
     ProductDetailComponent,
     ProductsComponent,
-    FlowerCustomizationComponent,
-    CartComponent
+    FlowerCustomizationComponent
   ],
   imports: [SharedModule, CommonModule, ProductsRoutingModule],
   providers: [ProductService]
