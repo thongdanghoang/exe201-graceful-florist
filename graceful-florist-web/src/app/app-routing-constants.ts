@@ -11,6 +11,9 @@ export class AppRoutingConstants {
   public static readonly CUSTOMIZE_FLOWER_PATH = 'customization';
   public static readonly CART_PATH = 'cart';
 
+  // Payment module
+  public static readonly PAYMENT_PATH = 'payment';
+
   // orders module
   public static readonly ORDERS_PATH = 'orders';
   public static readonly ORDER_TRACKING_PATH = 'order-tracking';

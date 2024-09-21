@@ -221,7 +221,11 @@
                             totalSelectedValue | vndCurrency
                         }}</strong>
                     </div>
-                    <button mat-flat-button color="primary">
+                    <button
+                        mat-flat-button
+                        color="primary"
+                        (click)="navigateToCheckout()"
+                    >
                         Đi đến thanh toán
                     </button>
                 </div>

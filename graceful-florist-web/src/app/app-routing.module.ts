@@ -28,6 +28,11 @@ const routes: Routes = [
       import('./modules/orders/orders.module').then(m => m.OrdersModule)
   },
   {
+    path: AppRoutingConstants.PAYMENT_PATH,
+    loadChildren: () =>
+      import('./modules/payment/payment.module').then(m => m.PaymentModule)
+  },
+  {
     path: AppRoutingConstants.PRODUCTS_PATH,
     loadChildren: () =>
       import('./modules/products/products.module').then(m => m.ProductsModule)

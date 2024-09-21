@@ -38,6 +38,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatMenuModule} from '@angular/material/menu';
 import {PaginatorLabelDirective} from './directives/paginator-label.directive';
 import {CounterComponent} from './components/counter/counter.component';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import {CounterComponent} from './components/counter/counter.component';
     MatTabsModule,
     NgOptimizedImage,
     MatButtonToggleModule,
-    MatMenuModule
+    MatMenuModule,
+    MatBadgeModule
   ],
   exports: [
     AutocompleteComponent,
@@ -96,6 +98,8 @@ import {CounterComponent} from './components/counter/counter.component';
     VndCurrencyPipe,
     BreadcrumbComponent,
     CommentCardComponent,
+    PaginatorLabelDirective,
+    CounterComponent,
     HttpClientModule,
     RouterModule,
     FormsModule,
@@ -127,8 +131,7 @@ import {CounterComponent} from './components/counter/counter.component';
     NgOptimizedImage,
     MatButtonToggleModule,
     MatMenuModule,
-    PaginatorLabelDirective,
-    CounterComponent
+    MatBadgeModule
   ]
 })
 export class SharedModule {}

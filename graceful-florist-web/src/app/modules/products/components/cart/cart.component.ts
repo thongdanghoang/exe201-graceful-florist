@@ -125,6 +125,16 @@ export class CartComponent
   }
 
   protected navigateToProducts(): void {
-    this.router.navigate([AppRoutingConstants.PRODUCTS_PATH]).then();
+    void this.router.navigate([AppRoutingConstants.PRODUCTS_PATH]).then();
+  }
+
+  protected navigateToCheckout(): void {
+    const selectedProductIds: string[] = this.selectedCartItems.map(
+      (item: CartItemDto): string => item.id
+    );
+    const queryParams = {ids: selectedProductIds.join(',')};
+    void this.router
+      .navigate([AppRoutingConstants.PAYMENT_PATH], {queryParams})
+      .then();
   }
 }
