@@ -1,13 +1,12 @@
 <div
-    class="min-h-fit bg-gray-200 bg-cover bg-repeat-y"
+    class="min-h-fit bg-cover bg-repeat-y"
     [ngStyle]="{
         'background-image': 'url(' + 'assets/427318924.png' + ')',
     }"
 >
-    <div class="container mx-auto" style="padding: 120px 0">
+    <div class="container mx-auto py-0 sm:p-28">
         <div
-            class="flex flex-col gap-6 bg-white max-w-xl w-full"
-            style="border-radius: 40px; padding: 47px 52px"
+            class="flex flex-col gap-6 bg-white max-w-xl w-full p-6 sm:p-12 sm:rounded-3xl"
         >
             <ng-container *ngTemplateOutlet="currentTemplate"></ng-container>
         </div>
@@ -31,16 +30,18 @@
                 id="username"
                 type="text"
                 formControlName="username"
+                autocomplete="username"
                 required
             />
             <mat-error> </mat-error>
         </mat-form-field>
-        <div class="flex flex-col">
+        <div class="flex flex-col gap-2">
             <div class="flex justify-end items-center">
                 <button
                     class="!text-slate-500 !font-sans !text-base"
                     mat-button
                     (click)="switchTemplate('forgotPassword')"
+                    type="button"
                 >
                     Quên Mật Khẩu?
                 </button>
@@ -56,6 +57,7 @@
                     id="password"
                     [type]="showPassword ? 'text' : 'password'"
                     formControlName="password"
+                    autocomplete="current-password"
                     required
                 />
                 <button
@@ -63,6 +65,7 @@
                     matSuffix
                     (click)="toggleShowPassword()"
                     aria-label="password visibility"
+                    type="button"
                 >
                     <mat-icon>{{
                         showPassword ? "visibility" : "visibility_off"
@@ -111,83 +114,94 @@
         [formGroup]="registerForm"
         (ngSubmit)="onSignUp()"
     >
-        <div class="flex flex-col gap-2">
-            <label class="text-slate-500 text-lg" for="fullName">Họ Tên</label>
-            <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
-                <input
-                    class="!outline-none w-full bg-gray-100"
-                    id="fullName"
-                    type="text"
-                    formControlName="fullName"
-                    placeholder="Họ Tên"
-                    required
-                />
-            </div>
-        </div>
-        <div class="flex flex-col gap-2">
-            <label class="text-slate-500 text-lg" for="usernameRegister"
-                >Tài Khoản</label
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Họ Tên</mat-label>
+            <input
+                matInput
+                id="fullName"
+                type="text"
+                formControlName="fullName"
+                required
+            />
+            <mat-error></mat-error>
+        </mat-form-field>
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Tài Khoản</mat-label>
+            <input
+                matInput
+                id="usernameRegister"
+                type="text"
+                formControlName="username"
+                autocomplete="username"
+                required
+            />
+            <mat-error></mat-error>
+        </mat-form-field>
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Mật Khẩu</mat-label>
+            <input
+                matInput
+                id="passwordRegister"
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                required
+                autocomplete="new-password"
+            />
+            <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleShowPassword()"
+                aria-label="password visibility"
+                type="button"
             >
-            <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
-                <input
-                    class="!outline-none w-full bg-gray-100"
-                    id="usernameRegister"
-                    type="text"
-                    formControlName="username"
-                    placeholder="Tài Khoản"
-                    required
-                />
-            </div>
-        </div>
-        <div class="flex flex-col gap-2">
-            <label class="text-slate-500 text-lg" for="passwordRegister"
-                >Mật Khẩu</label
+                <mat-icon>{{ getShowPasswordIcon() }}</mat-icon>
+            </button>
+            <mat-error></mat-error>
+        </mat-form-field>
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Xác Thực Mật Khẩu</mat-label>
+            <input
+                matInput
+                id="confirmPassword"
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                formControlName="confirmPassword"
+                placeholder="Xác Thực Mật Khẩu"
+                autocomplete="new-password"
+                required
+            />
+            <button
+                mat-icon-button
+                matSuffix
+                (click)="toggleConfirmPassword()"
+                aria-label="password visibility"
+                type="button"
             >
-            <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
-                <input
-                    class="!outline-none w-full bg-gray-100"
-                    id="passwordRegister"
-                    [type]="showPassword ? 'text' : 'password'"
-                    placeholder="Mật Khẩu"
-                    formControlName="password"
-                    required
-                />
-                <button
-                    mat-icon-button
-                    (click)="toggleShowPassword()"
-                    aria-label="password visibility"
-                >
-                    <mat-icon class="!text-slate-400">{{
-                        getShowPasswordIcon()
-                    }}</mat-icon>
-                </button>
-            </div>
-        </div>
-        <div class="flex flex-col gap-2">
-            <label class="text-slate-500 text-lg" for="confirmPassword"
-                >Xác Thực Mật Khẩu</label
-            >
-            <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
-                <input
-                    class="!outline-none w-full bg-gray-100"
-                    id="confirmPassword"
-                    [type]="showConfirmPassword ? 'text' : 'password'"
-                    formControlName="confirmPassword"
-                    placeholder="Xác Thực Mật Khẩu"
-                    required
-                />
-                <button
-                    mat-icon-button
-                    (click)="toggleConfirmPassword()"
-                    aria-label="password visibility"
-                >
-                    <mat-icon class="!text-slate-400">{{
-                        getShowConfirmPasswordIcon()
-                    }}</mat-icon>
-                </button>
-            </div>
-        </div>
-        <button class="!rounded-2xl min-h-14" mat-flat-button color="primary">
+                <mat-icon>{{ getShowConfirmPasswordIcon() }}</mat-icon>
+            </button>
+            <mat-error></mat-error>
+        </mat-form-field>
+        <button
+            [disabled]="registerForm.invalid"
+            class="!rounded-2xl min-h-14"
+            mat-flat-button
+            color="primary"
+        >
             Đăng Ký
         </button>
     </form>
@@ -204,7 +218,7 @@
     </div>
 </ng-template>
 <ng-template #forgotPasswordTemplate>
-    <div class="flex">
+    <div class="flex items-center">
         <button
             mat-icon-button
             aria-label="Back"
@@ -221,38 +235,46 @@
         [formGroup]="forgotPasswordForm"
         (ngSubmit)="onForgotPassword()"
     >
-        <div class="flex flex-col gap-2">
-            <label class="text-slate-500 text-lg" for="usernameForgotPw"
-                >Tài Khoản</label
-            >
-            <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
-                <input
-                    class="!outline-none w-full bg-gray-100"
-                    id="usernameForgotPw"
-                    type="text"
-                    formControlName="username"
-                    placeholder="Tài Khoản"
-                    required
-                />
-            </div>
-        </div>
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Tài Khoản</mat-label>
+            <input
+                matInput
+                id="usernameForgotPw"
+                type="text"
+                formControlName="username"
+                placeholder="Tài Khoản"
+                required
+            />
+            <mat-error></mat-error>
+        </mat-form-field>
         <ng-container *ngIf="!otpSent; else otpTemplate"></ng-container>
         <ng-template #otpTemplate>
-            <div class="flex flex-col gap-2">
-                <label class="text-slate-500 text-lg" for="otp">OTP</label>
-                <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
-                    <input
-                        class="!outline-none w-full bg-gray-100"
-                        id="otp"
-                        type="text"
-                        formControlName="otp"
-                        placeholder="OTP"
-                        required
-                    />
-                </div>
-            </div>
+            <mat-form-field
+                appearance="fill"
+                subscriptSizing="dynamic"
+                gracefulFloristErrorMessage
+            >
+                <mat-label>OTP</mat-label>
+                <input
+                    matInput
+                    id="otp"
+                    type="text"
+                    formControlName="otp"
+                    required
+                />
+                <mat-error></mat-error>
+            </mat-form-field>
         </ng-template>
-        <button class="!rounded-2xl min-h-14" mat-flat-button color="primary">
+        <button
+            [disabled]="forgotPasswordForm.invalid"
+            class="!rounded-2xl min-h-14"
+            mat-flat-button
+            color="primary"
+        >
             Lấy lại mật khẩu
         </button>
     </form>

@@ -1,41 +1,30 @@
 <div
-    class="min-h-fit bg-gray-200 bg-cover bg-repeat-y"
+    class="h-full bg-cover bg-repeat-y"
     [ngStyle]="{
         'background-image': 'url(' + 'assets/427318924.png' + ')',
     }"
 >
-    <div class="container mx-auto" style="padding: 120px 120px">
+    <div class="container mx-auto p-0 sm:p-28">
         <!--Tra cứu đơn hàng-->
         <div
-            class="flex flex-col gap-6 bg-white"
-            style="border-radius: 40px; padding: 47px 52px; width: 560px"
+            class="flex flex-col justify-center gap-6 bg-white sm:rounded-3xl p-6 sm:p-12 sm:max-w-xl h-dvh sm:h-fit"
         >
             <div
-                style="
-                    text-align: center;
-                    font-size: 32px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: normal;
-                "
+                class="font-sans font-semibold text-center text-2xl sm:text-4xl"
             >
                 Tra cứu đơn hàng
             </div>
             <div class="flex flex-col gap-2">
                 <div
-                    style="
-                        color: #4f566b;
-                        font-size: 18px;
-                        font-style: normal;
-                        font-weight: 400;
-                        line-height: normal;
-                        letter-spacing: 0.18px;
-                    "
+                    class="font-sans font-normal text-lg sm:text-lg text-gray-600"
                 >
                     Mã đơn hàng / Số điện thoại
                 </div>
                 <div class="flex items-center rounded-lg bg-gray-100 h-16 px-3">
-                    <input class="!outline-none w-full bg-gray-100" />
+                    <input
+                        name="orderIdOrPhoneNumber"
+                        class="!outline-none w-full bg-gray-100"
+                    />
                 </div>
             </div>
             <button
