@@ -14,6 +14,13 @@ import {HomepageComponent} from './homepage/homepage.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {MatPaginatorIntl} from '@angular/material/paginator';
 import {MatPaginatorIntlImpl} from './modules/shared/components/mat-paginator-intl-impl/mat-paginator-intl-impl';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {HttpClient} from '@angular/common/http';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -27,7 +34,14 @@ import {MatPaginatorIntlImpl} from './modules/shared/components/mat-paginator-in
     BrowserModule,
     AppRoutingModule,
     CoreModule,
-    SharedModule
+    SharedModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     provideAnimationsAsync(),

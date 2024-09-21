@@ -39,6 +39,10 @@ import {MatMenuModule} from '@angular/material/menu';
 import {PaginatorLabelDirective} from './directives/paginator-label.directive';
 import {CounterComponent} from './components/counter/counter.component';
 import {MatBadgeModule} from '@angular/material/badge';
+import {TranslateModule} from '@ngx-translate/core';
+import {ErrorMessagesDirective} from './directives/error-messages.directive';
+import {TranslateParamsPipe} from './pipes/translate-params.pipe';
+import {MatErrorDirective} from './directives/mat-error.directive';
 
 @NgModule({
   declarations: [
@@ -51,7 +55,10 @@ import {MatBadgeModule} from '@angular/material/badge';
     VndCurrencyPipe,
     BreadcrumbComponent,
     PaginatorLabelDirective,
-    CounterComponent
+    CounterComponent,
+    ErrorMessagesDirective,
+    TranslateParamsPipe,
+    MatErrorDirective
   ],
   imports: [
     AsyncPipe,
@@ -60,6 +67,7 @@ import {MatBadgeModule} from '@angular/material/badge';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    TranslateModule.forChild(),
     SvgIconComponent,
     MatTableModule,
     MatCheckboxModule,
@@ -90,6 +98,9 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatBadgeModule
   ],
   exports: [
+    ErrorMessagesDirective,
+    TranslateParamsPipe,
+    MatErrorDirective,
     AutocompleteComponent,
     TabCategoryComponent,
     GracefulFloristDateTimePickerComponent,
