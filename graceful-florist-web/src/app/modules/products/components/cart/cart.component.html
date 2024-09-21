@@ -1,0 +1,246 @@
+<div class="container mx-auto flex flex-col gap-6 py-6">
+    <graceful-florist-breadcrumb [breadcrumbs]="breadcrumbs" />
+    <graceful-florist-tab-category />
+    <ng-container *ngIf="loading; else cartContent">
+        <!-- Loading Skeleton-->
+        <div
+            class="bg-white rounded-lg shadow-md p-6"
+            aria-busy="true"
+            aria-live="polite"
+        >
+            <div class="flex items-center justify-between mb-6">
+                <div class="h-8 bg-gray-200 rounded w-1/4 animate-pulse"></div>
+                <div class="h-8 bg-gray-200 rounded w-1/6 animate-pulse"></div>
+            </div>
+            <div class="space-y-6">
+                <div class="flex items-center space-x-4">
+                    <div
+                        class="w-16 h-16 bg-gray-200 rounded-md animate-pulse"
+                    ></div>
+                    <div class="flex-1 space-y-2">
+                        <div
+                            class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"
+                        ></div>
+                        <div
+                            class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"
+                        ></div>
+                    </div>
+                    <div
+                        class="h-8 bg-gray-200 rounded w-20 animate-pulse"
+                    ></div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div
+                        class="w-16 h-16 bg-gray-200 rounded-md animate-pulse"
+                    ></div>
+                    <div class="flex-1 space-y-2">
+                        <div
+                            class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"
+                        ></div>
+                        <div
+                            class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"
+                        ></div>
+                    </div>
+                    <div
+                        class="h-8 bg-gray-200 rounded w-20 animate-pulse"
+                    ></div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div
+                        class="w-16 h-16 bg-gray-200 rounded-md animate-pulse"
+                    ></div>
+                    <div class="flex-1 space-y-2">
+                        <div
+                            class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"
+                        ></div>
+                        <div
+                            class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"
+                        ></div>
+                    </div>
+                    <div
+                        class="h-8 bg-gray-200 rounded w-20 animate-pulse"
+                    ></div>
+                </div>
+            </div>
+            <div class="mt-8 space-y-4">
+                <div class="flex justify-between items-center">
+                    <div
+                        class="h-4 bg-gray-200 rounded w-1/3 animate-pulse"
+                    ></div>
+                    <div
+                        class="h-4 bg-gray-200 rounded w-1/5 animate-pulse"
+                    ></div>
+                </div>
+                <div
+                    class="h-12 bg-gray-200 rounded w-full animate-pulse"
+                ></div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<ng-template #cartContent>
+    <ng-container *ngIf="cartItems.length; else emptyCart">
+        <div class="flex flex-col py-2 px-4 gap-2.5 bg-white rounded-lg">
+            <div>
+                <table
+                    mat-table
+                    [dataSource]="cartItems"
+                    class="mat-elevation-z8 !shadow-none"
+                >
+                    <!-- Selection -->
+                    <ng-container matColumnDef="select">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <mat-checkbox
+                                (change)="$event ? masterToggle() : null"
+                                [checked]="isAllSelected()"
+                                [indeterminate]="isIndeterminate()"
+                                color="primary"
+                            ></mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-checkbox
+                                (click)="$event.stopPropagation()"
+                                (change)="
+                                    $event ? toggleSelection(element) : null
+                                "
+                                [checked]="isSelected(element)"
+                                color="primary"
+                            ></mat-checkbox>
+                        </td>
+                    </ng-container>
+
+                    <!-- Tên sản phẩm -->
+                    <ng-container matColumnDef="name">
+                        <th
+                            class="!font-bold"
+                            mat-header-cell
+                            *matHeaderCellDef
+                        >
+                            Tên sản phẩm
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="flex gap-2 w-fit bg">
+                                <img
+                                    class="object-cover"
+                                    alt="{{ element.name }}"
+                                    ngSrc="{{ element.image_url }}"
+                                    width="100"
+                                    height="100"
+                                    priority
+                                />
+                                <div class="flex flex-col justify-center gap-1">
+                                    <div class="text-sm leading-5 font-normal">
+                                        {{ element.name }}
+                                    </div>
+                                    <div
+                                        class="text-xs leading-4 font-normal text-gray-400"
+                                    >
+                                        {{ element.detail }}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <!-- Giá đặt hàng -->
+                    <ng-container matColumnDef="price">
+                        <th
+                            class="!font-bold"
+                            mat-header-cell
+                            *matHeaderCellDef
+                        >
+                            Giá đặt hàng
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            {{ element.price | vndCurrency }}
+                        </td>
+                    </ng-container>
+
+                    <!-- Số lượng -->
+                    <ng-container matColumnDef="quantity">
+                        <th
+                            class="!font-bold"
+                            mat-header-cell
+                            *matHeaderCellDef
+                        >
+                            Số lượng
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <graceful-florist-counter
+                                (countChanged)="
+                                    onCartItemQuantityChanges($event, element)
+                                "
+                                [count]="element.quantity"
+                            ></graceful-florist-counter>
+                        </td>
+                    </ng-container>
+
+                    <!-- Actions -->
+                    <ng-container matColumnDef="actions">
+                        <th
+                            class="!font-bold"
+                            mat-header-cell
+                            *matHeaderCellDef
+                        ></th>
+                        <td mat-cell *matCellDef="let element">
+                            <button
+                                mat-button
+                                (click)="removeFromCart(element)"
+                                color="primary"
+                            >
+                                <mat-icon>delete</mat-icon>
+                                Xoá
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr
+                        mat-header-row
+                        *matHeaderRowDef="productDisplayedColumns"
+                    ></tr>
+                    <tr
+                        mat-row
+                        *matRowDef="let row; columns: productDisplayedColumns"
+                        (click)="toggleSelection(row)"
+                        [class.selected]="isSelected(row)"
+                    ></tr>
+                </table>
+                <mat-divider></mat-divider>
+            </div>
+            <div class="flex py-3.5 justify-between items-center">
+                <button mat-button (click)="navigateToProducts()">
+                    <mat-icon>arrow_back</mat-icon>
+                    Tiếp tục mua hàng
+                </button>
+                <div class="flex gap-8 items-center">
+                    <div class="flex justify-end items-center gap-1">
+                        <p class="text-sm leading-5 font-normal">
+                            Số tiền phải trả:
+                        </p>
+                        <strong class="text-sm leading-5 text-primary">{{
+                            totalSelectedValue | vndCurrency
+                        }}</strong>
+                    </div>
+                    <button mat-flat-button color="primary">
+                        Đi đến thanh toán
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-template>
+<ng-template #emptyCart>
+    <div class="flex flex-col items-center justify-center gap-6">
+        <img
+            ngSrc="assets/empty-cart.png"
+            alt="empty-cart"
+            height="300"
+            width="200"
+            priority
+        />
+        <h1 class="font-sans text-2xl font-bold">
+            Giỏ hàng trống! Thêm sản phẩm & mua sắm ngay
+        </h1>
+        <button mat-flat-button color="primary">Quay lại khám phá thêm</button>
+    </div>
+</ng-template>

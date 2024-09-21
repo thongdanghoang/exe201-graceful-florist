@@ -86,7 +86,14 @@ export class ProductDetailComponent
     ]);
   }
 
-  protected addToCart(): void {}
+  protected addToCart(): void {
+    this.productService.addToCart([
+      {
+        ...(this.productDto as ProductDto),
+        quantity: 1
+      }
+    ]);
+  }
 
   protected buyNow(): void {}
 

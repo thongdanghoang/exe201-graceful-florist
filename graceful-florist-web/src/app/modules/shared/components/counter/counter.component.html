@@ -1,21 +1,11 @@
 <div class="flex gap-6 items-center">
-    <button
-        class="!rounded-xl !bg-neutral-100"
-        mat-icon-button
-        aria-label="decrement"
-        (click)="decrement()"
-    >
+    <button mat-icon-button aria-label="decrement" (click)="decrement()">
         <mat-icon>remove</mat-icon>
     </button>
     <span class="font-sans text-base font-normal leading-normal">{{
         count
     }}</span>
-    <button
-        class="!rounded-xl !bg-neutral-100"
-        mat-icon-button
-        aria-label="increment"
-        (click)="increment()"
-    >
+    <button mat-icon-button aria-label="increment" (click)="increment()">
         <mat-icon>add</mat-icon>
     </button>
 </div>

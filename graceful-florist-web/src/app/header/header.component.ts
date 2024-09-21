@@ -19,6 +19,12 @@ export class HeaderComponent {
     void this.router.navigate([AppRoutingConstants.PRODUCTS_PATH]);
   }
 
+  protected navigateToCart(): void {
+    void this.router.navigate([
+      `${AppRoutingConstants.PRODUCTS_PATH}/${AppRoutingConstants.CART_PATH}`
+    ]);
+  }
+
   protected navigateToCustomization(): void {
     void this.router.navigate([
       `${AppRoutingConstants.PRODUCTS_PATH}/${AppRoutingConstants.CUSTOMIZE_FLOWER_PATH}`

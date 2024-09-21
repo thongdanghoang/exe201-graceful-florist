@@ -30,8 +30,8 @@ export class OrderDetailComponent
   extends SubscriptionAwareComponent
   implements OnInit
 {
-  displayedColumns: string[] = ['name', 'price', 'quantity'];
-  dataSource: ProductDto[] = [];
+  productDisplayedColumns: string[] = ['name', 'price', 'quantity'];
+  orderProducts: ProductDto[] = [];
   protected orderDto!: OrderDto;
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super();
@@ -39,7 +39,7 @@ export class OrderDetailComponent
   ngOnInit(): void {
     this.activatedRoute.data.subscribe((data: any): void => {
       this.orderDto = data.order;
-      this.dataSource = this.orderDto.products;
+      this.orderProducts = this.orderDto.products;
     });
   }
 }

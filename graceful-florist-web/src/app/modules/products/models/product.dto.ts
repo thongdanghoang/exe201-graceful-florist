@@ -37,6 +37,10 @@ export interface CommentSearchCriteriaDto {
   productId: string;
 }
 
+export interface CartItemDto extends ProductDto {
+  quantity: number;
+}
+
 export interface UserDto {
   id: string;
   name: string;

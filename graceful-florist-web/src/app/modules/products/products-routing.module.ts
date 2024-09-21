@@ -4,11 +4,16 @@ import {ProductDetailComponent} from './components/product-detail/product-detail
 import {ProductsComponent} from './components/products/products.component';
 import {AppRoutingConstants} from '../../app-routing-constants';
 import {FlowerCustomizationComponent} from './components/flower-customization/flower-customization.component';
+import {CartComponent} from './components/cart/cart.component';
 
 const routes: Routes = [
   {
     path: AppRoutingConstants.CUSTOMIZE_FLOWER_PATH,
     component: FlowerCustomizationComponent
+  },
+  {
+    path: AppRoutingConstants.CART_PATH,
+    component: CartComponent
   },
   {path: '', component: ProductsComponent},
   {path: ':id', component: ProductDetailComponent}
