@@ -225,6 +225,7 @@
                         mat-flat-button
                         color="primary"
                         (click)="navigateToCheckout()"
+                        [disabled]="selectedCartItems.length === 0"
                     >
                         Đi đến thanh toán
                     </button>

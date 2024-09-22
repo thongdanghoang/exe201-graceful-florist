@@ -1,1 +1,290 @@
-<p>payment works!</p>
+<form
+    [formGroup]="paymentForm"
+    (ngSubmit)="onPaymentSubmit()"
+    class="container mx-auto flex-col flex gap-5 py-5"
+>
+    <graceful-florist-breadcrumb [breadcrumbs]="breadcrumbs" />
+    <graceful-florist-tab-category />
+    <div
+        class="flex flex-col sm:flex-row gap-5 sm:gap-2.5 px-2 sm:px-4 py-8 rounded-lg bg-white"
+    >
+        <!-- Thông tin người nhận - Người nhận hoa -->
+        <div class="flex flex-col w-full sm:w-1/2 gap-2.5">
+            <div class="font-sans font-bold text-xl">Thông tin người nhận</div>
+            <div
+                formGroupName="recipient"
+                class="flex flex-col gap-2.5 sm:px-5"
+            >
+                <mat-form-field
+                    appearance="fill"
+                    subscriptSizing="dynamic"
+                    gracefulFloristErrorMessage
+                >
+                    <mat-label>Tên Người Nhận</mat-label>
+                    <input matInput formControlName="fullName" required />
+                    <mat-error></mat-error>
+                </mat-form-field>
+                <mat-form-field
+                    appearance="fill"
+                    subscriptSizing="dynamic"
+                    gracefulFloristErrorMessage
+                >
+                    <mat-label>Số Điện Thoại</mat-label>
+                    <input matInput formControlName="phone" required />
+                    <mat-error></mat-error>
+                </mat-form-field>
+                <div class="flex flex-col sm:flex-row gap-2.5">
+                    <div class="w-full sm:w-2/5">
+                        <mat-form-field
+                            class="w-full"
+                            appearance="fill"
+                            subscriptSizing="dynamic"
+                            gracefulFloristErrorMessage
+                        >
+                            <mat-label>Quận</mat-label>
+                            <input
+                                matInput
+                                formControlName="district"
+                                required
+                            />
+                            <mat-error></mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="w-full sm:w-3/5">
+                        <mat-form-field
+                            class="w-full"
+                            appearance="fill"
+                            subscriptSizing="dynamic"
+                            gracefulFloristErrorMessage
+                        >
+                            <mat-label>Phường</mat-label>
+                            <input matInput formControlName="ward" required />
+                            <mat-error></mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <mat-form-field
+                    appearance="fill"
+                    subscriptSizing="dynamic"
+                    gracefulFloristErrorMessage
+                >
+                    <mat-label>Địa Chỉ Chi Tiết</mat-label>
+                    <input matInput formControlName="addressDetail" required />
+                    <mat-error></mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- Thông tin người đặt hàng - Người đặt hoa -->
+        <div class="flex flex-col w-full sm:w-1/2 gap-2.5">
+            <div class="font-sans font-bold text-xl">
+                Thông tin người đặt hàng
+            </div>
+            <div formGroupName="sender" class="flex flex-col gap-2.5 sm:px-5">
+                <mat-form-field
+                    appearance="fill"
+                    subscriptSizing="dynamic"
+                    gracefulFloristErrorMessage
+                >
+                    <mat-label>Tên Người Đặt</mat-label>
+                    <input matInput formControlName="fullName" required />
+                    <mat-error></mat-error>
+                </mat-form-field>
+                <mat-form-field
+                    appearance="fill"
+                    subscriptSizing="dynamic"
+                    gracefulFloristErrorMessage
+                >
+                    <mat-label>Số Điện Thoại</mat-label>
+                    <input matInput formControlName="phone" required />
+                    <mat-error></mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div
+        class="flex flex-col sm:flex-row gap-5 sm:gap-2.5 px-2 sm:px-4 py-8 rounded-lg bg-white"
+    >
+        <!-- Ngày Giao Hàng -->
+        <div class="flex flex-col w-full sm:w-1/2 gap-2.5">
+            <div class="font-sans font-bold text-xl">Ngày Giao Hàng</div>
+            <div
+                formGroupName="deliveryDateTime"
+                class="flex flex-col gap-5 sm:px-5"
+            >
+                <div class="flex flex-col gap-2.5">
+                    <div class="font-sans text-xs font-normal">
+                        Ngày Giao Hàng
+                    </div>
+                    <mat-form-field
+                        subscriptSizing="dynamic"
+                        gracefulFloristErrorMessage
+                    >
+                        <input
+                            formControlName="deliveryDate"
+                            matInput
+                            [matDatepicker]="picker"
+                            placeholder="dd.mm.yyyy"
+                        />
+                        <mat-datepicker-toggle
+                            matIconSuffix
+                            [for]="picker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col gap-2.5">
+                    <div class="font-sans text-xs font-normal">
+                        Thời Gian Giao Hàng
+                    </div>
+                    <graceful-florist-date-time-picker />
+                </div>
+            </div>
+        </div>
+        <!-- Thẻ và lời nhắn -->
+        <div class="flex flex-col w-full sm:w-1/2 gap-2.5">
+            <div class="font-sans font-bold text-xl">Thẻ và lời nhắn</div>
+            <div class="flex flex-col gap-2.5 sm:px-5">
+                <mat-form-field class="mx-auto h-48 w-full *:!bg-transparent">
+                    <mat-label class="!font-sans">Lời nhắn</mat-label>
+                    <textarea
+                        class="!font-sans"
+                        formControlName="message"
+                        placeholder="Thêm lời nhắn vào thiệp"
+                        rows="5"
+                        cols="80"
+                        matInput
+                    ></textarea>
+                    <mat-error></mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <!-- Danh sách sản phẩm (...) -->
+    <div
+        class="flex flex-col sm:flex-row gap-5 sm:gap-2.5 px-2 sm:px-4 py-8 rounded-lg bg-white"
+    >
+        <div class="flex flex-col w-full sm:w-1/2 gap-2.5">
+            <div class="font-sans font-bold text-xl">
+                Danh sách sản phẩm ({{ cartItemsLength }})
+            </div>
+            <div class="flex flex-col gap-2.5 px-10">
+                <ng-container *ngFor="let item of cartItems; let i = index">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            cartItem;
+                            context: { $implicit: item }
+                        "
+                    ></ng-container>
+                </ng-container>
+            </div>
+        </div>
+        <div class="flex flex-col w-full sm:w-1/2 gap-2.5">
+            <div class="font-sans font-bold text-xl">Tùy Chọn (0)</div>
+            <div class="flex flex-col gap-2.5 px-10"></div>
+        </div>
+    </div>
+    <!-- Phương thức thanh toán -->
+    <div class="flex flex-col gap-5 px-2 sm:px-4 py-8 rounded-lg bg-white">
+        <div class="font-sans font-bold text-xl">Phương thức thanh toán</div>
+        <div class="flex flex-col gap-2.5 px-10">
+            <mat-radio-group
+                formControlName="paymentMethod"
+                class="flex flex-col gap-2.5"
+            >
+                <mat-radio-button value="cod" color="primary"
+                    >Thanh toán khi nhận hàng
+                </mat-radio-button>
+                <mat-radio-button value="momo" color="primary"
+                    >Thanh toán qua MoMo
+                </mat-radio-button>
+                <mat-radio-button value="zalopay" color="primary"
+                    >Thanh toán qua ZaloPay
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </div>
+    <!-- Summary -->
+    <div
+        class="flex items-center flex-col sm:flex-row sm:justify-between px-8 py-4 rounded-lg bg-white"
+    >
+        <div class="flex flex-col gap-2.5">
+            <div
+                class="flex flex-row gap-2.5 font-sans text-base font-bold leading-normal"
+            >
+                Giao hàng đến:
+                <div
+                    class="flex flex-row gap-2.5 font-sans text-base font-medium leading-normal"
+                >
+                    {{ recipientAddress }}
+                    <div
+                        class="font-sans text-base font-medium leading-normal text-primary"
+                    >
+                        {{ recipientName }}
+                    </div>
+                </div>
+            </div>
+            <div
+                class="flex flex-row gap-2.5 font-sans text-base font-bold leading-normal"
+            >
+                Người đặt:
+                <div
+                    class="flex flex-row gap-2.5 font-sans text-base font-medium leading-normal"
+                >
+                    <div
+                        class="font-sans text-base font-medium leading-normal text-primary"
+                    >
+                        {{ senderName }}
+                    </div>
+                    {{ senderPhone }}
+                </div>
+            </div>
+        </div>
+        <div class="flex gap-2.5">
+            <div class="flex justify-end items-center gap-1">
+                <p class="text-sm leading-5 font-normal">Số tiền phải trả:</p>
+                <strong class="text-sm leading-5 text-primary">{{
+                    totalSelectedValue | vndCurrency
+                }}</strong>
+            </div>
+            <button
+                [disabled]="paymentForm.invalid"
+                mat-flat-button
+                color="primary"
+                type="submit"
+            >
+                Đặt Hàng
+            </button>
+        </div>
+    </div>
+</form>
+<ng-template
+    class="flex flex-col sm:flex-row gap-5 sm:gap-2.5 px-2 sm:px-4 py-8 rounded-lg bg-white"
+>
+    <div class="flex flex-col w-full sm:w-1/2 gap-2.5">
+        <div class="font-sans font-bold text-xl"></div>
+        <div class="flex flex-col gap-2.5 px-10"></div>
+    </div>
+    <div class="flex flex-col w-full sm:w-1/2 gap-2.5">
+        <div class="font-sans font-bold text-xl"></div>
+        <div class="flex flex-col gap-2.5 px-10"></div>
+    </div>
+</ng-template>
+<ng-template #cartItem let-item>
+    <div class="flex gap-2">
+        <img
+            [ngSrc]="item.image_url"
+            alt="product"
+            priority
+            width="100"
+            height="100"
+        />
+        <div class="flex flex-col gap-1">
+            <div class="font-sans text-sm font-normal">{{ item.name }}</div>
+            <div class="flex gap-1 font-sans text-sm font-normal">
+                {{ item.price | vndCurrency }}
+                <div class="text-primary">x{{ item.quantity }}</div>
+            </div>
+        </div>
+    </div>
+</ng-template>

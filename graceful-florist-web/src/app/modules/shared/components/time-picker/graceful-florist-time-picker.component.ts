@@ -12,24 +12,23 @@ export interface ChipColor {
 
 @Component({
   selector: 'graceful-florist-date-time-picker',
-  templateUrl: './graceful-florist-date-time-picker.component.html',
-  styleUrl: './graceful-florist-date-time-picker.component.css'
+  templateUrl: './graceful-florist-time-picker.component.html',
+  styleUrl: './graceful-florist-time-picker.component.css'
 })
-export class GracefulFloristDateTimePickerComponent {
+export class GracefulFloristTimePickerComponent {
   @ViewChild(MatExpansionPanel) panel!: MatExpansionPanel;
   readonly panelOpenState = signal(false);
-  selected: Date | null = null;
-  availableColors: ChipColor[] = [
+  availableTimeRange: ChipColor[] = [
     {name: 'Buổi Sáng (8:30 ~ 12:00)', color: 'primary'},
     {name: 'Buổi Chiều (12:00 ~ 17:00)', color: 'primary'},
     {name: 'Buổi Tối (17:00 ~ 20:30)', color: 'primary'},
     {name: 'Giao Hàng Nhanh (1-2 giờ)', color: 'primary'},
     {name: 'Tùy Chọn', color: 'primary'}
   ];
+  selectedHour: number = 12;
+  selectedMinute: number = 0;
   hours: number[] = Array.from({length: 24}, (_, i) => i);
-  selectedHour: number | null = null;
   minutes: number[] = Array.from({length: 60}, (_, i) => i);
-  selectedMinute: number | null = null;
   readonly range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null)
@@ -48,14 +47,30 @@ export class GracefulFloristDateTimePickerComponent {
     this.selectedChip = chip.value;
   }
 
-  formatDate(date: Date | null): string {
-    if (date) {
-      return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-    }
-    return 'Chọn ngày';
-  }
-
   closePanel(): void {
     this.panel.close();
+  }
+
+  get displaySelectedTime(): string {
+    switch (this.selectedChip) {
+      case 'Buổi Sáng (8:30 ~ 12:00)': {
+        return this.availableTimeRange[0].name;
+      }
+      case 'Buổi Chiều (12:00 ~ 17:00)': {
+        return this.availableTimeRange[1].name;
+      }
+      case 'Buổi Tối (17:00 ~ 20:30)': {
+        return this.availableTimeRange[2].name;
+      }
+      case 'Giao Hàng Nhanh (1-2 giờ)': {
+        return this.availableTimeRange[3].name;
+      }
+      case 'Tùy Chọn': {
+        return `Tùy Chọn: ${this.selectedHour}:${this.selectedMinute}`;
+      }
+      default: {
+        return 'Chọn giờ';
+      }
+    }
   }
 }

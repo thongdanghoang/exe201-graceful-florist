@@ -3,8 +3,7 @@ import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.c
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {Router} from '@angular/router';
-import {CartItemDto} from '../../models/cart.dto';
-import {CartService} from '../../services/cart.service';
+import {CartItemDto, CartService} from '../../services/cart.service';
 
 @Component({
   selector: 'graceful-florist-cart',
@@ -127,10 +126,8 @@ export class CartComponent
   }
 
   protected navigateToCheckout(): void {
-    const selectedProductIds: string[] = this.selectedCartItems.map(
-      (item: CartItemDto): string => item.id
-    );
-    const queryParams = {ids: selectedProductIds.join(',')};
+    const selectedProducts = JSON.stringify(this.selectedCartItems);
+    const queryParams = {products: selectedProducts};
     void this.router
       .navigate([AppRoutingConstants.PAYMENT_PATH], {queryParams})
       .then();

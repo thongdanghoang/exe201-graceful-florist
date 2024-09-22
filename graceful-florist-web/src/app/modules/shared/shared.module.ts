@@ -27,7 +27,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatTabsModule} from '@angular/material/tabs';
 import {TabCategoryComponent} from './components/tab-category/tab-category.component';
 import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
-import {GracefulFloristDateTimePickerComponent} from './components/date-time-picker/graceful-florist-date-time-picker.component';
+import {GracefulFloristTimePickerComponent} from './components/time-picker/graceful-florist-time-picker.component';
 import {ImageCardComponent} from './components/image-card/image-card.component';
 import {ImageCardHorizontalComponent} from './components/image-card-horizontal/image-card-horizontal.component';
 import {CommentCardComponent} from './components/comment-card/comment-card.component';
@@ -48,7 +48,7 @@ import {MatErrorDirective} from './directives/mat-error.directive';
   declarations: [
     TabCategoryComponent,
     AutocompleteComponent,
-    GracefulFloristDateTimePickerComponent,
+    GracefulFloristTimePickerComponent,
     ImageCardComponent,
     ImageCardHorizontalComponent,
     CommentCardComponent,
@@ -103,7 +103,7 @@ import {MatErrorDirective} from './directives/mat-error.directive';
     MatErrorDirective,
     AutocompleteComponent,
     TabCategoryComponent,
-    GracefulFloristDateTimePickerComponent,
+    GracefulFloristTimePickerComponent,
     ImageCardComponent,
     ImageCardHorizontalComponent,
     VndCurrencyPipe,

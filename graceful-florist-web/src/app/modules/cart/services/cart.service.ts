@@ -1,6 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Observable, delay, of} from 'rxjs';
-import {CartItemDto} from '../models/cart.dto';
+interface ProductDto {
+  id: string;
+  name: string;
+  price: number;
+  image_url: string;
+}
+
+export interface CartItemDto extends ProductDto {
+  quantity: number;
+}
 
 @Injectable({
   providedIn: 'root'
