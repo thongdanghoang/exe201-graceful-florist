@@ -1,0 +1,20 @@
+<div class="p-4 w-full h-full rounded-xl bg-white flex flex-col items-stretch">
+    <div class="flex justify-between items-center gap-1">
+        <div class="font-sans text-base font-semibold">{{ title }}</div>
+        @if (icon) {
+            <svg-icon [src]="icon"></svg-icon>
+        }
+    </div>
+    <div class="font-sans text-3xl font-bold">{{ value }}</div>
+    <div class="flex gap-1">
+        @if (changeIcon) {
+            <svg-icon [src]="changeIcon"></svg-icon>
+        }
+        <div class="font-sans text-base font-semibold" [ngClass]="changeColor">
+            {{ percentageChange }}%
+        </div>
+        <div class="font-sans text-base font-semibold">
+            {{ changeDescription }}
+        </div>
+    </div>
+</div>

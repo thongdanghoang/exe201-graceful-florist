@@ -43,6 +43,8 @@ import {TranslateModule} from '@ngx-translate/core';
 import {ErrorMessagesDirective} from './directives/error-messages.directive';
 import {TranslateParamsPipe} from './pipes/translate-params.pipe';
 import {MatErrorDirective} from './directives/mat-error.directive';
+import {SidebarComponent} from './components/sidebar/sidebar.component';
+import {NgApexchartsModule} from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -58,9 +60,11 @@ import {MatErrorDirective} from './directives/mat-error.directive';
     CounterComponent,
     ErrorMessagesDirective,
     TranslateParamsPipe,
-    MatErrorDirective
+    MatErrorDirective,
+    SidebarComponent
   ],
   imports: [
+    NgApexchartsModule,
     AsyncPipe,
     CommonModule,
     HttpClientModule,
@@ -98,6 +102,7 @@ import {MatErrorDirective} from './directives/mat-error.directive';
     MatBadgeModule
   ],
   exports: [
+    NgApexchartsModule,
     ErrorMessagesDirective,
     TranslateParamsPipe,
     MatErrorDirective,
@@ -111,6 +116,7 @@ import {MatErrorDirective} from './directives/mat-error.directive';
     CommentCardComponent,
     PaginatorLabelDirective,
     CounterComponent,
+    SidebarComponent,
     HttpClientModule,
     RouterModule,
     FormsModule,

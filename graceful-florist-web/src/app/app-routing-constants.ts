@@ -24,4 +24,7 @@ export class AppRoutingConstants {
 
   // dev module
   public static readonly DEV_PATH = 'dev';
+
+  // admin module
+  public static readonly ADMIN_PATH = 'admin';
 }

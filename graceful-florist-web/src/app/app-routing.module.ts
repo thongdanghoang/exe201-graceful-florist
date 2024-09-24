@@ -48,6 +48,11 @@ const routes: Routes = [
       import('./modules/auth/auth.module').then(m => m.AuthModule)
   },
   {
+    path: AppRoutingConstants.ADMIN_PATH,
+    loadChildren: () =>
+      import('./modules/admin/admin.module').then(m => m.AdminModule)
+  },
+  {
     // TODO: Add a 404 page instead homepage
     path: '**',
     component: HomepageComponent

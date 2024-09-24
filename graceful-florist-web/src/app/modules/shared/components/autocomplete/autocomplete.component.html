@@ -1,22 +1,22 @@
-<form class="example-form flex flex-row p-0.5">
-    <div class="flex justify-center items-center ml-6">
-        <input
-            id="search"
-            type="text"
-            placeholder="Search for a street"
-            [formControl]="control"
-            [matAutocomplete]="auto"
-            class="example-input"
-        />
-    </div>
+<form
+    class="border-2 border-primary rounded-3xl max-h-16 flex flex-row justify-between p-0.5"
+>
+    <input
+        class="outline-none font-sans text-base font-medium text-gray-500 ml-6 w-full"
+        id="search"
+        type="text"
+        placeholder="Search for a street"
+        [formControl]="control"
+        [matAutocomplete]="auto"
+    />
     <mat-autocomplete #auto="matAutocomplete">
         @for (street of filteredStreets | async; track street) {
             <mat-option [value]="street">{{ street }}</mat-option>
         }
     </mat-autocomplete>
     <button
+        class="!shadow-none !rounded-full"
         mat-mini-fab
-        class="!shadow-none"
         color="primary"
         aria-label="Example icon button with a cart icon"
     >
