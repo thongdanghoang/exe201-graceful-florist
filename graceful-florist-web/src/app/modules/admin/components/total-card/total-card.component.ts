@@ -11,4 +11,5 @@ export class TotalCardComponent {
   @Input() icon: string | undefined;
   @Input() percentageChange: number | undefined;
   @Input() changeDescription: string | undefined;
+  @Input() formatCurrency: boolean = false;
 }

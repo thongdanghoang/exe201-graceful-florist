@@ -23,6 +23,7 @@ export class SidebarComponent {
     {name: 'Authentication'},
     {name: 'Utility'}
   ];
+  selectedItem: MenuItem | null = null;
 
   constructor() {}
 
@@ -30,5 +31,9 @@ export class SidebarComponent {
     if (item.children) {
       item.expanded = !item.expanded;
     }
+  }
+
+  selectItem(item: MenuItem): void {
+    this.selectedItem = item;
   }
 }

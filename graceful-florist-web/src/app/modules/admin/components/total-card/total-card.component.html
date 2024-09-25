@@ -5,7 +5,13 @@
             <svg-icon [src]="icon"></svg-icon>
         }
     </div>
-    <div class="font-sans text-3xl font-bold">{{ value }}</div>
+    @if (formatCurrency && value) {
+        <div class="font-sans text-3xl font-bold">
+            {{ value | vndCurrency }}
+        </div>
+    } @else {
+        <div class="font-sans text-3xl font-bold">{{ value }}</div>
+    }
     <div class="flex gap-1">
         @if (percentageChange && percentageChange > 0) {
             <mat-icon class="text-emerald-500">trending_up</mat-icon>

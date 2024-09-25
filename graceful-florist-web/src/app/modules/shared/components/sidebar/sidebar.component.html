@@ -1,10 +1,22 @@
-<nav class="bg-white w-64 h-full flex flex-col gap-3 py-3">
+<nav class="bg-white w-64 h-full flex flex-col gap-2 py-3">
     <ng-container *ngFor="let item of menuItems">
-        <div class="px-4 py-2 cursor-pointer" (click)="toggleSubmenu(item)">
-            <div class="flex items-center justify-between">
-                <span class="text-slate-700 font-sans text-sm font-semibold">{{
-                    item.name
-                }}</span>
+        <div
+            class="px-4 cursor-pointer"
+            (click)="selectItem(item); toggleSubmenu(item)"
+        >
+            <div
+                class="flex items-center justify-between rounded-lg"
+                [ngClass]="{
+                    'bg-primary *:text-white': selectedItem === item,
+                    'hover:bg-primary *:hover:text-white':
+                        selectedItem !== item,
+                }"
+            >
+                <span
+                    class="text-slate-700 font-sans text-sm font-semibold px-6 py-3"
+                >
+                    {{ item.name }}
+                </span>
                 <mat-icon
                     *ngIf="item.children"
                     [ngClass]="{
