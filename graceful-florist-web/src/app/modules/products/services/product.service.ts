@@ -205,8 +205,10 @@ export class ProductService {
   // eslint-disable-next-line max-lines-per-function
   searchProducts(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _criteria: SearchCriteriaDto<ProductCriteriaDto>
+    criteria: SearchCriteriaDto<ProductCriteriaDto>
   ): Observable<SearchResultDto<ProductDto>> {
+    // eslint-disable-next-line no-console
+    console.debug(criteria);
     return of({
       results: [
         {

@@ -1,0 +1,67 @@
+<div class="mat-elevation-z8">
+    <table
+        mat-table
+        matSort
+        [dataSource]="searchResult.results"
+        (matSortChange)="onSortChange($event)"
+    >
+        <!-- Select Column -->
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox
+                    (change)="$event ? toggleAllRows() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                >
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox
+                    (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)"
+                >
+                </mat-checkbox>
+            </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by Name"
+            >
+                Name
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+
+        <!-- Price Column -->
+        <ng-container matColumnDef="price">
+            <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by Price"
+            >
+                Price
+            </th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.price | vndCurrency }}
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator
+        [length]="searchResult?.total"
+        [pageSize]="searchCriteria?.page?.limit"
+        (page)="onPageChange($event)"
+        [pageSizeOptions]="pageSizeOptions"
+        showFirstLastButtons
+    >
+    </mat-paginator>
+</div>
