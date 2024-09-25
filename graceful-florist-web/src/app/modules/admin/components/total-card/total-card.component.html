@@ -7,12 +7,17 @@
     </div>
     <div class="font-sans text-3xl font-bold">{{ value }}</div>
     <div class="flex gap-1">
-        @if (changeIcon) {
-            <svg-icon [src]="changeIcon"></svg-icon>
+        @if (percentageChange && percentageChange > 0) {
+            <mat-icon class="text-emerald-500">trending_up</mat-icon>
+            <div class="font-sans text-base font-semibold text-emerald-500">
+                {{ percentageChange }}%
+            </div>
+        } @else {
+            <div class="font-sans text-base font-semibold text-primary">
+                {{ percentageChange }}%
+            </div>
+            <mat-icon class="text-primary">trending_down</mat-icon>
         }
-        <div class="font-sans text-base font-semibold" [ngClass]="changeColor">
-            {{ percentageChange }}%
-        </div>
         <div class="font-sans text-base font-semibold">
             {{ changeDescription }}
         </div>
