@@ -4,12 +4,8 @@ import {ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
-import {CartItemDto} from '../../../cart/services/cart.service';
-
-export enum PaymentMethod {
-  COD = 'COD',
-  BANKING = 'BANKING'
-}
+import {CartItemDto} from '../../../cart/models/cart.dto';
+import {PaymentMethod} from '../../models/payment.dto';
 
 @Component({
   selector: 'graceful-florist-payment',

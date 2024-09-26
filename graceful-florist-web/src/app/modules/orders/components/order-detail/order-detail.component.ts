@@ -1,25 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
-
-export interface OrderDto {
-  id: string;
-  name: string;
-  phone: string;
-  address: string;
-  status: string;
-  total: number;
-  products: ProductDto[];
-}
-
-export interface ProductDto {
-  id: string;
-  name: string;
-  detail: string;
-  quantity: number;
-  price: number;
-  image_url: string;
-}
+import {OrderDto, OrderItemDto} from '../../models/order.dto';
 
 @Component({
   selector: 'graceful-florist-order-detail',
@@ -31,7 +13,7 @@ export class OrderDetailComponent
   implements OnInit
 {
   productDisplayedColumns: string[] = ['name', 'price', 'quantity'];
-  orderProducts: ProductDto[] = [];
+  orderItems: OrderItemDto[] = [];
   protected orderDto!: OrderDto;
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super();
@@ -39,7 +21,7 @@ export class OrderDetailComponent
   ngOnInit(): void {
     this.activatedRoute.data.subscribe((data: any): void => {
       this.orderDto = data.order;
-      this.orderProducts = this.orderDto.products;
+      this.orderItems = this.orderDto.products;
     });
   }
 }

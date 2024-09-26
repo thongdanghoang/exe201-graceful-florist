@@ -1,8 +1,5 @@
 import {Injectable} from '@angular/core';
-import {
-  OrderDto,
-  ProductDto
-} from '../components/order-detail/order-detail.component';
+import {OrderDto, OrderItemDto} from '../models/order.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +19,7 @@ export class OrdersService {
     };
   }
 
-  private getMockProducts(): ProductDto[] {
+  private getMockProducts(): OrderItemDto[] {
     return [
       {
         id: '2024020827709_134533_1',
@@ -31,7 +28,7 @@ export class OrdersService {
         detail: '33 Cánh Hoa Hồng',
         price: 600000,
         image_url: 'assets/flower-rose.png'
-      } as ProductDto,
+      } as OrderItemDto,
       {
         id: '2024020827709_134533_2',
         name: 'Vũ Điệu Tình Yêu',
@@ -39,7 +36,7 @@ export class OrdersService {
         detail: '22 bông hồng trắng',
         price: 1000000,
         image_url: 'assets/flower-love.png'
-      } as ProductDto,
+      } as OrderItemDto,
       {
         id: '2024020827709_134533_3',
         name: 'Nụ hôn Biển Cả ',
@@ -47,7 +44,7 @@ export class OrdersService {
         detail: '33 bông hồng xanh băng',
         price: 300000,
         image_url: 'assets/flower-ocean.png'
-      } as ProductDto
+      } as OrderItemDto
     ];
   }
 }

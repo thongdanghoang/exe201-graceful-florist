@@ -3,7 +3,8 @@ import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.c
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {Router} from '@angular/router';
-import {CartItemDto, CartService} from '../../services/cart.service';
+import {CartService} from '../../services/cart.service';
+import {CartItemDto} from '../../models/cart.dto';
 
 @Component({
   selector: 'graceful-florist-cart',

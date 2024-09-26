@@ -4,7 +4,7 @@ export interface ProductDto {
   id: string;
   name: string;
   price: number;
-  image_url: string;
+  image_url?: string;
   category?: string;
   createdDate?: Date;
   status?: ProductStatus;
