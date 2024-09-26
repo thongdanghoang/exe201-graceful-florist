@@ -1,4 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import {MenuItem} from '../../../shared/components/sidebar/sidebar.component';
 import {MatTableDataSource} from '@angular/material/table';
 import {ProductService} from '../../../products/services/product.service';
@@ -47,7 +53,7 @@ enum AdminTab {
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
   menuItems: MenuItem[] = [
@@ -85,6 +91,15 @@ export class DashboardComponent implements OnInit {
   sort!: SortDto;
   criteria!: ProductCriteriaDto;
 
+  // Reference the header and cell templates
+  @ViewChild('nameHeader') nameHeader!: TemplateRef<any>;
+  @ViewChild('priceCell') priceCell!: TemplateRef<any>;
+  @ViewChild('priceHeader') priceHeader!: TemplateRef<any>;
+  @ViewChild('nameCell') nameCell!: TemplateRef<any>;
+
+  headerTemplates: {[key: string]: TemplateRef<any>} = {};
+  cellTemplates: {[key: string]: TemplateRef<any>} = {};
+
   protected readonly AdminTab = AdminTab;
 
   constructor(private readonly productService: ProductService) {}
@@ -101,6 +116,18 @@ export class DashboardComponent implements OnInit {
     };
     this.criteria = {
       criteria: {}
+    };
+  }
+
+  ngAfterViewInit(): void {
+    // Dynamically map templates to columns
+    this.headerTemplates = {
+      price: this.priceHeader,
+      name: this.nameHeader
+    };
+    this.cellTemplates = {
+      price: this.priceCell,
+      name: this.nameCell
     };
   }
 

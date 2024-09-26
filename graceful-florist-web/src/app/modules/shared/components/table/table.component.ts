@@ -3,6 +3,7 @@ import {
   Component,
   Input,
   OnInit,
+  TemplateRef,
   ViewChild
 } from '@angular/core';
 import {MatSort, MatSortable, Sort} from '@angular/material/sort';
@@ -26,9 +27,15 @@ export class TableComponent
 {
   @ViewChild(MatSort) matSort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  // Header and Cell Template Maps
+  @Input() headerTemplates: {[key: string]: TemplateRef<any>} = {};
+  @Input() cellTemplates: {[key: string]: TemplateRef<any>} = {};
+
   @Input() searchOnInit = true; // Will trigger search event on init component
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
   @Input({required: true}) sort!: SortDto; // Init sort
+
   displayedColumns: string[] = ['select', 'name', 'price'];
   selection: SelectionModel<ProductDto> = new SelectionModel<ProductDto>(
     true,
@@ -82,6 +89,15 @@ export class TableComponent
     }
   }
 
+  get dynamicDisplayedColumns(): string[] {
+    return this.displayedColumns.filter(column => column !== 'select');
+  }
+
+  // Fallback when no template is provided for a column
+  defaultHeaderTemplate(column: string): string {
+    return column.toUpperCase();
+  }
+
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected(): boolean {
     const numSelected: number = this.selection
@@ -105,7 +121,6 @@ export class TableComponent
       offset: 0,
       limit: this.systemPageSize
     };
-
     this.searchCriteria = {
       page: pageDto,
       criteria: this.criteria,
