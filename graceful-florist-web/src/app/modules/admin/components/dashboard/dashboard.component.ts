@@ -10,8 +10,10 @@ import {
 import {Observable} from 'rxjs';
 import {
   ProductCriteriaDto,
-  ProductDto
+  ProductDto,
+  ProductStatus
 } from '../../../products/models/product.dto';
+import {MatChipSelectionChange} from '@angular/material/chips';
 
 export interface PeriodicElement {
   name: string;
@@ -77,6 +79,7 @@ export class DashboardComponent implements OnInit {
     }
   ];
   selectedDateFilter: Date | undefined;
+  selectedProductStatusFilter: ProductStatus | undefined;
   selectedOption: string = '';
   selectedTab: string = AdminTab.PRODUCTS;
   dailyChartOptions: any;
@@ -110,6 +113,10 @@ export class DashboardComponent implements OnInit {
 
   onOptionChange(value: string): void {
     this.selectedOption = value;
+  }
+
+  onProductStatusFilterChanged(status: MatChipSelectionChange): void {
+    this.selectedProductStatusFilter = status.source.id as ProductStatus;
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -270,5 +277,9 @@ export class DashboardComponent implements OnInit {
       {length: 12},
       () => Math.floor(Math.random() * 50000) + 10000
     );
+  }
+
+  get productStatus(): ProductStatus[] {
+    return Object.values(ProductStatus);
   }
 }

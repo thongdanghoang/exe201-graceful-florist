@@ -138,8 +138,11 @@
             Ngày
             <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
         </button>
-        <mat-menu #date="matMenu">
-            <mat-radio-group (change)="onOptionChange($event.value)">
+        <mat-menu #date="matMenu" class="!min-w-96">
+            <mat-radio-group
+                (change)="onOptionChange($event.value)"
+                class="w-full flex justify-between px-4"
+            >
                 <mat-radio-button value="newest">Gần Nhất</mat-radio-button>
                 <mat-radio-button value="oldest">Cũ nhất</mat-radio-button>
                 <mat-radio-button
@@ -189,8 +192,22 @@
             <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
         </button>
         <mat-menu #status="matMenu">
-            <button mat-menu-item>Item 1</button>
-            <button mat-menu-item>Item 2</button>
+            <mat-chip-listbox class="mx-3">
+                @for (status of productStatus; track status) {
+                    <mat-chip-option
+                        class="!rounded-lg !border"
+                        [ngClass]="{
+                            '!bg-primary':
+                                status === selectedProductStatusFilter,
+                            '!bg-white !border-slate-700':
+                                status !== selectedProductStatusFilter,
+                        }"
+                        (selectionChange)="onProductStatusFilterChanged($event)"
+                        [id]="status"
+                        >{{ status | productStatus }}</mat-chip-option
+                    >
+                }
+            </mat-chip-listbox>
         </mat-menu>
         <button class="!rounded-lg !text-primary" mat-flat-button>
             Reset Filter
