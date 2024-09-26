@@ -76,6 +76,8 @@ export class DashboardComponent implements OnInit {
       name: 'Đăng xuất'
     }
   ];
+  selectedDateFilter: Date | undefined;
+  selectedOption: string = '';
   selectedTab: string = AdminTab.PRODUCTS;
   dailyChartOptions: any;
   monthlyChartOptions: any;
@@ -99,13 +101,15 @@ export class DashboardComponent implements OnInit {
       column: 'name',
       direction: 'asc'
     };
-    this.criteria = {
-      criteria: {}
-    };
+    this.criteria = {};
   }
 
   onTabChanged(tab: string): void {
     this.selectedTab = tab;
+  }
+
+  onOptionChange(value: string): void {
+    this.selectedOption = value;
   }
 
   // eslint-disable-next-line max-lines-per-function
