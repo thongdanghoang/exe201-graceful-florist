@@ -183,22 +183,18 @@
         [fetch]="fetchProduct"
         [sort]="sort"
         [criteria]="criteria"
-        [headerTemplates]="headerTemplates"
-        [cellTemplates]="cellTemplates"
+        [displayedColumns]="['select', 'name', 'price']"
     >
-        <!-- Header Template for ID column -->
-        <ng-template #nameHeader let-column> Name </ng-template>
-
-        <ng-template #nameCell let-name>
-            {{ name }}
+        <ng-template headerTableTemplate="name" let-column> Name </ng-template>
+        <ng-template cellTableTemplate="name" let-value>
+            {{ value }}
         </ng-template>
 
-        <!-- Header Template for Name column -->
-        <ng-template #priceHeader let-column> Price </ng-template>
-
-        <!-- Cell Template for Name column -->
-        <ng-template #priceCell let-price>
-            {{ price | vndCurrency }}
+        <ng-template headerTableTemplate="price" let-column>
+            Price
+        </ng-template>
+        <ng-template cellTableTemplate="price" let-value>
+            {{ value | vndCurrency }}
         </ng-template>
     </graceful-florist-table>
 </ng-template>

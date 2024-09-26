@@ -5,6 +5,14 @@ export interface ProductDto {
   name: string;
   price: number;
   image_url: string;
+  category?: string;
+  createdDate?: Date;
+  status?: ProductStatus;
+}
+
+export enum ProductStatus {
+  SELLING = 'SELLING',
+  NOT_SELLING = 'NOT_SELLING'
 }
 
 export interface ProductDetailDto extends ProductDto {
