@@ -46,6 +46,8 @@ import {MatErrorDirective} from './directives/mat-error.directive';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {NgApexchartsModule} from 'ng-apexcharts';
 import {TableComponent} from './components/table/table.component';
+import {CellTableTemplateDirective} from './components/table/cell-table-template.directive';
+import {HeaderTableTemplateDirective} from './components/table/header-table-template.directive';
 
 const matModules = [
   MatTableModule,
@@ -75,7 +77,7 @@ const matModules = [
   MatMenuModule,
   MatBadgeModule
 ];
-const declarations = [
+const sharedModules = [
   TabCategoryComponent,
   AutocompleteComponent,
   GracefulFloristTimePickerComponent,
@@ -90,11 +92,13 @@ const declarations = [
   TranslateParamsPipe,
   MatErrorDirective,
   SidebarComponent,
-  TableComponent
+  TableComponent,
+  CellTableTemplateDirective,
+  HeaderTableTemplateDirective
 ];
 
 @NgModule({
-  declarations,
+  declarations: sharedModules,
   imports: [
     CommonModule,
     TranslateModule.forChild(),
@@ -110,7 +114,7 @@ const declarations = [
   ],
   exports: [
     ...matModules,
-    ...declarations,
+    ...sharedModules,
     AsyncPipe,
     NgOptimizedImage,
     NgApexchartsModule,

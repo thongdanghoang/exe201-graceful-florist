@@ -7,7 +7,7 @@
     >
         <!-- Select Column -->
         <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
                 <mat-checkbox
                     (change)="$event ? toggleAllRows() : null"
                     [checked]="selection.hasValue() && isAllSelected()"
@@ -33,11 +33,11 @@
             <!-- Header Template -->
             <th mat-header-cell *matHeaderCellDef mat-sort-header>
                 <ng-container
-                    *ngIf="headerTemplates[column]; else defaultHeader"
+                    *ngIf="headerTemplateMap[column]; else defaultHeader"
                 >
                     <ng-container
                         *ngTemplateOutlet="
-                            headerTemplates[column];
+                            headerTemplateMap[column];
                             context: { $implicit: column }
                         "
                     ></ng-container>
@@ -49,10 +49,10 @@
 
             <!-- Cell Template -->
             <td mat-cell *matCellDef="let element">
-                <ng-container *ngIf="cellTemplates[column]; else defaultCell">
+                <ng-container *ngIf="cellTemplateMap[column]; else defaultCell">
                     <ng-container
                         *ngTemplateOutlet="
-                            cellTemplates[column];
+                            cellTemplateMap[column];
                             context: {
                                 $implicit: element[column],
                                 element: element,

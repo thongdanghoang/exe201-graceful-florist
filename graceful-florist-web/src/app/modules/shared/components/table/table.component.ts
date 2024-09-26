@@ -1,8 +1,11 @@
 import {
+  AfterContentInit,
   AfterViewInit,
   Component,
+  ContentChildren,
   Input,
   OnInit,
+  QueryList,
   TemplateRef,
   ViewChild
 } from '@angular/core';
@@ -15,6 +18,8 @@ import {
   ProductCriteriaDto,
   ProductDto
 } from '../../../products/models/product.dto';
+import {CellTableTemplateDirective} from './cell-table-template.directive';
+import {HeaderTableTemplateDirective} from './header-table-template.directive';
 
 @Component({
   selector: 'graceful-florist-table',
@@ -23,20 +28,24 @@ import {
 })
 export class TableComponent
   extends AbstractSearchComponent<ProductCriteriaDto, ProductDto>
-  implements OnInit, AfterViewInit
+  implements OnInit, AfterViewInit, AfterContentInit
 {
   @ViewChild(MatSort) matSort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  // Header and Cell Template Maps
-  @Input() headerTemplates: {[key: string]: TemplateRef<any>} = {};
-  @Input() cellTemplates: {[key: string]: TemplateRef<any>} = {};
+  @ContentChildren(HeaderTableTemplateDirective)
+  headerTemplates!: QueryList<HeaderTableTemplateDirective>;
+  @ContentChildren(CellTableTemplateDirective)
+  cellTemplates!: QueryList<CellTableTemplateDirective>;
 
-  @Input() searchOnInit = true; // Will trigger search event on init component
+  headerTemplateMap: {[key: string]: TemplateRef<any>} = {};
+  cellTemplateMap: {[key: string]: TemplateRef<any>} = {};
+
+  @Input() searchOnInit = true;
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
+  @Input({required: true}) displayedColumns!: string[];
   @Input({required: true}) sort!: SortDto; // Init sort
 
-  displayedColumns: string[] = ['select', 'name', 'price'];
   selection: SelectionModel<ProductDto> = new SelectionModel<ProductDto>(
     true,
     []
@@ -68,6 +77,31 @@ export class TableComponent
     }
   }
 
+  ngAfterContentInit(): void {
+    // Map header templates based on the column
+    this.headerTemplates.forEach(
+      (headerTemplate: HeaderTableTemplateDirective): void => {
+        const column: string = headerTemplate.column;
+        if (this.displayedColumns.includes(column)) {
+          this.headerTemplateMap[column] = headerTemplate.templateRef;
+        }
+      }
+    );
+    // Map cell templates based on the column
+    this.cellTemplates.forEach(
+      (cellTemplate: CellTableTemplateDirective): void => {
+        const column: string = cellTemplate.column;
+        if (this.displayedColumns.includes(column)) {
+          this.cellTemplateMap[column] = cellTemplate.templateRef;
+        }
+      }
+    );
+  }
+
+  defaultHeaderTemplate(column: string): string {
+    return column.toUpperCase();
+  }
+
   onPageChange(pageEvent: PageEvent): void {
     this.searchCriteria.page.limit = pageEvent.pageSize;
     this.searchCriteria.page.offset =
@@ -91,11 +125,6 @@ export class TableComponent
 
   get dynamicDisplayedColumns(): string[] {
     return this.displayedColumns.filter(column => column !== 'select');
-  }
-
-  // Fallback when no template is provided for a column
-  defaultHeaderTemplate(column: string): string {
-    return column.toUpperCase();
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
