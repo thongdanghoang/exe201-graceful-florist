@@ -16,5 +16,5 @@ export interface OrderItemDto extends ProductDto {
   detail: string;
   quantity: number;
   price: number;
-  image_url: string;
+  imageUrl: string;
 }

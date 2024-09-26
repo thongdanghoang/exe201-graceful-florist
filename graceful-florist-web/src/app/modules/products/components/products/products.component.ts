@@ -5,7 +5,11 @@ import {
   SearchCriteriaDto,
   SearchResultDto
 } from '../../../shared/models/abstract-base-dto';
-import {ProductCriteriaDto, ProductDto} from '../../models/product.dto';
+import {
+  ProductCriteriaDto,
+  ProductDto,
+  ProductStatus
+} from '../../models/product.dto';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
@@ -59,7 +63,7 @@ export class ProductsComponent
         column: 'name',
         direction: 'asc'
       },
-      criteria: {} as ProductCriteriaDto
+      criteria: {status: ProductStatus.SELLING}
     };
   }
 

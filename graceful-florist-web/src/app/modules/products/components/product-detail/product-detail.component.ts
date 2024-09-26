@@ -63,7 +63,7 @@ export class ProductDetailComponent
         .getProductById(this.route.snapshot.paramMap.get('id') as string)
         .subscribe((productDto: ProductDetailDto): void => {
           this.productDto = productDto;
-          this.mainImage = productDto.image_url;
+          this.mainImage = productDto.imageUrl;
         }),
       this.productService
         .getProductComment(this.commentCriteria)

@@ -27,7 +27,7 @@ export class OrdersService {
         quantity: 1,
         detail: '33 Cánh Hoa Hồng',
         price: 600000,
-        image_url: 'assets/flower-rose.png'
+        imageUrl: 'assets/flower-rose.png'
       } as OrderItemDto,
       {
         id: '2024020827709_134533_2',
@@ -35,7 +35,7 @@ export class OrdersService {
         quantity: 1,
         detail: '22 bông hồng trắng',
         price: 1000000,
-        image_url: 'assets/flower-love.png'
+        imageUrl: 'assets/flower-love.png'
       } as OrderItemDto,
       {
         id: '2024020827709_134533_3',
@@ -43,7 +43,7 @@ export class OrdersService {
         quantity: 1,
         detail: '33 bông hồng xanh băng',
         price: 300000,
-        image_url: 'assets/flower-ocean.png'
+        imageUrl: 'assets/flower-ocean.png'
       } as OrderItemDto
     ];
   }

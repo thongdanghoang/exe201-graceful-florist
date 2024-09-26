@@ -48,6 +48,7 @@ import {NgApexchartsModule} from 'ng-apexcharts';
 import {TableComponent} from './components/table/table.component';
 import {CellTableTemplateDirective} from './components/table/cell-table-template.directive';
 import {HeaderTableTemplateDirective} from './components/table/header-table-template.directive';
+import {ProductStatusPipe} from './pipes/product-status.pipe';
 
 const matModules = [
   MatTableModule,
@@ -94,7 +95,8 @@ const sharedModules = [
   SidebarComponent,
   TableComponent,
   CellTableTemplateDirective,
-  HeaderTableTemplateDirective
+  HeaderTableTemplateDirective,
+  ProductStatusPipe
 ];
 
 @NgModule({

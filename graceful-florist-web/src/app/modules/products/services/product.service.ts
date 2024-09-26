@@ -4,13 +4,81 @@ import {
   CommentSearchCriteriaDto,
   ProductCriteriaDto,
   ProductDetailDto,
-  ProductDto
+  ProductDto,
+  ProductStatus
 } from '../models/product.dto';
 import {
   SearchCriteriaDto,
   SearchResultDto
 } from '../../shared/models/abstract-base-dto';
-import {Observable, delay, of} from 'rxjs';
+import {Observable, delay, map, of} from 'rxjs';
+
+const PRODUCT_MOCK_DATA: ProductDto[] = [
+  {
+    id: '519ec05c-f15f-4c23-bba6-80517d74d6f8',
+    name: 'Dịu Dàng Yêu Thương',
+    price: 900000,
+    imageUrl: 'assets/diu-dang-yeu-thuong.png',
+    createdDate: new Date(),
+    status: ProductStatus.SELLING
+  },
+  {
+    id: 'b57388b3-f292-416c-8a8a-3e87bbca319f',
+    name: 'Vẻ đẹp Vĩnh Cửu',
+    price: 260000,
+    imageUrl: 'assets/ve-dep-vinh-cuu.png',
+    createdDate: new Date(),
+    status: ProductStatus.SELLING
+  },
+  {
+    id: '9a30f6c2-13fc-4ef5-9df1-98311b8ff512',
+    name: 'Chung Thủy Vĩnh Viễn',
+    price: 350000,
+    imageUrl: 'assets/chung-thuy-vinh-vien.png',
+    createdDate: new Date(),
+    status: ProductStatus.SELLING
+  },
+  {
+    id: '217a1ae6-79e2-4bb8-abb4-d7c2fcd2f50f',
+    name: 'Nụ hôn Nồng Nàn',
+    price: 600000,
+    imageUrl: 'assets/nu-hon-nong-nan.png',
+    createdDate: new Date(),
+    status: ProductStatus.SELLING
+  },
+  {
+    id: 'f4f19141-dfb4-4e60-9bc0-ed6709d32689',
+    name: 'Lời Thì Thầm của Trái Tim',
+    price: 600000,
+    imageUrl: 'assets/loi-thi-tham-cua-trai-tim.png',
+    createdDate: new Date(),
+    status: ProductStatus.SELLING
+  },
+  {
+    id: 'c4de1603-1cb8-4dec-abab-44727f0dd1b8',
+    name: 'Hoa ly trắng',
+    price: 300000,
+    imageUrl: 'assets/hoa_ly_trang.jpg',
+    createdDate: new Date(),
+    status: ProductStatus.NOT_SELLING
+  },
+  {
+    id: 'e57ee88d-f949-410a-8125-aaa92099328a',
+    name: 'Hoa lan tím',
+    price: 400000,
+    imageUrl: 'assets/ve-dep-cua-bo-lan-tim.jpg',
+    createdDate: new Date(),
+    status: ProductStatus.NOT_SELLING
+  },
+  {
+    id: '55661625-cf55-4648-a874-290cbfc96fa0',
+    name: 'Hoa cúc vàng',
+    price: 150000,
+    imageUrl: 'assets/903_cuc-chum-vang-5.jpg',
+    createdDate: new Date(),
+    status: ProductStatus.NOT_SELLING
+  }
+];
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +92,7 @@ export class ProductService {
       id,
       name: 'Nụ hôn Nồng Nàn',
       price: 600000,
-      image_url: 'assets/202204241048398304.png',
+      imageUrl: 'assets/202204241048398304.png',
       detail: '33 Cánh Hoa Hồng',
       reviewCount: 593,
       purchaseCount: 40,
@@ -47,17 +115,17 @@ export class ProductService {
         {
           id: '',
           name: 'Hoa Hồng Đỏ',
-          image_url: 'assets/hoa-hong-do.png'
+          imageUrl: 'assets/hoa-hong-do.png'
         },
         {
           id: '',
           name: 'Lá Eucalyptus',
-          image_url: 'assets/Eucalyptus.png'
+          imageUrl: 'assets/Eucalyptus.png'
         },
         {
           id: '',
           name: 'Hoa Baby Trắng',
-          image_url: 'assets/hoa-baby-trang.png'
+          imageUrl: 'assets/hoa-baby-trang.png'
         }
       ],
       comments: {results: [], total: 0}
@@ -202,155 +270,29 @@ export class ProductService {
     }).pipe(delay(1000));
   }
 
-  // eslint-disable-next-line max-lines-per-function
   searchProducts(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     criteria: SearchCriteriaDto<ProductCriteriaDto>
   ): Observable<SearchResultDto<ProductDto>> {
     // eslint-disable-next-line no-console
     console.debug(criteria);
+    const products = PRODUCT_MOCK_DATA.filter(
+      (product: ProductDto): boolean =>
+        !criteria.criteria?.status ||
+        product.status === criteria.criteria.status
+    );
     return of({
-      results: [
-        {
-          id: '519ec05c-f15f-4c23-bba6-80517d74d6f8',
-          name: 'Dịu Dàng Yêu Thương',
-          price: 900000,
-          image_url: 'assets/diu-dang-yeu-thuong.png'
-        },
-        {
-          id: 'b57388b3-f292-416c-8a8a-3e87bbca319f',
-          name: 'Vẻ đẹp Vĩnh Cửu',
-          price: 260000,
-          image_url: 'assets/ve-dep-vinh-cuu.png'
-        },
-        {
-          id: '9a30f6c2-13fc-4ef5-9df1-98311b8ff512',
-          name: 'Chung Thủy Vĩnh Viễn',
-          price: 350000,
-          image_url: 'assets/chung-thuy-vinh-vien.png'
-        },
-        {
-          id: '217a1ae6-79e2-4bb8-abb4-d7c2fcd2f50f',
-          name: 'Nụ hôn Nồng Nàn',
-          price: 600000,
-          image_url: 'assets/nu-hon-nong-nan.png'
-        },
-        {
-          id: 'f4f19141-dfb4-4e60-9bc0-ed6709d32689',
-          name: 'Lời Thì Thầm của Trái Tim',
-          price: 600000,
-          image_url: 'assets/loi-thi-tham-cua-trai-tim.png'
-        },
-        {
-          id: '47219dcb-5b80-48d8-813d-151133612109',
-          name: 'Vũ Điệu Tình Yêu',
-          price: 800000,
-          image_url: 'assets/vu-dieu-tinh-yeu.png'
-        },
-        {
-          id: 'cd4fe003-1374-4db4-9d77-93a90e8b824e',
-          name: 'Dịu Dàng Yêu Thương',
-          price: 900000,
-          image_url: 'assets/diu-dang-yeu-thuong.png'
-        },
-        {
-          id: 'ff062730-af01-4e53-ac07-d38093778743',
-          name: 'Vẻ đẹp Vĩnh Cửu',
-          price: 260000,
-          image_url: 'assets/ve-dep-vinh-cuu.png'
-        },
-        {
-          id: 'd4c5aa6d-3f7b-41f9-9ea7-b42b246056d2',
-          name: 'Chung Thủy Vĩnh Viễn',
-          price: 350000,
-          image_url: 'assets/chung-thuy-vinh-vien.png'
-        },
-        {
-          id: '708d6cd6-b151-4fac-a38d-f767321c988a',
-          name: 'Nụ hôn Nồng Nàn',
-          price: 600000,
-          image_url: 'assets/nu-hon-nong-nan.png'
-        },
-        {
-          id: '490905c0-76a4-4a69-bc83-ac28f7469037',
-          name: 'Lời Thì Thầm của Trái Tim',
-          price: 600000,
-          image_url: 'assets/loi-thi-tham-cua-trai-tim.png'
-        },
-        {
-          id: 'd18cbfac-a999-4b91-9d86-1f24e4dee272',
-          name: 'Vũ Điệu Tình Yêu',
-          price: 800000,
-          image_url: 'assets/vu-dieu-tinh-yeu.png'
-        },
-        {
-          id: '43865ba4-74a3-4216-89ca-e0e8d1cb71c5',
-          name: 'Dịu Dàng Yêu Thương',
-          price: 900000,
-          image_url: 'assets/diu-dang-yeu-thuong.png'
-        },
-        {
-          id: 'f1a2c8a8-278b-4c69-86c3-bff6b8ac8c41',
-          name: 'Vẻ đẹp Vĩnh Cửu',
-          price: 260000,
-          image_url: 'assets/ve-dep-vinh-cuu.png'
-        },
-        {
-          id: 'ef0a45fa-2e91-4f57-9e3d-cf838408b9d0',
-          name: 'Chung Thủy Vĩnh Viễn',
-          price: 350000,
-          image_url: 'assets/chung-thuy-vinh-vien.png'
-        },
-        {
-          id: 'b8eb98f2-9d7c-4d7b-a93d-7145dc42fde9',
-          name: 'Nụ hôn Nồng Nàn',
-          price: 600000,
-          image_url: 'assets/nu-hon-nong-nan.png'
-        },
-        {
-          id: '28654c2c-dbdc-4792-9e9e-f1b59de1bdf4',
-          name: 'Lời Thì Thầm của Trái Tim',
-          price: 600000,
-          image_url: 'assets/loi-thi-tham-cua-trai-tim.png'
-        },
-        {
-          id: 'aad33395-9010-4f3c-8f23-05821d1b33d7',
-          name: 'Vũ Điệu Tình Yêu',
-          price: 800000,
-          image_url: 'assets/vu-dieu-tinh-yeu.png'
-        }
-      ],
-      total: 18
+      results: products,
+      total: products.length
     }).pipe(delay(1000));
   }
 
-  // eslint-disable-next-line max-lines-per-function
   getRecommendedProducts(): Observable<ProductDto[]> {
-    return of([
-      {
-        id: '519ec05c-f15f-4c23-bba6-80517d74d6f8',
-        name: 'Dịu Dàng Yêu Thương',
-        price: 900000,
-        image_url: 'assets/diu-dang-yeu-thuong.png'
-      },
-      {
-        id: 'b57388b3-f292-416c-8a8a-3e87bbca319f',
-        name: 'Vẻ đẹp Vĩnh Cửu',
-        price: 260000,
-        image_url: 'assets/ve-dep-vinh-cuu.png'
-      },
-      {
-        id: '9a30f6c2-13fc-4ef5-9df1-98311b8ff512',
-        name: 'Chung Thủy Vĩnh Viễn',
-        price: 350000,
-        image_url: 'assets/chung-thuy-vinh-vien.png'
-      },
-      {
-        id: '217a1ae6-79e2-4bb8-abb4-d7c2fcd2f50f',
-        name: 'Nụ hôn Nồng Nàn',
-        price: 600000,
-        image_url: 'assets/nu-hon-nong-nan.png'
-      }
-    ]).pipe(delay(1000));
+    return this.searchProducts({
+      sort: {column: 'createdDate', direction: 'desc'},
+      page: {offset: 0, limit: 5},
+      criteria: {status: ProductStatus.SELLING}
+    }).pipe(
+      map((result: SearchResultDto<ProductDto>): ProductDto[] => result.results)
+    );
   }
 }

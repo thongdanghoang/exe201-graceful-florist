@@ -4,7 +4,7 @@ export interface ProductDto {
   id: string;
   name: string;
   price: number;
-  image_url?: string;
+  imageUrl?: string;
   category?: string;
   createdDate?: Date;
   status?: ProductStatus;
@@ -28,7 +28,7 @@ export interface ProductDetailDto extends ProductDto {
 export interface IngredientDto {
   id: string;
   name: string;
-  image_url: string;
+  imageUrl: string;
 }
 
 export interface CommentDto {
@@ -51,4 +51,6 @@ export interface UserDto {
   avatar: string;
 }
 
-export interface ProductCriteriaDto {}
+export interface ProductCriteriaDto {
+  status?: ProductStatus;
+}
