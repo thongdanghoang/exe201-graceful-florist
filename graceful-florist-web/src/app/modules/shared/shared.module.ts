@@ -49,6 +49,8 @@ import {TableComponent} from './components/table/table.component';
 import {CellTableTemplateDirective} from './components/table/cell-table-template.directive';
 import {HeaderTableTemplateDirective} from './components/table/header-table-template.directive';
 import {ProductStatusPipe} from './pipes/product-status.pipe';
+import {ModalService} from './services/modal.service';
+import {ModalTemplateComponent} from './components/modal/modal-template.component';
 
 const matModules = [
   MatTableModule,
@@ -96,7 +98,8 @@ const sharedModules = [
   TableComponent,
   CellTableTemplateDirective,
   HeaderTableTemplateDirective,
-  ProductStatusPipe
+  ProductStatusPipe,
+  ModalTemplateComponent
 ];
 
 @NgModule({
@@ -125,6 +128,7 @@ const sharedModules = [
     FormsModule,
     ReactiveFormsModule,
     SvgIconComponent
-  ]
+  ],
+  providers: [ModalService]
 })
 export class SharedModule {}

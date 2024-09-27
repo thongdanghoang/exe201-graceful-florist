@@ -40,3 +40,15 @@ export interface AutoCompleteSearchDto<T> {
   value: T;
   searchText: string;
 }
+
+export interface BusinessErrorParam {
+  key: string;
+  value: string;
+}
+
+export interface BusinessErrorResponse {
+  correlationId: string;
+  field: string;
+  i18nKey: string;
+  args: BusinessErrorParam[];
+}
