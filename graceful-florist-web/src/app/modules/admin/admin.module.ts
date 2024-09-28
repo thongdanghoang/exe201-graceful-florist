@@ -9,6 +9,7 @@ import {ProductsManagementComponent} from './components/products-management/prod
 import {AdminComponent} from './admin.component';
 import {OrdersManagementComponent} from './components/orders-management/orders-management.component';
 import {CategoriesManagementComponent} from './components/categories-management/categories-management.component';
+import {AdminOrderDetailComponent} from './components/admin-order-detail/admin-order-detail.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {CategoriesManagementComponent} from './components/categories-management/
     ProductsManagementComponent,
     AdminComponent,
     OrdersManagementComponent,
-    CategoriesManagementComponent
+    CategoriesManagementComponent,
+    AdminOrderDetailComponent
   ],
   imports: [CommonModule, SharedModule, AdminRoutingModule]
 })

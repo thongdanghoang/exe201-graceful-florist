@@ -19,6 +19,9 @@ export interface OrderDto {
   type: OrderType;
   products: OrderItemDto[];
   total: number;
+  receivedDateTime: Date;
+  message: string;
+  note: string;
 }
 
 export interface OrderItemDto extends ProductDto {

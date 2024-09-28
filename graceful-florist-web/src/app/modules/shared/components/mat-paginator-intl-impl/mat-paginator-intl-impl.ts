@@ -3,7 +3,7 @@ import {MatPaginatorIntl} from '@angular/material/paginator';
 export function MatPaginatorIntlImpl(): MatPaginatorIntl {
   const paginatorIntl = new MatPaginatorIntl();
 
-  paginatorIntl.itemsPerPageLabel = 'Tổng số sản phẩm:';
+  paginatorIntl.itemsPerPageLabel = 'Tổng:';
   paginatorIntl.nextPageLabel = 'Trang tiếp';
   paginatorIntl.previousPageLabel = 'Trang trước';
   paginatorIntl.firstPageLabel = 'Trang đầu';

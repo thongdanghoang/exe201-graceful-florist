@@ -8,7 +8,7 @@ export class OrderStatusPipe implements PipeTransform {
   transform(value: OrderStatus, defaultValue: string = ''): string {
     switch (value) {
       case OrderStatus.PROCESSING:
-        return 'Đăng xử lý';
+        return 'Đang xử lý';
       default:
         return defaultValue;
     }

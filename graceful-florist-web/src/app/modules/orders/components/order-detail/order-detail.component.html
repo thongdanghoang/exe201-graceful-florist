@@ -79,7 +79,7 @@
                         <input
                             class="!outline-none w-full bg-gray-200 text-primary font-sans text-sm font-medium"
                             disabled
-                            value="{{ orderDto.status }}"
+                            value="{{ orderDto.status | orderStatus }}"
                         />
                     </div>
                 </div>

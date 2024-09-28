@@ -12,6 +12,16 @@ import {
 } from '../../shared/models/abstract-base-dto';
 import {Observable, delay, of} from 'rxjs';
 
+const MOCK_MESSAGE =
+  'Chúc Mai Anh luôn có những chuyến đi thú vị và khám phá được nhiều điều mới mẻ trên thế giới. Chúc bạn luôn có những trải nghiệm tuyệt vời và đáng nhớ trong mỗi hành trình.';
+
+const NOTE =
+  'Hoa tươi, nở đẹp, cánh hoa dày\n' +
+  'Cắt tỉa hoa theo kiểu dáng tự nhiên\n' +
+  'Buộc nơ màu đỏ cho cả 2 bó hoa\n' +
+  'Bó 1: "Chúc mừng sinh nhật mẹ yêu! Chúc mẹ luôn khỏe mạnh, hạnh phúc và tràn đầy niềm vui. - Từ con gái yêu."\n' +
+  'Bó 2: "Gửi đến người con gái tuyệt vời nhất của anh! Yêu em nhiều! - Từ người yêu của em."';
+
 const MOCK_ORDER_ITEMS: OrderItemDto[] = [
   {
     id: '2024020827709_134533_1',
@@ -49,7 +59,10 @@ const ORDER_MOCK_DATA: OrderDto[] = [
     type: OrderType.SPECIAL,
     createdDate: new Date(),
     total: 1600000,
-    products: MOCK_ORDER_ITEMS
+    receivedDateTime: new Date(),
+    products: MOCK_ORDER_ITEMS,
+    message: MOCK_MESSAGE,
+    note: NOTE
   },
   {
     id: '00002',
@@ -60,7 +73,10 @@ const ORDER_MOCK_DATA: OrderDto[] = [
     type: OrderType.NORMAL,
     createdDate: new Date(),
     total: 1600000,
-    products: MOCK_ORDER_ITEMS
+    receivedDateTime: new Date(),
+    products: MOCK_ORDER_ITEMS,
+    message: MOCK_MESSAGE,
+    note: NOTE
   },
   {
     id: '00003',
@@ -71,7 +87,10 @@ const ORDER_MOCK_DATA: OrderDto[] = [
     type: OrderType.NORMAL,
     createdDate: new Date(),
     total: 1600000,
-    products: MOCK_ORDER_ITEMS
+    receivedDateTime: new Date(),
+    products: MOCK_ORDER_ITEMS,
+    message: MOCK_MESSAGE,
+    note: NOTE
   },
   {
     id: '00004',
@@ -82,7 +101,10 @@ const ORDER_MOCK_DATA: OrderDto[] = [
     type: OrderType.SPECIAL,
     createdDate: new Date(),
     total: 1600000,
-    products: MOCK_ORDER_ITEMS
+    receivedDateTime: new Date(),
+    products: MOCK_ORDER_ITEMS,
+    message: MOCK_MESSAGE,
+    note: NOTE
   },
   {
     id: '00005',
@@ -93,7 +115,10 @@ const ORDER_MOCK_DATA: OrderDto[] = [
     type: OrderType.NORMAL,
     createdDate: new Date(),
     total: 1600000,
-    products: MOCK_ORDER_ITEMS
+    receivedDateTime: new Date(),
+    products: MOCK_ORDER_ITEMS,
+    message: MOCK_MESSAGE,
+    note: NOTE
   },
   {
     id: '00006',
@@ -104,7 +129,10 @@ const ORDER_MOCK_DATA: OrderDto[] = [
     type: OrderType.NORMAL,
     createdDate: new Date(),
     total: 1600000,
-    products: MOCK_ORDER_ITEMS
+    receivedDateTime: new Date(),
+    products: MOCK_ORDER_ITEMS,
+    message: MOCK_MESSAGE,
+    note: NOTE
   }
 ];
 
@@ -127,46 +155,20 @@ export class OrdersService {
     }).pipe(delay(1000));
   }
 
-  getOrderById(id: string): OrderDto {
-    return {
+  getOrderById(id: string): Observable<OrderDto> {
+    return of({
       id,
-      name: 'Trần Thanh Tân',
-      address: '...ận Bình Thạnh, TPHCM',
+      name: 'Sơn',
+      address: '23 Hoàng Hoa Thám, Phường 6, Bình Thạnh, Hồ Chí Minh',
       phone: '033...1630',
       status: OrderStatus.PROCESSING,
-      type: OrderType.SPECIAL,
+      type: OrderType.NORMAL,
       createdDate: new Date(),
       total: 1600000,
-      products: this.getMockProducts()
-    };
-  }
-
-  private getMockProducts(): OrderItemDto[] {
-    return [
-      {
-        id: '2024020827709_134533_1',
-        name: 'Nụ hôn Nồng Nàn',
-        quantity: 1,
-        detail: '33 Cánh Hoa Hồng',
-        price: 600000,
-        imageUrl: 'assets/flower-rose.png'
-      } as OrderItemDto,
-      {
-        id: '2024020827709_134533_2',
-        name: 'Vũ Điệu Tình Yêu',
-        quantity: 1,
-        detail: '22 bông hồng trắng',
-        price: 1000000,
-        imageUrl: 'assets/flower-love.png'
-      } as OrderItemDto,
-      {
-        id: '2024020827709_134533_3',
-        name: 'Nụ hôn Biển Cả ',
-        quantity: 1,
-        detail: '33 bông hồng xanh băng',
-        price: 300000,
-        imageUrl: 'assets/flower-ocean.png'
-      } as OrderItemDto
-    ];
+      receivedDateTime: new Date(),
+      products: MOCK_ORDER_ITEMS,
+      message: MOCK_MESSAGE,
+      note: NOTE
+    }).pipe(delay(1000));
   }
 }

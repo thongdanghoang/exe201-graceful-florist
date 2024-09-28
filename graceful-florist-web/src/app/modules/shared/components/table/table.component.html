@@ -7,7 +7,7 @@
     >
         <!-- Select Column -->
         <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <th mat-header-cell *matHeaderCellDef>
                 <mat-checkbox
                     (change)="$event ? toggleAllRows() : null"
                     [checked]="selection.hasValue() && isAllSelected()"
