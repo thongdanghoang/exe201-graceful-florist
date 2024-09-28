@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {MenuItem} from '../../../shared/components/sidebar/sidebar.component';
-import {AppRoutingConstants} from '../../../../app-routing-constants';
+import {MenuItem} from '../../shared/components/sidebar/sidebar.component';
+import {AppRoutingConstants} from '../../../app-routing-constants';
 import {Router} from '@angular/router';
 
 @Component({

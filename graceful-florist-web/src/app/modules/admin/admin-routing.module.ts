@@ -3,7 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {ProductsManagementComponent} from './components/products-management/products-management.component';
 import {AppRoutingConstants} from '../../app-routing-constants';
-import {AdminComponent} from './components/admin/admin.component';
+import {AdminComponent} from './components/admin.component';
 
 const routes: Routes = [
   {

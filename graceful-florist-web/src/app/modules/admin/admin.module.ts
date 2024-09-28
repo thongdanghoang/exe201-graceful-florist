@@ -5,8 +5,8 @@ import {AdminRoutingModule} from './admin-routing.module';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {TotalCardComponent} from './components/total-card/total-card.component';
 import {CreateProductModalComponent} from './components/create-product-modal/create-product-modal.component';
-import { ProductsManagementComponent } from './components/products-management/products-management.component';
-import { AdminComponent } from './components/admin/admin.component';
+import {ProductsManagementComponent} from './components/products-management/products-management.component';
+import {AdminComponent} from './components/admin.component';
 
 @NgModule({
   declarations: [
