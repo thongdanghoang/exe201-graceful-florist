@@ -1,10 +1,4 @@
-import {
-  Component,
-  Injector,
-  WritableSignal,
-  computed,
-  signal
-} from '@angular/core';
+import {Component, Injector} from '@angular/core';
 import {DialogOptions} from '../../../shared/services/modal.service';
 import {AbstractModalFormComponent} from '../../../shared/components/modal/abstract-modal-form.component';
 import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
@@ -39,13 +33,19 @@ export class CreateProductModalComponent extends AbstractModalFormComponent<Crea
   } = {
     name: this.formBuilder.control(null, [Validators.required]),
     description: this.formBuilder.control(null),
-    price: this.formBuilder.control(null, [Validators.required]),
+    price: this.formBuilder.control(null, [
+      Validators.required,
+      Validators.min(1000)
+    ]),
     categories: this.formBuilder.control(null, [Validators.required]),
-    image: this.formBuilder.control(null, [Validators.required]),
-    isSelling: this.formBuilder.control(false)
+    ingredients: this.formBuilder.control(null, [Validators.required]),
+    isSelling: this.formBuilder.control(false),
+    mainImage: this.formBuilder.control(null, [Validators.required]),
+    images: this.formBuilder.control(null)
   };
-
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  readonly allowAddCategory: boolean = false;
+  readonly allowAddIngredient: boolean = false;
   readonly allCategories: string[] = [
     'Hoa Khai Trương',
     'Hoa hồng',
@@ -53,21 +53,44 @@ export class CreateProductModalComponent extends AbstractModalFormComponent<Crea
     'Hoa lan',
     'Hoa cúc'
   ];
-  readonly filteredCategories = computed(() => {
-    const currentCategory = this.formGroup
-      .get('currentCategory')
-      ?.value.toLowerCase();
-    return currentCategory
-      ? this.allCategories.filter(fruit =>
-          fruit.toLowerCase().includes(currentCategory)
-        )
-      : this.allCategories.slice();
-  });
-
-  protected readonly ProductStatus = ProductStatus;
+  readonly allIngredients: string[] = [
+    'Hoa Khai Trương',
+    'Hoa hồng',
+    'Hoa ly',
+    'Hoa lan',
+    'Hoa cúc'
+  ];
 
   constructor(injector: Injector) {
     super(injector);
+  }
+
+  protected onMainImageUpload(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      // const file = input.files[0];
+      // TODO: Upload image to server
+      this.formGroup
+        .get('mainImage')
+        ?.setValue(
+          'https://bloomsland.com.au/cdn/shop/articles/rose-meaning_b9a1bd31-488e-4961-8268-d8d109bb2f33.jpg?v=1717506684'
+        );
+    }
+  }
+
+  protected onImageUpload(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      // const file = input.files[0];
+      // TODO: Upload image to server
+      const images = this.formGroup.get('images')?.value ?? [];
+      this.formGroup
+        .get('images')
+        ?.setValue([
+          ...images,
+          'https://cms.interiorcompany.com/wp-content/uploads/2024/01/lincoln-red-rose-bush-types.jpg'
+        ]);
+    }
   }
 
   protected get productStatusValue(): ProductStatus {
@@ -110,16 +133,22 @@ export class CreateProductModalComponent extends AbstractModalFormComponent<Crea
     return [];
   }
 
-  protected onAddCategory(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
+  protected get filteredCategories(): string[] {
+    const categories = this.formGroup.get('categories')?.value || [];
+    return this.allCategories.filter(
+      category => !categories.includes(category)
+    );
+  }
 
-    // Add our fruit
+  protected onAddCategory(event: MatChipInputEvent): void {
+    if (!this.allowAddCategory) {
+      return;
+    }
+    const value = (event.value || '').trim();
     if (value) {
       const categories = this.formGroup.get('categories')?.value || [];
       this.formGroup.get('categories')?.setValue([...categories, value]);
     }
-
-    // Clear the input value
     event.chipInput.clear();
   }
 
@@ -138,6 +167,42 @@ export class CreateProductModalComponent extends AbstractModalFormComponent<Crea
     if (index >= 0) {
       categories.splice(index, 1);
       this.formGroup.get('categories')?.setValue(categories);
+    }
+  }
+
+  protected get filteredIngredients(): string[] {
+    const ingredients = this.formGroup.get('ingredients')?.value || [];
+    return this.allIngredients.filter(
+      ingredient => !ingredients.includes(ingredient)
+    );
+  }
+
+  protected onAddIngredient(event: MatChipInputEvent): void {
+    if (!this.allowAddIngredient) {
+      return;
+    }
+    const value = (event.value || '').trim();
+    if (value) {
+      const ingredients = this.formGroup.get('ingredients')?.value || [];
+      this.formGroup.get('ingredients')?.setValue([...ingredients, value]);
+    }
+    event.chipInput.clear();
+  }
+
+  protected onSelectedIngredient(event: MatAutocompleteSelectedEvent): void {
+    const ingredients = this.formGroup.get('ingredients')?.value || [];
+    this.formGroup
+      .get('ingredients')
+      ?.setValue([...ingredients, event.option.viewValue]);
+    event.option.deselect();
+  }
+
+  protected removeIngredient(ingredient: string): void {
+    const ingredients = this.formGroup.get('ingredients')?.value || [];
+    const index = ingredients.indexOf(ingredient);
+    if (index >= 0) {
+      ingredients.splice(index, 1);
+      this.formGroup.get('ingredients')?.setValue(ingredients);
     }
   }
 }

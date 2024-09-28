@@ -12,10 +12,13 @@
                 <div class="flex gap-6 overflow-x-scroll w-full">
                     <img
                         *ngFor="let image of productDto.images"
-                        [src]="image"
+                        [ngSrc]="image"
                         [alt]="productDto.name"
-                        class="object-cover max-w-28 max-h-28"
-                        (mouseenter)="changeMainImage(image)"
+                        class="object-cover"
+                        (click)="changeMainImage(image)"
+                        priority
+                        width="100"
+                        height="100"
                     />
                 </div>
             </div>

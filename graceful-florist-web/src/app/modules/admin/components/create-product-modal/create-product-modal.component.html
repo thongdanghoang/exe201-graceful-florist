@@ -2,8 +2,84 @@
     Thêm Mới Sản Phẩm
 </div>
 <mat-dialog-content>
-    <form [formGroup]="formGroup" class="flex flex-col gap-4 min-w-96">
+    <form [formGroup]="formGroup" class="flex flex-col gap-4 w-fit">
         <!-- Upload images -->
+        <div class="flex flex-col gap-2">
+            <ng-container *ngIf="!formGroup.get('mainImage')?.value">
+                <mat-error
+                    *ngIf="formGroup.get('mainImage')?.errors?.['required']"
+                    >Hình ảnh là bắt buộc</mat-error
+                >
+            </ng-container>
+            <ng-container
+                *ngIf="!formGroup.get('mainImage')?.value; else mainImage"
+            >
+                <div
+                    class="rounded-lg flex justify-center items-center border border-neutral-500 hover:border-primary hover:cursor-pointer *:hover:text-primary"
+                    style="width: 472px; height: 350px"
+                    (click)="fileInput.click()"
+                >
+                    <mat-icon class="">add_photo_alternate</mat-icon>
+                    <input
+                        #fileInput
+                        class="hidden"
+                        type="file"
+                        accept="image/*"
+                        (change)="onMainImageUpload($event)"
+                    />
+                </div>
+            </ng-container>
+            <ng-template #mainImage>
+                <img
+                    class="rounded-lg"
+                    alt="product image"
+                    [ngSrc]="formGroup.get('mainImage')?.value"
+                    priority
+                    width="472"
+                    height="350"
+                />
+            </ng-template>
+            <div class="flex gap-6 flex-wrap" style="max-width: 472px">
+                <ng-container
+                    *ngFor="let image of formGroup.get('images')?.value"
+                >
+                    <img
+                        class="rounded-lg"
+                        alt="product image"
+                        [ngSrc]="image"
+                        priority
+                        width="100"
+                        height="100"
+                    />
+                </ng-container>
+                <ng-container *ngIf="formGroup.get('mainImage')?.value">
+                    <div
+                        class="rounded-lg flex justify-center items-center border border-neutral-500 hover:border-primary hover:cursor-pointer *:hover:text-primary"
+                        style="width: 100px; height: 100px"
+                        (click)="imageUpload.click()"
+                    >
+                        <mat-icon class="">add_photo_alternate</mat-icon>
+                        <input
+                            #imageUpload
+                            class="hidden"
+                            type="file"
+                            accept="image/*"
+                            (change)="onImageUpload($event)"
+                        />
+                    </div>
+                </ng-container>
+                <ng-template #imageTemplate let-image>
+                    <img
+                        class="rounded-lg"
+                        alt="product image"
+                        [ngSrc]="image"
+                        priority
+                        width="100"
+                        height=""
+                    />
+                </ng-template>
+            </div>
+        </div>
         <!-- Tên sản phẩm -->
         <mat-form-field
             appearance="fill"
@@ -21,7 +97,7 @@
             gracefulFloristErrorMessage
         >
             <mat-label>Danh mục</mat-label>
-            <mat-chip-grid #reactiveChipGrid formControlName="categories">
+            <mat-chip-grid #categories formControlName="categories">
                 <mat-chip-row
                     *ngFor="let category of formGroup.get('categories')?.value"
                     (removed)="removeCategory(category)"
@@ -38,19 +114,19 @@
             <mat-error></mat-error>
             <input
                 placeholder="New Catergory..."
-                [matChipInputFor]="reactiveChipGrid"
+                [matChipInputFor]="categories"
                 (matChipInputTokenEnd)="onAddCategory($event)"
-                [matAutocomplete]="auto"
+                [matAutocomplete]="autoCategories"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
             />
             <mat-autocomplete
-                #auto="matAutocomplete"
+                #autoCategories="matAutocomplete"
                 (optionSelected)="onSelectedCategory($event)"
             >
                 <mat-option
-                    *ngFor="let fruit of filteredCategories()"
-                    [value]="fruit"
-                    >{{ fruit }}</mat-option
+                    *ngFor="let catergory of filteredCategories"
+                    [value]="catergory"
+                    >{{ catergory }}</mat-option
                 >
             </mat-autocomplete>
         </mat-form-field>
@@ -77,6 +153,47 @@
             ></textarea>
         </mat-form-field>
         <!-- Thành phần auto-complete multi-select -->
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Thành phần</mat-label>
+            <mat-chip-grid #ingredients formControlName="ingredients">
+                <mat-chip-row
+                    *ngFor="
+                        let ingredient of formGroup.get('ingredients')?.value
+                    "
+                    (removed)="removeIngredient(ingredient)"
+                >
+                    {{ ingredient }}
+                    <button
+                        matChipRemove
+                        [attr.aria-label]="'remove ' + ingredient"
+                    >
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+            </mat-chip-grid>
+            <mat-error></mat-error>
+            <input
+                placeholder="New Ingredient..."
+                [matChipInputFor]="ingredients"
+                (matChipInputTokenEnd)="onAddIngredient($event)"
+                [matAutocomplete]="autoIngredients"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            />
+            <mat-autocomplete
+                #autoIngredients="matAutocomplete"
+                (optionSelected)="onSelectedIngredient($event)"
+            >
+                <mat-option
+                    *ngFor="let ingredient of filteredIngredients"
+                    [value]="ingredient"
+                    >{{ ingredient }}</mat-option
+                >
+            </mat-autocomplete>
+        </mat-form-field>
         <!-- Trạng thái -->
         <div class="flex gap-2 items-center">
             <mat-label class="!font-sans">Trạng thái:</mat-label>
@@ -93,10 +210,10 @@
     <div class="flex justify-end w-full gap-4">
         <button mat-button (click)="close()">Hủy bỏ</button>
         <button
+            [disabled]="formGroup.invalid"
             mat-flat-button
             color="primary"
             (click)="submit()"
-            cdkFocusInitial
         >
             Thêm Mới
         </button>
