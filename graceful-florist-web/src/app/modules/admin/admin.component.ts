@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {MenuItem} from '../shared/components/sidebar/sidebar.component';
 import {AppRoutingConstants} from '../../app-routing-constants';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
 
 @Component({
   selector: 'graceful-florist-admin',
@@ -37,7 +37,16 @@ export class AdminComponent {
   ];
   selectedTab: string = AppRoutingConstants.DASHBOARD_PATH;
 
-  constructor(private readonly router: Router) {}
+  constructor(private readonly router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        const currentUrl = event.urlAfterRedirects.split('/').pop();
+        this.selectedTab =
+          this.menuItems.find(item => item.id === currentUrl)?.id ||
+          AppRoutingConstants.DASHBOARD_PATH;
+      }
+    });
+  }
 
   onTabChanged(tab: string): void {
     if (tab === AppRoutingConstants.LOGOUT) {
