@@ -1,8 +1,17 @@
-import {Component, Injector} from '@angular/core';
+import {
+  Component,
+  Injector,
+  WritableSignal,
+  computed,
+  signal
+} from '@angular/core';
 import {DialogOptions} from '../../../shared/services/modal.service';
 import {AbstractModalFormComponent} from '../../../shared/components/modal/abstract-modal-form.component';
 import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
 import {ProductStatus} from '../../../products/models/product.dto';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 
 export interface BasicModalOptions extends DialogOptions<string> {
   title: string;
@@ -31,10 +40,29 @@ export class CreateProductModalComponent extends AbstractModalFormComponent<Crea
     name: this.formBuilder.control(null, [Validators.required]),
     description: this.formBuilder.control(null),
     price: this.formBuilder.control(null, [Validators.required]),
-    category: this.formBuilder.control(null, [Validators.required]),
+    categories: this.formBuilder.control(null, [Validators.required]),
     image: this.formBuilder.control(null, [Validators.required]),
     isSelling: this.formBuilder.control(false)
   };
+
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  readonly allCategories: string[] = [
+    'Hoa Khai Trương',
+    'Hoa hồng',
+    'Hoa ly',
+    'Hoa lan',
+    'Hoa cúc'
+  ];
+  readonly filteredCategories = computed(() => {
+    const currentCategory = this.formGroup
+      .get('currentCategory')
+      ?.value.toLowerCase();
+    return currentCategory
+      ? this.allCategories.filter(fruit =>
+          fruit.toLowerCase().includes(currentCategory)
+        )
+      : this.allCategories.slice();
+  });
 
   protected readonly ProductStatus = ProductStatus;
 
@@ -80,5 +108,36 @@ export class CreateProductModalComponent extends AbstractModalFormComponent<Crea
 
   protected override validateForm(): string[] {
     return [];
+  }
+
+  protected onAddCategory(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add our fruit
+    if (value) {
+      const categories = this.formGroup.get('categories')?.value || [];
+      this.formGroup.get('categories')?.setValue([...categories, value]);
+    }
+
+    // Clear the input value
+    event.chipInput.clear();
+  }
+
+  protected onSelectedCategory(event: MatAutocompleteSelectedEvent): void {
+    const categories = this.formGroup.get('categories')?.value || [];
+    this.formGroup
+      .get('categories')
+      ?.setValue([...categories, event.option.viewValue]);
+    event.option.deselect();
+  }
+
+  protected removeCategory(category: string): void {
+    const categories = this.formGroup.get('categories')?.value || [];
+    const index = categories.indexOf(category);
+
+    if (index >= 0) {
+      categories.splice(index, 1);
+      this.formGroup.get('categories')?.setValue(categories);
+    }
   }
 }

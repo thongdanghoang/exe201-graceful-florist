@@ -15,6 +15,45 @@
             <mat-error></mat-error>
         </mat-form-field>
         <!-- Danh mục auto-complete multi-select -->
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Danh mục</mat-label>
+            <mat-chip-grid #reactiveChipGrid formControlName="categories">
+                <mat-chip-row
+                    *ngFor="let category of formGroup.get('categories')?.value"
+                    (removed)="removeCategory(category)"
+                >
+                    {{ category }}
+                    <button
+                        matChipRemove
+                        [attr.aria-label]="'remove ' + category"
+                    >
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+            </mat-chip-grid>
+            <mat-error></mat-error>
+            <input
+                placeholder="New Catergory..."
+                [matChipInputFor]="reactiveChipGrid"
+                (matChipInputTokenEnd)="onAddCategory($event)"
+                [matAutocomplete]="auto"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            />
+            <mat-autocomplete
+                #auto="matAutocomplete"
+                (optionSelected)="onSelectedCategory($event)"
+            >
+                <mat-option
+                    *ngFor="let fruit of filteredCategories()"
+                    [value]="fruit"
+                    >{{ fruit }}</mat-option
+                >
+            </mat-autocomplete>
+        </mat-form-field>
         <!-- Giá tiền -->
         <mat-form-field
             appearance="fill"

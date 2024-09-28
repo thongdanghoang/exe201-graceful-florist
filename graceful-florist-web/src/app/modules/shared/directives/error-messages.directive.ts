@@ -10,6 +10,7 @@ import {FormGroupDirective, NgForm, ValidationErrors} from '@angular/forms';
 import {MatSelect} from '@angular/material/select';
 import {Observable, Subject, merge} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {MatChipGrid} from '@angular/material/chips';
 
 @Directive({
   selector: '[gracefulFloristErrorMessage]'
@@ -21,6 +22,9 @@ export class ErrorMessagesDirective implements AfterViewInit, OnDestroy {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   @ContentChild(MatSelect) matSelect;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  @ContentChild(MatChipGrid) matChipGrid;
   readonly errors$: Observable<ValidationErrors>;
   private readonly errors = new Subject<ValidationErrors>();
   private readonly form: NgForm | FormGroupDirective;
@@ -41,7 +45,10 @@ export class ErrorMessagesDirective implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    const ctrl = this.matInput?.ngControl || this.matSelect?.ngControl;
+    const ctrl =
+      this.matInput?.ngControl ||
+      this.matSelect?.ngControl ||
+      this.matChipGrid?.ngControl;
     if (ctrl) {
       this.errors.next(ctrl.errors); // because 1st statusChange occurs before ngAfterViewInit
       merge(this.form.ngSubmit, ctrl.statusChanges)
