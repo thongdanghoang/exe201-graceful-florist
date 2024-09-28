@@ -1,24 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {MenuItem} from '../../../shared/components/sidebar/sidebar.component';
 import {MatTableDataSource} from '@angular/material/table';
 import {ProductService} from '../../../products/services/product.service';
-import {
-  SearchCriteriaDto,
-  SearchResultDto,
-  SortDto
-} from '../../../shared/models/abstract-base-dto';
-import {Observable} from 'rxjs';
-import {
-  ProductCriteriaDto,
-  ProductDto,
-  ProductStatus
-} from '../../../products/models/product.dto';
-import {MatChipSelectionChange} from '@angular/material/chips';
 import {ModalService} from '../../../shared/services/modal.service';
-import {
-  BasicModalOptions,
-  CreateProductModalComponent
-} from '../create-product-modal/create-product-modal.component';
+import {Router} from '@angular/router';
 
 export interface PeriodicElement {
   name: string;
@@ -40,15 +24,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
   {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Đợi xử lý'}
 ];
 
-enum AdminTab {
-  DASHBOARD = 'dashboard',
-  PRODUCTS = 'product',
-  ORDERS = 'order',
-  CATEGORIES = 'category',
-  SETTINGS = 'setting',
-  LOGOUT = 'logout'
-}
-
 @Component({
   selector: 'graceful-florist-dashboard',
   templateUrl: './dashboard.component.html',
@@ -57,47 +32,12 @@ enum AdminTab {
 export class DashboardComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
-  menuItems: MenuItem[] = [
-    {
-      id: AdminTab.DASHBOARD,
-      name: 'Trang chủ'
-    },
-    {
-      id: AdminTab.PRODUCTS,
-      name: 'Sản phẩm'
-    },
-    {
-      id: AdminTab.ORDERS,
-      name: 'Đơn hàng'
-    },
-    {
-      id: AdminTab.CATEGORIES,
-      name: 'Phân loại'
-    },
-    {
-      id: AdminTab.SETTINGS,
-      name: 'Cài đặt'
-    },
-    {
-      id: AdminTab.LOGOUT,
-      name: 'Đăng xuất'
-    }
-  ];
-  selectedDateFilter: Date | undefined;
-  selectedProductStatusFilter: ProductStatus | undefined;
-  selectedOption: string = '';
-  selectedTab: string = AdminTab.PRODUCTS;
+
   dailyChartOptions: any;
   monthlyChartOptions: any;
-  fetchProduct!: (
-    criteria: SearchCriteriaDto<ProductCriteriaDto>
-  ) => Observable<SearchResultDto<ProductDto>>;
-  sort!: SortDto;
-  criteria!: ProductCriteriaDto;
-
-  protected readonly AdminTab = AdminTab;
 
   constructor(
+    private readonly router: Router,
     private readonly modalService: ModalService,
     private readonly productService: ProductService
   ) {}
@@ -105,33 +45,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.initDailyChartOptions();
     this.initMonthlyChartOptions();
-    this.fetchProduct = this.productService.searchProducts.bind(
-      this.productService
-    );
-    this.sort = {
-      column: 'name',
-      direction: 'asc'
-    };
-    this.criteria = {};
-  }
-
-  onTabChanged(tab: string): void {
-    this.selectedTab = tab;
-  }
-
-  onOptionChange(value: string): void {
-    this.selectedOption = value;
-  }
-
-  onProductStatusFilterChanged(status: MatChipSelectionChange): void {
-    this.selectedProductStatusFilter = status.source.id as ProductStatus;
-  }
-
-  onAddProductClicked(): void {
-    const options: BasicModalOptions = {
-      title: 'Thêm sản phẩm'
-    };
-    void this.modalService.open(CreateProductModalComponent, options);
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -292,9 +205,5 @@ export class DashboardComponent implements OnInit {
       {length: 12},
       () => Math.floor(Math.random() * 50000) + 10000
     );
-  }
-
-  get productStatus(): ProductStatus[] {
-    return Object.values(ProductStatus);
   }
 }

@@ -1,22 +1,4 @@
-<div class="flex min-h-screen">
-    <graceful-florist-sidebar
-        [defaultSelectedItemId]="selectedTab"
-        [menuItems]="menuItems"
-        (itemChanged)="onTabChanged($event)"
-    />
-    <div class="bg-gray-50 flex flex-col w-full p-8 gap-8">
-        <ng-container ngSwitch [ngSwitch]="selectedTab">
-            <ng-container *ngSwitchCase="AdminTab.DASHBOARD">
-                <ng-container *ngTemplateOutlet="dashboard"></ng-container>
-            </ng-container>
-            <ng-container *ngSwitchCase="AdminTab.PRODUCTS">
-                <ng-container *ngTemplateOutlet="products"></ng-container>
-            </ng-container>
-        </ng-container>
-    </div>
-</div>
-
-<ng-template #dashboard>
+<div class="flex flex-col p-8 gap-8">
     <div class="grid grid-cols-3 gap-8">
         <!--     Tổng đơn đặt hàng     -->
         <graceful-florist-total-card
@@ -73,10 +55,12 @@
             [legend]="monthlyChartOptions.legend"
         ></apx-chart>
     </div>
-    <!--   Đang Đợi Xử Lý   -->
+    <!--   Đơn hàng Đang Đợi Xử Lý   -->
     <div class="flex flex-col gap-3">
         <div class="flex justify-between items-center">
-            <h2 class="font-sans text-xl font-semibold mb-2">Đang Đợi Xử Lý</h2>
+            <h2 class="font-sans text-xl font-semibold mb-2">
+                Đơn Hàng Đang Đợi Xử Lý
+            </h2>
             <button mat-flat-button color="primary">Xem thêm</button>
         </div>
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -123,142 +107,4 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
     </div>
-</ng-template>
-
-<ng-template #products>
-    <div class="font-sans text-2xl font-bold">Sản phẩm</div>
-    <div class="flex gap-3 justify-start">
-        <!-- Ngày -->
-        <button
-            class="!rounded-lg"
-            mat-flat-button
-            [matMenuTriggerFor]="date"
-            aria-label="Ngày"
-        >
-            Ngày
-            <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
-        </button>
-        <mat-menu #date="matMenu" class="!min-w-96">
-            <mat-radio-group
-                (change)="onOptionChange($event.value)"
-                class="w-full flex justify-between px-4"
-            >
-                <mat-radio-button value="newest">Gần Nhất</mat-radio-button>
-                <mat-radio-button value="oldest">Cũ nhất</mat-radio-button>
-                <mat-radio-button
-                    value="optional"
-                    (click)="$event.stopPropagation()"
-                    >Tùy Chọn</mat-radio-button
-                >
-            </mat-radio-group>
-            <ng-container *ngIf="selectedOption === 'optional'">
-                <mat-card
-                    class="min-w-max !shadow-none"
-                    (click)="$event.stopPropagation()"
-                >
-                    <mat-calendar
-                        [(selected)]="selectedDateFilter"
-                    ></mat-calendar>
-                </mat-card>
-                <div class="min-w-max flex justify-center">
-                    <button class="mx-auto" mat-flat-button color="primary">
-                        Áp dụng
-                    </button>
-                </div>
-            </ng-container>
-        </mat-menu>
-        <!-- Danh mục -->
-        <button
-            class="!rounded-lg"
-            mat-flat-button
-            [matMenuTriggerFor]="category"
-            aria-label="Danh mục"
-        >
-            Danh mục
-            <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
-        </button>
-        <mat-menu #category="matMenu">
-            <button mat-menu-item>Item 1</button>
-            <button mat-menu-item>Item 2</button>
-        </mat-menu>
-        <!-- Trạng thái -->
-        <button
-            class="!rounded-lg"
-            mat-flat-button
-            [matMenuTriggerFor]="status"
-            aria-label="Trạng thái"
-        >
-            Trạng thái
-            <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
-        </button>
-        <mat-menu #status="matMenu">
-            <mat-chip-listbox class="mx-3">
-                @for (status of productStatus; track status) {
-                    <mat-chip-option
-                        class="!rounded-lg !border"
-                        [ngClass]="{
-                            '!bg-primary':
-                                status === selectedProductStatusFilter,
-                            '!bg-white !border-slate-700':
-                                status !== selectedProductStatusFilter,
-                        }"
-                        (selectionChange)="onProductStatusFilterChanged($event)"
-                        [id]="status"
-                        >{{ status | productStatus }}</mat-chip-option
-                    >
-                }
-            </mat-chip-listbox>
-        </mat-menu>
-        <button class="!rounded-lg !text-primary" mat-flat-button>
-            Reset Filter
-        </button>
-        <div class="ml-auto">
-            <button
-                class="!rounded-lg"
-                mat-flat-button
-                color="primary"
-                (click)="onAddProductClicked()"
-            >
-                + Thêm Mới Sản Phẩm
-            </button>
-        </div>
-    </div>
-    <graceful-florist-table
-        [fetch]="fetchProduct"
-        [sort]="sort"
-        [criteria]="criteria"
-        [displayedColumns]="[
-            'select',
-            'name',
-            'createdDate',
-            'status',
-            'price',
-        ]"
-    >
-        <ng-template headerTableTemplate="name" let-column>
-            Tên Sản Phẩm
-        </ng-template>
-        <ng-template cellTableTemplate="name" let-value>
-            {{ value }}
-        </ng-template>
-
-        <ng-template headerTableTemplate="createdDate" let-column>
-            Ngày thêm
-        </ng-template>
-        <ng-template cellTableTemplate="createdDate" let-value>
-            {{ value | date: "dd/MM/yyyy" }}
-        </ng-template>
-
-        <ng-template headerTableTemplate="status" let-column>
-            Trạng thái
-        </ng-template>
-        <ng-template cellTableTemplate="status" let-value>
-            {{ value | productStatus }}
-        </ng-template>
-
-        <ng-template headerTableTemplate="price" let-column> Giá </ng-template>
-        <ng-template cellTableTemplate="price" let-value>
-            {{ value | vndCurrency }}
-        </ng-template>
-    </graceful-florist-table>
-</ng-template>
+</div>
