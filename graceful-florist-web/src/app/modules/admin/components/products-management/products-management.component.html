@@ -1,6 +1,6 @@
 <div class="flex flex-col p-8 gap-8">
     <div class="font-sans text-2xl font-bold">Sản phẩm</div>
-    <div class="flex gap-3 justify-start">
+    <form [formGroup]="filterFormGroups" class="flex gap-3 justify-start">
         <!-- Ngày -->
         <button
             class="!rounded-lg"
@@ -8,12 +8,12 @@
             [matMenuTriggerFor]="date"
             aria-label="Ngày"
         >
-            Ngày
+            {{ dateTypeFilterLabel }}
             <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
         </button>
         <mat-menu #date="matMenu" class="!min-w-96">
             <mat-radio-group
-                (change)="onOptionChange($event.value)"
+                formControlName="dateType"
                 class="w-full flex justify-between px-4"
             >
                 <mat-radio-button value="newest">Gần Nhất</mat-radio-button>
@@ -24,7 +24,9 @@
                     >Tùy Chọn</mat-radio-button
                 >
             </mat-radio-group>
-            <ng-container *ngIf="selectedOption === 'optional'">
+            <ng-container
+                *ngIf="filterFormGroups.get('dateType')?.value === 'optional'"
+            >
                 <mat-card
                     class="min-w-max !shadow-none"
                     (click)="$event.stopPropagation()"
@@ -34,7 +36,12 @@
                     ></mat-calendar>
                 </mat-card>
                 <div class="min-w-max flex justify-center">
-                    <button class="mx-auto" mat-flat-button color="primary">
+                    <button
+                        class="mx-auto"
+                        mat-flat-button
+                        color="primary"
+                        (click)="onSelectedDateFilterChanged()"
+                    >
                         Áp dụng
                     </button>
                 </div>
@@ -61,28 +68,33 @@
             [matMenuTriggerFor]="status"
             aria-label="Trạng thái"
         >
-            Trạng thái
+            {{ statusFilterLabel | productStatus: "Trạng thái" }}
             <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
         </button>
         <mat-menu #status="matMenu">
-            <mat-chip-listbox class="mx-3">
+            <mat-chip-listbox class="mx-3" formControlName="status">
                 @for (status of productStatus; track status) {
                     <mat-chip-option
                         class="!rounded-lg !border"
                         [ngClass]="{
                             '!bg-primary':
-                                status === selectedProductStatusFilter,
+                                status ===
+                                this.filterFormGroups.get('status')?.value,
                             '!bg-white !border-slate-700':
-                                status !== selectedProductStatusFilter,
+                                status !==
+                                this.filterFormGroups.get('status')?.value,
                         }"
-                        (selectionChange)="onProductStatusFilterChanged($event)"
-                        [id]="status"
+                        [value]="status"
                         >{{ status | productStatus }}</mat-chip-option
                     >
                 }
             </mat-chip-listbox>
         </mat-menu>
-        <button class="!rounded-lg !text-primary" mat-flat-button>
+        <button
+            class="!rounded-lg !text-primary"
+            mat-flat-button
+            (click)="resetFilter()"
+        >
             Reset Filter
         </button>
         <div class="ml-auto">
@@ -95,7 +107,7 @@
                 + Thêm Mới Sản Phẩm
             </button>
         </div>
-    </div>
+    </form>
     <graceful-florist-table
         [fetch]="fetchProduct"
         [sort]="sort"

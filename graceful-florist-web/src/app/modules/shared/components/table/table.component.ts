@@ -39,10 +39,10 @@ export class TableComponent<C, R>
   headerTemplateMap: {[key: string]: TemplateRef<any>} = {};
   cellTemplateMap: {[key: string]: TemplateRef<any>} = {};
 
-  @Input() searchOnInit = true;
+  @Input() searchOnInit: boolean = true;
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
   @Input({required: true}) displayedColumns!: string[];
-  @Input({required: true}) sort!: SortDto; // Init sort
+  @Input({required: true}) sort!: SortDto;
   @Output() readonly rowClicked = new EventEmitter<R>();
 
   selection: SelectionModel<R> = new SelectionModel<R>(true, []);

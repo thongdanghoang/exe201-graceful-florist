@@ -18,6 +18,7 @@ import {
   SortDto
 } from '../../../shared/models/abstract-base-dto';
 import {Observable} from 'rxjs';
+import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'graceful-florist-products-management',
@@ -25,17 +26,27 @@ import {Observable} from 'rxjs';
   styleUrl: './products-management.component.css'
 })
 export class ProductsManagementComponent implements OnInit {
+  filterFormControls: {
+    [key: string]: AbstractControl<any, any>;
+  } = {
+    dateType: this.formBuilder.control(null),
+    optionalDate: this.formBuilder.control(null),
+    status: this.formBuilder.control(null),
+    categories: this.formBuilder.control(null)
+  };
+
+  filterFormGroups: FormGroup = this.formBuilder.group(this.filterFormControls);
+  selectedDateFilter: Date | undefined;
+
   fetchProduct!: (
     criteria: SearchCriteriaDto<ProductCriteriaDto>
   ) => Observable<SearchResultDto<ProductDto>>;
   sort!: SortDto;
   criteria!: ProductCriteriaDto;
 
-  selectedOption: string = '';
-  selectedDateFilter: Date | undefined;
-  selectedProductStatusFilter: ProductStatus | undefined;
   constructor(
     private readonly router: Router,
+    private readonly formBuilder: FormBuilder,
     private readonly modalService: ModalService,
     private readonly productService: ProductService
   ) {}
@@ -51,12 +62,12 @@ export class ProductsManagementComponent implements OnInit {
     this.criteria = {};
   }
 
-  onOptionChange(value: string): void {
-    this.selectedOption = value;
-  }
-
-  onProductStatusFilterChanged(status: MatChipSelectionChange): void {
-    this.selectedProductStatusFilter = status.source.id as ProductStatus;
+  onSelectedDateFilterChanged(): void {
+    if (this.selectedDateFilter) {
+      this.filterFormGroups
+        .get('optionalDate')
+        ?.setValue(this.selectedDateFilter);
+    }
   }
 
   onAddProductClicked(): void {
@@ -68,5 +79,33 @@ export class ProductsManagementComponent implements OnInit {
 
   get productStatus(): ProductStatus[] {
     return Object.values(ProductStatus);
+  }
+
+  get dateTypeFilterLabel(): string {
+    const dateType = this.filterFormGroups.get('dateType')?.value;
+    const optionalDate = this.filterFormGroups.get('optionalDate')?.value;
+
+    if (!dateType) {
+      return 'Ngày';
+    } else if (dateType === 'optional' && optionalDate) {
+      return optionalDate.toLocaleDateString('vi-VN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+    } else if (dateType === 'newest') {
+      return 'Gần Nhất';
+    } else if (dateType === 'oldest') {
+      return 'Cũ nhất';
+    }
+    return 'Ngày';
+  }
+
+  get statusFilterLabel(): ProductStatus {
+    return this.filterFormGroups.get('status')?.value;
+  }
+
+  resetFilter(): void {
+    this.filterFormGroups.reset();
   }
 }

@@ -141,7 +141,12 @@
             <mat-error></mat-error>
         </mat-form-field>
         <!-- Mô tả -->
-        <mat-form-field class="mx-auto h-44 w-full *:!bg-transparent">
+        <mat-form-field
+            class="mx-auto h-44 w-full *:!bg-transparent"
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
             <mat-label class="!font-sans">Mô tả</mat-label>
             <textarea
                 matInput
@@ -151,6 +156,7 @@
                 rows="5"
                 cols="50"
             ></textarea>
+            <mat-error></mat-error>
         </mat-form-field>
         <!-- Thành phần auto-complete multi-select -->
         <mat-form-field

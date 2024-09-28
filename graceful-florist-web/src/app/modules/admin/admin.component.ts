@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {MenuItem} from '../../shared/components/sidebar/sidebar.component';
-import {AppRoutingConstants} from '../../../app-routing-constants';
+import {MenuItem} from '../shared/components/sidebar/sidebar.component';
+import {AppRoutingConstants} from '../../app-routing-constants';
 import {Router} from '@angular/router';
 
 @Component({
@@ -40,6 +40,9 @@ export class AdminComponent {
   constructor(private readonly router: Router) {}
 
   onTabChanged(tab: string): void {
+    if (tab === AppRoutingConstants.LOGOUT) {
+      return;
+    }
     void this.router.navigate([`${AppRoutingConstants.ADMIN_PATH}/${tab}`]);
   }
 }

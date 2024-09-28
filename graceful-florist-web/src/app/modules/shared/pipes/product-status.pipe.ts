@@ -5,16 +5,14 @@ import {ProductStatus} from '../../products/models/product.dto';
   name: 'productStatus'
 })
 export class ProductStatusPipe implements PipeTransform {
-  private _args: unknown;
-  transform(value: ProductStatus, ...args: unknown[]): string {
-    this._args = args;
+  transform(value: ProductStatus, defaultValue: string = ''): string {
     switch (value) {
       case ProductStatus.SELLING:
         return 'Đang mở bán';
       case ProductStatus.NOT_SELLING:
         return 'Chưa bán';
       default:
-        return '';
+        return defaultValue;
     }
   }
 }
