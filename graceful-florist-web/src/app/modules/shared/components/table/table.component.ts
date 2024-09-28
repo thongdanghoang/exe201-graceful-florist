@@ -3,8 +3,10 @@ import {
   AfterViewInit,
   Component,
   ContentChildren,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   QueryList,
   TemplateRef,
   ViewChild
@@ -14,10 +16,6 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {SelectionModel} from '@angular/cdk/collections';
 import {AbstractSearchComponent} from '../abstract-search-component';
 import {SearchPageDto, SortDto} from '../../models/abstract-base-dto';
-import {
-  ProductCriteriaDto,
-  ProductDto
-} from '../../../products/models/product.dto';
 import {CellTableTemplateDirective} from './cell-table-template.directive';
 import {HeaderTableTemplateDirective} from './header-table-template.directive';
 
@@ -26,8 +24,8 @@ import {HeaderTableTemplateDirective} from './header-table-template.directive';
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })
-export class TableComponent
-  extends AbstractSearchComponent<ProductCriteriaDto, ProductDto>
+export class TableComponent<C, R>
+  extends AbstractSearchComponent<C, R>
   implements OnInit, AfterViewInit, AfterContentInit
 {
   @ViewChild(MatSort) matSort!: MatSort;
@@ -45,11 +43,9 @@ export class TableComponent
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
   @Input({required: true}) displayedColumns!: string[];
   @Input({required: true}) sort!: SortDto; // Init sort
+  @Output() readonly rowClicked = new EventEmitter<R>();
 
-  selection: SelectionModel<ProductDto> = new SelectionModel<ProductDto>(
-    true,
-    []
-  );
+  selection: SelectionModel<R> = new SelectionModel<R>(true, []);
 
   private readonly systemPageSize: number = 25;
 
