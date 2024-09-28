@@ -32,16 +32,12 @@
                     (click)="$event.stopPropagation()"
                 >
                     <mat-calendar
-                        [(selected)]="selectedDateFilter"
+                        [selected]="filterFormGroups.get('optionalDate')?.value"
+                        (selectedChange)="onSelectedDateFilterChanged($event)"
                     ></mat-calendar>
                 </mat-card>
                 <div class="min-w-max flex justify-center">
-                    <button
-                        class="mx-auto"
-                        mat-flat-button
-                        color="primary"
-                        (click)="onSelectedDateFilterChanged()"
-                    >
+                    <button class="mx-auto" mat-flat-button color="primary">
                         Áp dụng
                     </button>
                 </div>

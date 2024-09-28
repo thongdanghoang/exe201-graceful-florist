@@ -7,7 +7,6 @@ import {
   ProductDto,
   ProductStatus
 } from '../../../products/models/product.dto';
-import {MatChipSelectionChange} from '@angular/material/chips';
 import {
   BasicModalOptions,
   CreateProductModalComponent
@@ -62,12 +61,9 @@ export class ProductsManagementComponent implements OnInit {
     this.criteria = {};
   }
 
-  onSelectedDateFilterChanged(): void {
-    if (this.selectedDateFilter) {
-      this.filterFormGroups
-        .get('optionalDate')
-        ?.setValue(this.selectedDateFilter);
-    }
+  // It's seem mat-calendar is not work with reactive form
+  onSelectedDateFilterChanged(value: any): void {
+    this.filterFormGroups.get('optionalDate')?.setValue(value);
   }
 
   onAddProductClicked(): void {
