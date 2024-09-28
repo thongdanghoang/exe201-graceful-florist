@@ -1,28 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {MatTableDataSource} from '@angular/material/table';
 import {ProductService} from '../../../products/services/product.service';
 import {ModalService} from '../../../shared/services/modal.service';
 import {Router} from '@angular/router';
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'Đợi xử lý'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'Đợi xử lý'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Đợi xử lý'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Đợi xử lý'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'Đợi xử lý'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'Đợi xử lý'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'Đợi xử lý'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'Đợi xử lý'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'Đợi xử lý'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Đợi xử lý'}
-];
+import {
+  SearchCriteriaDto,
+  SearchResultDto,
+  SortDto
+} from '../../../shared/models/abstract-base-dto';
+import {OrderCriteriaDto, OrderDto} from '../../../orders/models/order.dto';
+import {Observable} from 'rxjs';
+import {AppRoutingConstants} from '../../../../app-routing-constants';
+import {OrdersService} from '../../../orders/services/orders.service';
 
 @Component({
   selector: 'graceful-florist-dashboard',
@@ -30,8 +18,11 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  fetchProduct!: (
+    criteria: SearchCriteriaDto<OrderCriteriaDto>
+  ) => Observable<SearchResultDto<OrderDto>>;
+  sort!: SortDto;
+  criteria!: OrderCriteriaDto;
 
   dailyChartOptions: any;
   monthlyChartOptions: any;
@@ -39,12 +30,21 @@ export class DashboardComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly modalService: ModalService,
-    private readonly productService: ProductService
+    private readonly productService: ProductService,
+    private readonly ordersService: OrdersService
   ) {}
 
   ngOnInit(): void {
     this.initDailyChartOptions();
     this.initMonthlyChartOptions();
+    this.fetchProduct = this.ordersService.searchProducts.bind(
+      this.ordersService
+    );
+    this.sort = {
+      column: 'name',
+      direction: 'asc'
+    };
+    this.criteria = {} as OrderCriteriaDto;
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -205,5 +205,17 @@ export class DashboardComponent implements OnInit {
       {length: 12},
       () => Math.floor(Math.random() * 50000) + 10000
     );
+  }
+
+  openAdminOrder(): void {
+    void this.router.navigate([
+      `${AppRoutingConstants.ADMIN_PATH}/${AppRoutingConstants.ORDERS_MANAGEMENT_PATH}`
+    ]);
+  }
+
+  openAdminOrderDetail(order: OrderDto): void {
+    void this.router.navigate([
+      `${AppRoutingConstants.ADMIN_PATH}/${AppRoutingConstants.ORDERS_MANAGEMENT_PATH}/${order.id}`
+    ]);
   }
 }

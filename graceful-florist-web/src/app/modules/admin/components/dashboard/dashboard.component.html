@@ -61,50 +61,65 @@
             <h2 class="font-sans text-xl font-semibold mb-2">
                 Đơn Hàng Đang Đợi Xử Lý
             </h2>
-            <button mat-flat-button color="primary">Xem thêm</button>
+            <button mat-flat-button color="primary" (click)="openAdminOrder()">
+                Xem thêm
+            </button>
         </div>
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-            <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
-
-            <!-- Position Column -->
-            <ng-container matColumnDef="position">
-                <th mat-header-cell *matHeaderCellDef>No.</th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.position }}
-                </td>
-            </ng-container>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.name }}
-                </td>
-            </ng-container>
-
-            <!-- Weight Column -->
-            <ng-container matColumnDef="weight">
-                <th mat-header-cell *matHeaderCellDef>Weight</th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.weight }}
-                </td>
-            </ng-container>
-
-            <!-- Symbol Column -->
-            <ng-container matColumnDef="symbol">
-                <th mat-header-cell *matHeaderCellDef>Symbol</th>
-                <td mat-cell *matCellDef="let element">
-                    <div
-                        class="text-center font-sans text-xs font-bold w-fit bg-violet-200 text-violet-800 rounded-lg py-2 px-8"
-                    >
-                        {{ element.symbol }}
-                    </div>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
     </div>
+    <graceful-florist-table
+        (rowClicked)="openAdminOrderDetail($event)"
+        [fetch]="fetchProduct"
+        [sort]="sort"
+        [criteria]="criteria"
+        [displayedColumns]="[
+            'id',
+            'name',
+            'address',
+            'createdDate',
+            'type',
+            'status',
+        ]"
+    >
+        <ng-template headerTableTemplate="id" let-column>
+            Mã đơn hàng
+        </ng-template>
+        <ng-template cellTableTemplate="id" let-value>
+            {{ value }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="name" let-column>
+            Tên khách hàng
+        </ng-template>
+        <ng-template cellTableTemplate="name" let-value>
+            {{ value }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="address" let-column>
+            Địa chỉ
+        </ng-template>
+        <ng-template cellTableTemplate="address" let-value>
+            {{ value }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="createdDate" let-column>
+            Ngày đặt
+        </ng-template>
+        <ng-template cellTableTemplate="createdDate" let-value>
+            {{ value | date: "dd/MM/yyyy" }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="type" let-column>
+            Loại đơn
+        </ng-template>
+        <ng-template cellTableTemplate="type" let-value>
+            {{ value | orderType }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="status" let-column>
+            Trạng thái
+        </ng-template>
+        <ng-template cellTableTemplate="status" let-value>
+            {{ value | orderStatus }}
+        </ng-template>
+    </graceful-florist-table>
 </div>

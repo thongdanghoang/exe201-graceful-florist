@@ -13,7 +13,6 @@ const routes: Routes = [
     path: '',
     component: AdminComponent,
     children: [
-      {path: '', component: DashboardComponent},
       {path: AppRoutingConstants.DASHBOARD_PATH, component: DashboardComponent},
       {
         path: AppRoutingConstants.PRODUCTS_MANAGEMENT_PATH,

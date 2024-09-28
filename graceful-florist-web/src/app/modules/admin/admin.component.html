@@ -1,6 +1,6 @@
 <div class="flex">
     <graceful-florist-sidebar
-        [defaultSelectedItemId]="selectedTab"
+        [tabChanged]="selectedTab"
         [menuItems]="menuItems"
         (itemChanged)="onTabChanged($event)"
     />

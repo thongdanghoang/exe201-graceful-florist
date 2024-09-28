@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 
 export interface MenuItem {
   id: string;
@@ -10,22 +11,28 @@ export interface MenuItem {
   selector: 'graceful-florist-sidebar',
   templateUrl: './sidebar.component.html'
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent
+  extends SubscriptionAwareComponent
+  implements OnInit
+{
   @Input() menuItems: MenuItem[] = [];
-  @Input() defaultSelectedItemId: string | null = null;
+  @Input({required: true}) tabChanged!: EventEmitter<string>;
   @Output() readonly itemChanged: EventEmitter<string> =
     new EventEmitter<string>();
   selectedItem: MenuItem | null = null;
 
-  constructor() {}
+  constructor() {
+    super();
+  }
 
   ngOnInit(): void {
-    if (this.defaultSelectedItemId) {
-      this.selectedItem =
-        this.menuItems.find(
-          (item: MenuItem): boolean => item.id === this.defaultSelectedItemId
-        ) || null;
-    }
+    this.registerSubscription(
+      this.tabChanged.subscribe((tab: string): void => {
+        this.selectedItem =
+          this.menuItems.find((item: MenuItem): boolean => item.id === tab) ||
+          null;
+      })
+    );
   }
 
   toggleSubmenu(item: MenuItem): void {

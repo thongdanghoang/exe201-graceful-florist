@@ -30,7 +30,7 @@ export class AppRoutingConstants {
   public static readonly DASHBOARD_PATH = 'dashboard';
   public static readonly PRODUCTS_MANAGEMENT_PATH = 'products';
   public static readonly ORDERS_MANAGEMENT_PATH = 'orders';
-  public static readonly CLASSIFICATIONS_PATH = 'classifications';
+  public static readonly CLASSIFICATIONS_PATH = 'categories';
   public static readonly SETTINGS_PATH = 'settings';
   public static readonly LOGOUT = 'logout';
 }

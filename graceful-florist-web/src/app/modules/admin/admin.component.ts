@@ -1,14 +1,18 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {MenuItem} from '../shared/components/sidebar/sidebar.component';
 import {AppRoutingConstants} from '../../app-routing-constants';
 import {NavigationEnd, Router} from '@angular/router';
+import {SubscriptionAwareComponent} from '../core/subscription-aware.component';
 
 @Component({
   selector: 'graceful-florist-admin',
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
-export class AdminComponent {
+export class AdminComponent
+  extends SubscriptionAwareComponent
+  implements OnInit
+{
   menuItems: MenuItem[] = [
     {
       id: AppRoutingConstants.DASHBOARD_PATH,
@@ -35,17 +39,25 @@ export class AdminComponent {
       name: 'Đăng xuất'
     }
   ];
-  selectedTab: string = AppRoutingConstants.DASHBOARD_PATH;
+  readonly selectedTab: EventEmitter<string> = new EventEmitter<string>(false);
 
   constructor(private readonly router: Router) {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        const currentUrl = event.urlAfterRedirects.split('/').pop();
-        this.selectedTab =
-          this.menuItems.find(item => item.id === currentUrl)?.id ||
-          AppRoutingConstants.DASHBOARD_PATH;
-      }
-    });
+    super();
+  }
+
+  ngOnInit(): void {
+    this.registerSubscription(
+      this.router.events.subscribe(event => {
+        if (event instanceof NavigationEnd) {
+          const urlSegments = event.urlAfterRedirects.split('/');
+          const currentId = urlSegments[2];
+          this.selectedTab.emit(
+            this.menuItems.find(item => item.id === currentId)?.id ||
+              AppRoutingConstants.DASHBOARD_PATH
+          );
+        }
+      })
+    );
   }
 
   onTabChanged(tab: string): void {
