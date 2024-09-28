@@ -1,1 +1,105 @@
-<p>categories-management works!</p>
+<div class="flex flex-col p-8 gap-8">
+    <div class="font-sans text-2xl font-bold">Phân Loại</div>
+    <form [formGroup]="filterFormGroups" class="flex gap-3 justify-start">
+        <!-- Tên -->
+        <button
+            class="!rounded-lg"
+            mat-flat-button
+            [matMenuTriggerFor]="name"
+            aria-label="Ngày"
+        >
+            Tên
+            <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #name="matMenu">
+            <button mat-menu-item>Item 1</button>
+            <button mat-menu-item>Item 2</button></mat-menu
+        >
+        <!-- Phân Loại -->
+        <button
+            class="!rounded-lg"
+            mat-flat-button
+            [matMenuTriggerFor]="categoryType"
+            aria-label="Danh mục"
+        >
+            {{ typeValue | categoryType: "Phân Loại" }}
+            <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #categoryType="matMenu">
+            <mat-chip-listbox class="mx-3" formControlName="type">
+                @for (type of categoriesType; track type) {
+                    <mat-chip-option
+                        class="!rounded-lg !border"
+                        [ngClass]="{
+                            '!bg-primary':
+                                type ===
+                                this.filterFormGroups.get('type')?.value,
+                            '!bg-white !border-slate-700':
+                                type !==
+                                this.filterFormGroups.get('type')?.value,
+                        }"
+                        [value]="type"
+                        >{{ type | categoryType }}</mat-chip-option
+                    >
+                }
+            </mat-chip-listbox>
+        </mat-menu>
+        <!-- Trạng thái -->
+        <button
+            class="!rounded-lg"
+            mat-flat-button
+            [matMenuTriggerFor]="status"
+            aria-label="Trạng thái"
+        >
+            Trạng thái
+            <mat-icon iconPositionEnd>arrow_drop_down> </mat-icon>
+        </button>
+        <mat-menu #status="matMenu">
+            <button mat-menu-item>Item 1</button>
+            <button mat-menu-item>Item 2</button>
+        </mat-menu>
+        <button
+            class="!rounded-lg !text-primary"
+            mat-flat-button
+            (click)="resetFilter()"
+        >
+            Reset Filter
+        </button>
+        <div class="ml-auto">
+            <button
+                class="!rounded-lg"
+                mat-flat-button
+                color="primary"
+                (click)="onAddCategoryClicked()"
+            >
+                + Thêm Danh Mục Mới
+            </button>
+        </div>
+    </form>
+    <graceful-florist-table
+        (rowClicked)="openCategoryDetailModal($event)"
+        [fetch]="fetchCategories"
+        [sort]="sort"
+        [criteria]="criteria"
+        [displayedColumns]="['name', 'type', 'enabled']"
+    >
+        <ng-template headerTableTemplate="name" let-column> Tên </ng-template>
+        <ng-template cellTableTemplate="name" let-value>
+            {{ value }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="type" let-column>
+            Phân Loại
+        </ng-template>
+        <ng-template cellTableTemplate="type" let-value>
+            {{ value | categoryType }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="enabled" let-column>
+            Trạng thái
+        </ng-template>
+        <ng-template cellTableTemplate="enabled" let-value>
+            {{ value ? "Đang hoạt động" : "Ngừng hoạt động" }}
+        </ng-template>
+    </graceful-florist-table>
+</div>

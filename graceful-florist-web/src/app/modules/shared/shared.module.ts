@@ -53,6 +53,7 @@ import {ModalService} from './services/modal.service';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {OrderStatusPipe} from './pipes/order-status.pipe';
 import {OrderTypePipe} from './pipes/order-type.pipe';
+import {CategoryTypePipe} from './pipes/category-type.pipe';
 
 const matModules = [
   MatTableModule,
@@ -103,7 +104,8 @@ const sharedModules = [
   HeaderTableTemplateDirective,
   ProductStatusPipe,
   OrderStatusPipe,
-  OrderTypePipe
+  OrderTypePipe,
+  CategoryTypePipe
 ];
 
 @NgModule({

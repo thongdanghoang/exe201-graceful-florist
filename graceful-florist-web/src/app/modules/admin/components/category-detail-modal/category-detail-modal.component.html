@@ -1,0 +1,53 @@
+<div class="text-2xl font-bold font-sans" mat-dialog-title>
+    {{ options.title }}
+</div>
+<mat-dialog-content>
+    <form [formGroup]="formGroup" class="flex flex-col gap-4 w-96">
+        <!-- Tên danh mục -->
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Tên danh mục</mat-label>
+            <input matInput formControlName="name" />
+            <mat-error></mat-error>
+        </mat-form-field>
+        <!-- Phân loại -->
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Phân loại</mat-label>
+            <mat-select formControlName="type">
+                <ng-container *ngFor="let type of categoriesType">
+                    <mat-option [value]="type">{{
+                        type | categoryType
+                    }}</mat-option>
+                </ng-container></mat-select
+            >
+            <mat-error></mat-error>
+        </mat-form-field>
+        <!-- Trạng thái -->
+        <mat-slide-toggle
+            formControlName="enabled"
+            labelPosition="before"
+            [checked]="formGroup.get('enabled')?.value"
+            >Trạng thái</mat-slide-toggle
+        >
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="flex justify-end w-full gap-4">
+        <button mat-button (click)="close()">Hủy bỏ</button>
+        <button
+            [disabled]="formGroup.invalid"
+            mat-flat-button
+            color="primary"
+            (click)="submit()"
+        >
+            {{ isEditMode ? "Cập Nhật" : "Thêm Mới" }}
+        </button>
+    </div>
+</mat-dialog-actions>

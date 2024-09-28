@@ -94,27 +94,11 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
     }
   }
 
-  protected get productStatusValue(): ProductStatus {
-    return this.formGroup.get('isSelling')?.value
-      ? ProductStatus.SELLING
-      : ProductStatus.NOT_SELLING;
-  }
-
   protected override initDefaultData(): ProductDetailDto {
     if (this.options.data?.data) {
       return this.options.data.data;
     }
     return {} as ProductDetailDto;
-  }
-
-  protected override initializeData(): void {
-    this.data = this.options?.data?.data;
-    if (!this.data) {
-      this.data = this.initDefaultData();
-    }
-    if (this.formGroup && this.data) {
-      this.formGroup.patchValue(this.data);
-    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -154,6 +138,12 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
     );
   }
 
+  protected get productStatusValue(): ProductStatus {
+    return this.formGroup.get('isSelling')?.value
+      ? ProductStatus.SELLING
+      : ProductStatus.NOT_SELLING;
+  }
+
   protected onAddCategory(event: MatChipInputEvent): void {
     if (!this.allowAddCategory) {
       return;
@@ -191,7 +181,7 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
     );
   }
 
-  protected get iEditMode(): boolean {
+  protected get isEditMode(): boolean {
     return !!this.options?.data?.data.id;
   }
 

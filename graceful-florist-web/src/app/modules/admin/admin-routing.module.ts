@@ -6,6 +6,7 @@ import {AppRoutingConstants} from '../../app-routing-constants';
 import {AdminComponent} from './admin.component';
 import {OrdersManagementComponent} from './components/orders-management/orders-management.component';
 import {AdminOrderDetailComponent} from './components/admin-order-detail/admin-order-detail.component';
+import {CategoriesManagementComponent} from './components/categories-management/categories-management.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path: `${AppRoutingConstants.ORDERS_MANAGEMENT_PATH}/:id`,
         component: AdminOrderDetailComponent
+      },
+      {
+        path: AppRoutingConstants.CLASSIFICATIONS_PATH,
+        component: CategoriesManagementComponent
       }
     ]
   }

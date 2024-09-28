@@ -1,5 +1,5 @@
 <div class="text-2xl font-bold font-sans" mat-dialog-title>
-    Thêm Mới Sản Phẩm
+    {{ options.title }}
 </div>
 <mat-dialog-content>
     <form [formGroup]="formGroup" class="flex flex-col gap-4 w-fit">
@@ -202,7 +202,7 @@
         </mat-form-field>
         <!-- Trạng thái -->
         <div class="flex gap-2 items-center">
-            <mat-label class="!font-sans">Trạng thái:</mat-label>
+            <mat-label class="!font-sans">Trạng thái</mat-label>
             <mat-slide-toggle
                 formControlName="isSelling"
                 [checked]="formGroup.get('isSelling')?.value"
@@ -221,7 +221,7 @@
             color="primary"
             (click)="submit()"
         >
-            {{ iEditMode ? "Cập Nhật" : "Thêm Mới" }}
+            {{ isEditMode ? "Cập Nhật" : "Thêm Mới" }}
         </button>
     </div>
 </mat-dialog-actions>
