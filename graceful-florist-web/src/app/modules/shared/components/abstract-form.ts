@@ -25,7 +25,7 @@ export abstract class AbstractFormComponent<T>
   /**
    * the root form group of the form.
    */
-  public formGroup: FormGroup | undefined;
+  public formGroup!: FormGroup;
 
   /**
    * The target entity which is bound to the form input controls
@@ -95,21 +95,21 @@ export abstract class AbstractFormComponent<T>
    */
   reset(): void {
     this.submitted = false;
-    this.formGroup?.reset();
+    this.formGroup.reset();
   }
 
   /**
    * dirty flag
    */
   isDirty(): boolean {
-    return this.formGroup?.dirty ?? false;
+    return this.formGroup.dirty ?? false;
   }
 
   /**
    * Reset state of formGroup back to pristine.
    */
   resetDirty(): void {
-    this.formGroup?.markAsPristine();
+    this.formGroup.markAsPristine();
   }
 
   /**
@@ -148,19 +148,17 @@ export abstract class AbstractFormComponent<T>
     // Only perform valid check when formGroup is defined.
     this.disableSubmitBtn();
     this.prepareDataBeforeSubmit();
-    if (this.formGroup) {
-      this.updateFormControlsState(this.formGroup, [
-        (ctr: AbstractControl): void => ctr.markAsTouched(),
-        (ctr: AbstractControl): void => ctr.markAsDirty(),
-        (ctr: AbstractControl): void => ctr.updateValueAndValidity()
-      ]);
-      this.formGroup.markAsTouched();
-      if (this.formGroup.invalid) {
-        this.enableSubmitBtn();
-        this.showValidationErrorNotification();
-        this.onSubmitFormRequestError({});
-        return;
-      }
+    this.updateFormControlsState(this.formGroup, [
+      (ctr: AbstractControl): void => ctr.markAsTouched(),
+      (ctr: AbstractControl): void => ctr.markAsDirty(),
+      (ctr: AbstractControl): void => ctr.updateValueAndValidity()
+    ]);
+    this.formGroup.markAsTouched();
+    if (this.formGroup.invalid) {
+      this.enableSubmitBtn();
+      this.showValidationErrorNotification();
+      this.onSubmitFormRequestError({});
+      return;
     }
 
     of(this.validateForm())
@@ -239,15 +237,13 @@ export abstract class AbstractFormComponent<T>
   }
 
   protected subscribeToFormChanges(): void {
-    if (this.formGroup) {
-      this.registerSubscription(
-        this.formGroup.valueChanges.subscribe((): void => {
-          if (this.isOnSubmissionFailed) {
-            this.enableSubmitBtn();
-          }
-        })
-      );
-    }
+    this.registerSubscription(
+      this.formGroup.valueChanges.subscribe((): void => {
+        if (this.isOnSubmissionFailed) {
+          this.enableSubmitBtn();
+        }
+      })
+    );
   }
 
   protected convertErrorParams(params: BusinessErrorParam[]): any {

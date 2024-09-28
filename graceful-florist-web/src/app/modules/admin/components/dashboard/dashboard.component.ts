@@ -14,6 +14,11 @@ import {
   ProductStatus
 } from '../../../products/models/product.dto';
 import {MatChipSelectionChange} from '@angular/material/chips';
+import {ModalService} from '../../../shared/services/modal.service';
+import {
+  BasicModalOptions,
+  CreateProductModalComponent
+} from '../create-product-modal/create-product-modal.component';
 
 export interface PeriodicElement {
   name: string;
@@ -92,7 +97,10 @@ export class DashboardComponent implements OnInit {
 
   protected readonly AdminTab = AdminTab;
 
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly modalService: ModalService,
+    private readonly productService: ProductService
+  ) {}
 
   ngOnInit(): void {
     this.initDailyChartOptions();
@@ -117,6 +125,13 @@ export class DashboardComponent implements OnInit {
 
   onProductStatusFilterChanged(status: MatChipSelectionChange): void {
     this.selectedProductStatusFilter = status.source.id as ProductStatus;
+  }
+
+  onAddProductClicked(): void {
+    const options: BasicModalOptions = {
+      title: 'Thêm sản phẩm'
+    };
+    void this.modalService.open(CreateProductModalComponent, options);
   }
 
   // eslint-disable-next-line max-lines-per-function

@@ -50,7 +50,7 @@ import {CellTableTemplateDirective} from './components/table/cell-table-template
 import {HeaderTableTemplateDirective} from './components/table/header-table-template.directive';
 import {ProductStatusPipe} from './pipes/product-status.pipe';
 import {ModalService} from './services/modal.service';
-import {ModalTemplateComponent} from './components/modal/modal-template.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 const matModules = [
   MatTableModule,
@@ -78,7 +78,8 @@ const matModules = [
   MatTabsModule,
   MatButtonToggleModule,
   MatMenuModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatSlideToggleModule
 ];
 const sharedModules = [
   TabCategoryComponent,
@@ -98,8 +99,7 @@ const sharedModules = [
   TableComponent,
   CellTableTemplateDirective,
   HeaderTableTemplateDirective,
-  ProductStatusPipe,
-  ModalTemplateComponent
+  ProductStatusPipe
 ];
 
 @NgModule({
