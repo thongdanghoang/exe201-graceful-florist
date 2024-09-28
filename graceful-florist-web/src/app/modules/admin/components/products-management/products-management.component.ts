@@ -4,13 +4,14 @@ import {ModalService} from '../../../shared/services/modal.service';
 import {ProductService} from '../../../products/services/product.service';
 import {
   ProductCriteriaDto,
+  ProductDetailDto,
   ProductDto,
   ProductStatus
 } from '../../../products/models/product.dto';
 import {
   BasicModalOptions,
-  CreateProductModalComponent
-} from '../create-product-modal/create-product-modal.component';
+  ProductDetailModalComponent
+} from '../product-detail-modal/product-detail-modal.component';
 import {
   SearchCriteriaDto,
   SearchResultDto,
@@ -70,7 +71,18 @@ export class ProductsManagementComponent implements OnInit {
     const options: BasicModalOptions = {
       title: 'Thêm sản phẩm'
     };
-    void this.modalService.open(CreateProductModalComponent, options);
+    void this.modalService.open(ProductDetailModalComponent, options);
+  }
+
+  openProductDetailModal(product: ProductDto): void {
+    // fetch product detail ?
+    const options: BasicModalOptions = {
+      title: 'Sửa sản phẩm',
+      data: {
+        data: product as ProductDetailDto
+      }
+    };
+    void this.modalService.open(ProductDetailModalComponent, options);
   }
 
   get productStatus(): ProductStatus[] {

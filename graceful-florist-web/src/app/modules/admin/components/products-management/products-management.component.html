@@ -105,6 +105,7 @@
         </div>
     </form>
     <graceful-florist-table
+        (rowClicked)="openProductDetailModal($event)"
         [fetch]="fetchProduct"
         [sort]="sort"
         [criteria]="criteria"

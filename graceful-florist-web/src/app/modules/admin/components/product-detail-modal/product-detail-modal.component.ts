@@ -1,13 +1,16 @@
 import {Component, Injector} from '@angular/core';
-import {DialogOptions} from '../../../shared/services/modal.service';
+import {FormDialogOptions} from '../../../shared/services/modal.service';
 import {AbstractModalFormComponent} from '../../../shared/components/modal/abstract-modal-form.component';
 import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
-import {ProductStatus} from '../../../products/models/product.dto';
+import {
+  ProductDetailDto,
+  ProductStatus
+} from '../../../products/models/product.dto';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 
-export interface BasicModalOptions extends DialogOptions<string> {
+export interface BasicModalOptions extends FormDialogOptions<ProductDetailDto> {
   title: string;
   body?: string;
   bodyTranslateParams?: any;
@@ -20,14 +23,12 @@ export interface BasicModalOptions extends DialogOptions<string> {
   multiLine?: boolean;
 }
 
-interface CreateProductDto {}
-
 @Component({
   selector: 'graceful-florist-create-product-modal',
-  templateUrl: './create-product-modal.component.html',
-  styleUrl: './create-product-modal.component.css'
+  templateUrl: './product-detail-modal.component.html',
+  styleUrl: './product-detail-modal.component.css'
 })
-export class CreateProductModalComponent extends AbstractModalFormComponent<CreateProductDto> {
+export class ProductDetailModalComponent extends AbstractModalFormComponent<ProductDetailDto> {
   createProductFormControls: {
     [key: string]: AbstractControl<any, any>;
   } = {
@@ -99,8 +100,21 @@ export class CreateProductModalComponent extends AbstractModalFormComponent<Crea
       : ProductStatus.NOT_SELLING;
   }
 
-  protected override initDefaultData(): CreateProductDto {
-    return {};
+  protected override initDefaultData(): ProductDetailDto {
+    if (this.options.data?.data) {
+      return this.options.data.data;
+    }
+    return {} as ProductDetailDto;
+  }
+
+  protected override initializeData(): void {
+    this.data = this.options?.data?.data;
+    if (!this.data) {
+      this.data = this.initDefaultData();
+    }
+    if (this.formGroup && this.data) {
+      this.formGroup.patchValue(this.data);
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -175,6 +189,10 @@ export class CreateProductModalComponent extends AbstractModalFormComponent<Crea
     return this.allIngredients.filter(
       ingredient => !ingredients.includes(ingredient)
     );
+  }
+
+  protected get iEditMode(): boolean {
+    return !!this.options?.data?.data.id;
   }
 
   protected onAddIngredient(event: MatChipInputEvent): void {
