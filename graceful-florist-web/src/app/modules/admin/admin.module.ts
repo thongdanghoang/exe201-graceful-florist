@@ -4,17 +4,21 @@ import {SharedModule} from '../shared/shared.module';
 import {AdminRoutingModule} from './admin-routing.module';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {TotalCardComponent} from './components/total-card/total-card.component';
-import {CreateProductModalComponent} from './components/create-product-modal/create-product-modal.component';
+import {ProductDetailModalComponent} from './components/product-detail-modal/product-detail-modal.component';
 import {ProductsManagementComponent} from './components/products-management/products-management.component';
-import {AdminComponent} from './components/admin.component';
+import {AdminComponent} from './admin.component';
+import {OrdersManagementComponent} from './components/orders-management/orders-management.component';
+import {CategoriesManagementComponent} from './components/categories-management/categories-management.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     TotalCardComponent,
-    CreateProductModalComponent,
+    ProductDetailModalComponent,
     ProductsManagementComponent,
-    AdminComponent
+    AdminComponent,
+    OrdersManagementComponent,
+    CategoriesManagementComponent
   ],
   imports: [CommonModule, SharedModule, AdminRoutingModule]
 })

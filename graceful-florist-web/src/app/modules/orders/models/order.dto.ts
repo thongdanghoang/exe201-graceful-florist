@@ -1,13 +1,24 @@
 import {ProductDto} from '../../products/models/product.dto';
 
+export enum OrderStatus {
+  PROCESSING = 'PROCESSING'
+}
+
+export enum OrderType {
+  NORMAL = 'NORMAL',
+  SPECIAL = 'SPECIAL'
+}
+
 export interface OrderDto {
   id: string;
   name: string;
   phone: string;
   address: string;
-  status: string;
-  total: number;
+  createdDate: Date;
+  status: OrderStatus;
+  type: OrderType;
   products: OrderItemDto[];
+  total: number;
 }
 
 export interface OrderItemDto extends ProductDto {
@@ -17,4 +28,8 @@ export interface OrderItemDto extends ProductDto {
   quantity: number;
   price: number;
   imageUrl: string;
+}
+
+export interface OrderCriteriaDto {
+  status: OrderStatus;
 }

@@ -51,6 +51,8 @@ import {HeaderTableTemplateDirective} from './components/table/header-table-temp
 import {ProductStatusPipe} from './pipes/product-status.pipe';
 import {ModalService} from './services/modal.service';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {OrderStatusPipe} from './pipes/order-status.pipe';
+import {OrderTypePipe} from './pipes/order-type.pipe';
 
 const matModules = [
   MatTableModule,
@@ -99,7 +101,9 @@ const sharedModules = [
   TableComponent,
   CellTableTemplateDirective,
   HeaderTableTemplateDirective,
-  ProductStatusPipe
+  ProductStatusPipe,
+  OrderStatusPipe,
+  OrderTypePipe
 ];
 
 @NgModule({

@@ -3,7 +3,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {ProductsManagementComponent} from './components/products-management/products-management.component';
 import {AppRoutingConstants} from '../../app-routing-constants';
-import {AdminComponent} from './components/admin.component';
+import {AdminComponent} from './admin.component';
+import {OrdersManagementComponent} from './components/orders-management/orders-management.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,10 @@ const routes: Routes = [
       {
         path: AppRoutingConstants.PRODUCTS_MANAGEMENT_PATH,
         component: ProductsManagementComponent
+      },
+      {
+        path: AppRoutingConstants.ORDERS_MANAGEMENT_PATH,
+        component: OrdersManagementComponent
       }
     ]
   }

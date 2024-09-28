@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
 import {ModalService} from '../../../shared/services/modal.service';
 import {ProductService} from '../../../products/services/product.service';
 import {
@@ -36,7 +35,6 @@ export class ProductsManagementComponent implements OnInit {
   };
 
   filterFormGroups: FormGroup = this.formBuilder.group(this.filterFormControls);
-  selectedDateFilter: Date | undefined;
 
   fetchProduct!: (
     criteria: SearchCriteriaDto<ProductCriteriaDto>
@@ -45,7 +43,6 @@ export class ProductsManagementComponent implements OnInit {
   criteria!: ProductCriteriaDto;
 
   constructor(
-    private readonly router: Router,
     private readonly formBuilder: FormBuilder,
     private readonly modalService: ModalService,
     private readonly productService: ProductService
