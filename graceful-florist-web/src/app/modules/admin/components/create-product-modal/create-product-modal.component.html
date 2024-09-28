@@ -1,0 +1,65 @@
+<div class="text-2xl font-bold font-sans" mat-dialog-title>
+    Thêm Mới Sản Phẩm
+</div>
+<mat-dialog-content>
+    <form [formGroup]="formGroup" class="flex flex-col gap-4 min-w-96">
+        <!-- Upload images -->
+        <!-- Tên sản phẩm -->
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Tên Sản Phẩm</mat-label>
+            <input matInput formControlName="name" />
+            <mat-error></mat-error>
+        </mat-form-field>
+        <!-- Danh mục auto-complete multi-select -->
+        <!-- Giá tiền -->
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Giá tiền</mat-label>
+            <input matInput formControlName="price" />
+            <mat-error></mat-error>
+        </mat-form-field>
+        <!-- Mô tả -->
+        <mat-form-field class="mx-auto h-44 w-full *:!bg-transparent">
+            <mat-label class="!font-sans">Mô tả</mat-label>
+            <textarea
+                matInput
+                class="!font-sans"
+                formControlName="description"
+                placeholder="Thêm lời nhắn vào thiệp"
+                rows="5"
+                cols="50"
+            ></textarea>
+        </mat-form-field>
+        <!-- Thành phần auto-complete multi-select -->
+        <!-- Trạng thái -->
+        <div class="flex gap-2 items-center">
+            <mat-label class="!font-sans">Trạng thái:</mat-label>
+            <mat-slide-toggle
+                formControlName="isSelling"
+                [checked]="formGroup.get('isSelling')?.value"
+            >
+                {{ productStatusValue | productStatus }}
+            </mat-slide-toggle>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="flex justify-end w-full gap-4">
+        <button mat-button (click)="close()">Hủy bỏ</button>
+        <button
+            mat-flat-button
+            color="primary"
+            (click)="submit()"
+            cdkFocusInitial
+        >
+            Thêm Mới
+        </button>
+    </div>
+</mat-dialog-actions>
