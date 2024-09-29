@@ -58,7 +58,11 @@ export class AuthorizeComponent
   ngOnInit(): void {
     this.currentTemplate = this.loginTemplate;
     if (this.userService.authenticated()) {
-      void this.router.navigate([AppRoutingConstants.HOME_PATH]);
+      if (this.userService.getUser()?.role === 'admin') {
+        void this.router.navigate([AppRoutingConstants.ADMIN_PATH]);
+      } else {
+        void this.router.navigate([AppRoutingConstants.HOME_PATH]);
+      }
     }
   }
 
@@ -68,7 +72,11 @@ export class AuthorizeComponent
       const role = username.includes('admin') ? 'admin' : 'user';
       const mockUser = {username, password, role};
       this.userService.setUser(mockUser);
-      void this.router.navigate([AppRoutingConstants.HOME_PATH]);
+      if (this.userService.getUser()?.role === 'admin') {
+        void this.router.navigate([AppRoutingConstants.ADMIN_PATH]);
+      } else {
+        void this.router.navigate([AppRoutingConstants.HOME_PATH]);
+      }
     }
   }
 

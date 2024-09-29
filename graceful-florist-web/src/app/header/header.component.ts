@@ -41,6 +41,10 @@ export class HeaderComponent
     return this.userService.authenticated();
   }
 
+  protected get userRole(): string {
+    return this.userService.getUser()?.role ?? '';
+  }
+
   protected navigateToLoginPage(): void {
     if (this.userService.authenticated()) {
       this.userService.clearUser();
@@ -76,8 +80,7 @@ export class HeaderComponent
     void this.router.navigate([`${AppRoutingConstants.ORDERS_PATH}`]);
   }
 
-  protected onLogout(): void {
-    this.userService.clearUser();
-    void this.router.navigate([AppRoutingConstants.AUTH_PATH]);
+  protected navigatetoAdmin(): void {
+    void this.router.navigate([`${AppRoutingConstants.ADMIN_PATH}`]);
   }
 }

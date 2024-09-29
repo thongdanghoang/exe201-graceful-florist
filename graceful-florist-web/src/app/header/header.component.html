@@ -1,5 +1,43 @@
-<ng-container *ngIf="true; else adminHeader"
-    ><div class="hidden sm:flex justify-between my-2.5 bg-white">
+<ng-container *ngIf="userRole === 'admin'; else userHeader">
+    <div class="hidden sm:flex items-center">
+        <!--  Logo  -->
+        <div
+            class="w-64 font-sans text-base font-extrabold text-primary cursor-pointer"
+            (click)="navigatetoAdmin()"
+        >
+            GRACEFUL-MS
+        </div>
+        <div class="flex w-full justify-between items-center py-3">
+            <graceful-florist-autocomplete
+                class="w-96"
+            ></graceful-florist-autocomplete>
+            <div class="flex items-center gap-4">
+                <button
+                    mat-icon-button
+                    aria-label="Example icon button with a cart icon"
+                >
+                    <mat-icon color="primary">notifications</mat-icon>
+                </button>
+                <img
+                    class="rounded-full"
+                    ngSrc="assets/avatar-admin.png"
+                    alt="admin"
+                    height="44"
+                    width="45"
+                />
+                <div class="flex flex-col">
+                    <div class="font-sans text-sm font-bold">Admin</div>
+                    <div class="font-sans text-xs font-semibold">Admin</div>
+                </div>
+                <mat-icon class="material-icons-outlined"
+                    >expand_circle_down</mat-icon
+                >
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #userHeader>
+    <div class="hidden sm:flex justify-between my-2.5 bg-white">
         <!--  Logo  -->
         <div class="hover:cursor-pointer" (click)="navigateToHomepage()">
             <svg-icon src="assets/Logo.svg"></svg-icon>
@@ -48,41 +86,6 @@
                     <mat-icon color="primary">shopping_cart</mat-icon>
                 </ng-template>
             </button>
-        </div>
-    </div></ng-container
->
-<ng-template #adminHeader>
-    <div class="hidden sm:flex items-center">
-        <!--  Logo  -->
-        <div class="w-64 font-sans text-base font-extrabold text-primary">
-            GRACEFUL-MS
-        </div>
-        <div class="flex w-full justify-between items-center py-3">
-            <graceful-florist-autocomplete
-                class="w-96"
-            ></graceful-florist-autocomplete>
-            <div class="flex items-center gap-4">
-                <button
-                    mat-icon-button
-                    aria-label="Example icon button with a cart icon"
-                >
-                    <mat-icon color="primary">notifications</mat-icon>
-                </button>
-                <img
-                    class="rounded-full"
-                    ngSrc="assets/avatar-admin.png"
-                    alt="admin"
-                    height="44"
-                    width="45"
-                />
-                <div class="flex flex-col">
-                    <div class="font-sans text-sm font-bold">Admin</div>
-                    <div class="font-sans text-xs font-semibold">Admin</div>
-                </div>
-                <mat-icon class="material-icons-outlined"
-                    >expand_circle_down</mat-icon
-                >
-            </div>
         </div>
     </div>
 </ng-template>

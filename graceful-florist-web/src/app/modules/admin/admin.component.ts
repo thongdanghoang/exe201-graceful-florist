@@ -3,6 +3,7 @@ import {MenuItem} from '../shared/components/sidebar/sidebar.component';
 import {AppRoutingConstants} from '../../app-routing-constants';
 import {NavigationEnd, Router} from '@angular/router';
 import {SubscriptionAwareComponent} from '../core/subscription-aware.component';
+import {UserService} from '../../mock/mock-user.service';
 
 @Component({
   selector: 'graceful-florist-admin',
@@ -41,7 +42,10 @@ export class AdminComponent
   ];
   readonly selectedTab: EventEmitter<string> = new EventEmitter<string>(false);
 
-  constructor(private readonly router: Router) {
+  constructor(
+    private readonly router: Router,
+    private readonly userService: UserService
+  ) {
     super();
   }
 
@@ -62,6 +66,8 @@ export class AdminComponent
 
   onTabChanged(tab: string): void {
     if (tab === AppRoutingConstants.LOGOUT) {
+      this.userService.clearUser();
+      void this.router.navigate([AppRoutingConstants.AUTH_PATH]);
       return;
     }
     void this.router.navigate([`${AppRoutingConstants.ADMIN_PATH}/${tab}`]);
