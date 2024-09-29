@@ -1,21 +1,28 @@
 import {Injectable} from '@angular/core';
-import {Observable, delay, of} from 'rxjs';
+import {BehaviorSubject, Observable, delay, of} from 'rxjs';
 import {CartItemDto} from '../models/cart.dto';
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+  public cartItems$: Observable<CartItemDto[]>;
+  private readonly cartItemsSubject: BehaviorSubject<CartItemDto[]>;
   private readonly CART_ITEMS_KEY = 'cartItems';
 
-  constructor() {}
+  constructor() {
+    this.cartItemsSubject = new BehaviorSubject<CartItemDto[]>([]);
+    this.cartItems$ = this.cartItemsSubject.asObservable();
+    this.loadCartItems();
+  }
+
+  loadCartItems(): void {
+    const cartItemsJson = localStorage.getItem(this.CART_ITEMS_KEY);
+    const cartItems = cartItemsJson ? JSON.parse(cartItemsJson) : [];
+    this.cartItemsSubject.next(cartItems);
+  }
 
   addToCart(items: CartItemDto[]): void {
-    const cartItemsJson = localStorage.getItem(this.CART_ITEMS_KEY);
-    let cartItems: CartItemDto[] = [];
-
-    if (cartItemsJson) {
-      cartItems = JSON.parse(cartItemsJson);
-    }
+    const cartItems = this.cartItemsSubject.value;
 
     items.forEach((newItem: CartItemDto): void => {
       const index = cartItems.findIndex(
@@ -29,6 +36,7 @@ export class CartService {
     });
 
     localStorage.setItem(this.CART_ITEMS_KEY, JSON.stringify(cartItems));
+    this.cartItemsSubject.next(cartItems);
   }
 
   changeCartItemQuantity(id: string, quantity: number): void {
@@ -45,6 +53,7 @@ export class CartService {
     }
     cartItems[index].quantity = quantity;
     localStorage.setItem(this.CART_ITEMS_KEY, JSON.stringify(cartItems));
+    this.cartItemsSubject.next(cartItems);
   }
 
   removeFromCart(id: string): void {
@@ -61,6 +70,7 @@ export class CartService {
     }
     cartItems.splice(index, 1);
     localStorage.setItem(this.CART_ITEMS_KEY, JSON.stringify(cartItems));
+    this.cartItemsSubject.next(cartItems);
   }
 
   getCart(): Observable<CartItemDto[]> {

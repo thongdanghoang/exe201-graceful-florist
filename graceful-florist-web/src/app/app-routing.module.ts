@@ -2,6 +2,9 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomepageComponent} from './homepage/homepage.component';
 import {AppRoutingConstants} from './app-routing-constants';
+import {AuthenticatedGuard} from './mock/authenticated-guard.service';
+import {AdminRoleGuard} from './mock/admin-role.guard';
+import {UserRoleGuard} from './mock/user-role.guard';
 
 const routes: Routes = [
   {
@@ -20,27 +23,32 @@ const routes: Routes = [
   {
     path: AppRoutingConstants.DEV_PATH,
     loadChildren: () =>
-      import('./modules/dev/dev.module').then(m => m.DevModule)
+      import('./modules/dev/dev.module').then(m => m.DevModule),
+    canActivate: [AuthenticatedGuard, AdminRoleGuard]
   },
   {
     path: AppRoutingConstants.ORDERS_PATH,
     loadChildren: () =>
-      import('./modules/orders/orders.module').then(m => m.OrdersModule)
+      import('./modules/orders/orders.module').then(m => m.OrdersModule),
+    canActivate: [AuthenticatedGuard, UserRoleGuard]
   },
   {
     path: AppRoutingConstants.PAYMENT_PATH,
     loadChildren: () =>
-      import('./modules/payment/payment.module').then(m => m.PaymentModule)
+      import('./modules/payment/payment.module').then(m => m.PaymentModule),
+    canActivate: [AuthenticatedGuard, UserRoleGuard]
   },
   {
     path: AppRoutingConstants.PRODUCTS_PATH,
     loadChildren: () =>
-      import('./modules/products/products.module').then(m => m.ProductsModule)
+      import('./modules/products/products.module').then(m => m.ProductsModule),
+    canActivate: [AuthenticatedGuard, UserRoleGuard]
   },
   {
     path: AppRoutingConstants.CART_PATH,
     loadChildren: () =>
-      import('./modules/cart/cart.module').then(m => m.CartModule)
+      import('./modules/cart/cart.module').then(m => m.CartModule),
+    canActivate: [AuthenticatedGuard, UserRoleGuard]
   },
   {
     path: AppRoutingConstants.AUTH_PATH,
@@ -50,7 +58,8 @@ const routes: Routes = [
   {
     path: AppRoutingConstants.ADMIN_PATH,
     loadChildren: () =>
-      import('./modules/admin/admin.module').then(m => m.AdminModule)
+      import('./modules/admin/admin.module').then(m => m.AdminModule),
+    canActivate: [AuthenticatedGuard, AdminRoleGuard]
   },
   {
     // TODO: Add a 404 page instead homepage

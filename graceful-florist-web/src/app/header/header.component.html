@@ -30,14 +30,23 @@
                 aria-label="Example icon button with a user icon"
                 (click)="navigateToLoginPage()"
             >
-                <mat-icon color="primary">person</mat-icon>
+                <mat-icon color="primary">{{
+                    isLoggedIn ? "logout" : "person"
+                }}</mat-icon>
             </button>
             <button
                 mat-icon-button
                 aria-label="Example icon button with a cart icon"
                 (click)="navigateToCart()"
             >
-                <mat-icon color="primary">shopping_cart</mat-icon>
+                <ng-container *ngIf="cartItemCount > 0; else emptyCart">
+                    <mat-icon color="primary" [matBadge]="cartItemCount"
+                        >shopping_cart</mat-icon
+                    >
+                </ng-container>
+                <ng-template #emptyCart>
+                    <mat-icon color="primary">shopping_cart</mat-icon>
+                </ng-template>
             </button>
         </div>
     </div></ng-container

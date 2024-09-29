@@ -8,9 +8,12 @@ import {AppRoutingConstants} from '../../../../app-routing-constants';
   styleUrl: './order-tracking.component.css'
 })
 export class OrderTrackingComponent {
+  protected loading: boolean = false;
+
   constructor(private readonly route: Router) {}
 
   protected navigateToOrderDetail(): void {
+    this.loading = true;
     const id = '2024020827709_134533';
     void this.route.navigate([`${AppRoutingConstants.ORDERS_PATH}/${id}`]);
   }

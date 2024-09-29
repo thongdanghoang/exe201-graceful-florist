@@ -54,6 +54,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {OrderStatusPipe} from './pipes/order-status.pipe';
 import {OrderTypePipe} from './pipes/order-type.pipe';
 import {CategoryTypePipe} from './pipes/category-type.pipe';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 const matModules = [
   MatTableModule,
@@ -82,7 +83,8 @@ const matModules = [
   MatButtonToggleModule,
   MatMenuModule,
   MatBadgeModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatProgressSpinnerModule
 ];
 const sharedModules = [
   TabCategoryComponent,

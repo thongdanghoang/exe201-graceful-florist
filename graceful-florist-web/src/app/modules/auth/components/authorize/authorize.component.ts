@@ -1,6 +1,9 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AppRoutingConstants} from '../../../../app-routing-constants';
+import {Router} from '@angular/router';
+import {UserService} from '../../../../mock/mock-user.service';
 
 @Component({
   selector: 'graceful-florist-authorize',
@@ -26,7 +29,11 @@ export class AuthorizeComponent
   forgotPasswordForm: FormGroup;
   currentTemplate: TemplateRef<any>;
 
-  constructor(private readonly fb: FormBuilder) {
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly router: Router,
+    private readonly userService: UserService
+  ) {
     // NOTE: Avoid complex logic or operations that depend on Angular bindings or lifecycle hooks
     super();
     this.loginForm = this.fb.group({
@@ -49,8 +56,20 @@ export class AuthorizeComponent
   }
 
   ngOnInit(): void {
-    // TODO : Implement onInit
     this.currentTemplate = this.loginTemplate;
+    if (this.userService.authenticated()) {
+      void this.router.navigate([AppRoutingConstants.HOME_PATH]);
+    }
+  }
+
+  protected onLogin(): void {
+    if (this.loginForm.valid) {
+      const {username, password} = this.loginForm.value;
+      const role = username.includes('admin') ? 'admin' : 'user';
+      const mockUser = {username, password, role};
+      this.userService.setUser(mockUser);
+      void this.router.navigate([AppRoutingConstants.HOME_PATH]);
+    }
   }
 
   protected switchTemplate(template: string): void {
@@ -66,14 +85,6 @@ export class AuthorizeComponent
         break;
       default:
         this.currentTemplate = this.loginTemplate;
-    }
-  }
-
-  protected onLogin(): void {
-    // Handle login logic
-    if (this.loginForm.valid) {
-      // eslint-disable-next-line no-console
-      console.debug('Logging in with', this.loginForm.value);
     }
   }
 

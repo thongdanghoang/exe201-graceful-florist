@@ -17,6 +17,7 @@ import {MatPaginatorIntlImpl} from './modules/shared/components/mat-paginator-in
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {HttpClient} from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {UserService} from './mock/mock-user.service';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -44,6 +45,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     })
   ],
   providers: [
+    UserService,
     provideAnimationsAsync(),
     provideNativeDateAdapter(),
     {provide: MatPaginatorIntl, useValue: MatPaginatorIntlImpl()}

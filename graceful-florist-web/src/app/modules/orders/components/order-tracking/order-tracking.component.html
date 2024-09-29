@@ -33,7 +33,14 @@
                 class="!rounded-2xl !h-14"
                 (click)="navigateToOrderDetail()"
             >
-                Kiểm tra
+                <ng-container *ngIf="loading; else buttonText">
+                    <div class="flex justify-center items-center">
+                        <div
+                            class="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white"
+                        ></div>
+                    </div>
+                </ng-container>
+                <ng-template #buttonText>Kiểm tra</ng-template>
             </button>
         </div>
     </div>

@@ -16,6 +16,7 @@ import {
 } from '../../../shared/models/abstract-base-dto';
 import {PageEvent} from '@angular/material/paginator';
 import {CartService} from '../../../cart/services/cart.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'graceful-florist-product-detail',
@@ -39,6 +40,7 @@ export class ProductDetailComponent
   private readonly productService: ProductService = inject(ProductService);
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
   private readonly router: Router = inject(Router);
+  private readonly _snackBar = inject(MatSnackBar);
 
   constructor() {
     super();
@@ -85,6 +87,15 @@ export class ProductDetailComponent
         quantity: 1
       }
     ]);
+    const snackBarRef = this._snackBar.open(
+      'Đã thêm vào giỏ hàng',
+      'Đi đến giỏ hàng'
+    );
+    this.registerSubscription(
+      snackBarRef.onAction().subscribe((): void => {
+        void this.router.navigate([`${AppRoutingConstants.CART_PATH}`]);
+      })
+    );
   }
 
   protected buyNow(): void {}
