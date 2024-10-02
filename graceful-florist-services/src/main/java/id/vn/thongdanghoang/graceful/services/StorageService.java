@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,29 +19,31 @@ public class StorageService {
 
     private final MinioClient minioClient;
 
-    public void uploadFile(String objectName, InputStream inputStream, String contentType) {
+    public UUID uploadFile(InputStream inputStream, String contentType) {
         try {
             boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             if (!found) {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
             }
+            var imageId = UUID.randomUUID();
             ObjectWriteResponse objectWriteResponse = minioClient.putObject(
-                    PutObjectArgs.builder().bucket(bucketName).object(objectName).stream(
+                    PutObjectArgs.builder().bucket(bucketName).object(imageId.toString()).stream(
                                     inputStream, inputStream.available(), -1)
                             .contentType(contentType)
                             .build());
             log.info("File uploaded successfully: {}", objectWriteResponse.object());
+            return imageId;
         } catch (Exception e) {
             throw new RuntimeException("Error occurred: " + e.getMessage());
         }
     }
 
-    public InputStream getFile(String objectName) {
+    public InputStream getFile(String imageId) {
         try {
             return minioClient.getObject(
                     GetObjectArgs.builder()
                             .bucket(bucketName)
-                            .object(objectName)
+                            .object(imageId)
                             .build());
         } catch (Exception e) {
             throw new RuntimeException("Error occurred: " + e.getMessage());
