@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
 @RequestMapping("/admin")
+@PreAuthorize("hasRole('ADMIN')")
+@RestController
 @RequiredArgsConstructor
 public class AdminController {
 
     @GetMapping("/profile")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String adminProfile() {
         return "Welcome to Admin Profile";
     }

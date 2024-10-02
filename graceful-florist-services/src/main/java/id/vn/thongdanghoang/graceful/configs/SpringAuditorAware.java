@@ -1,4 +1,4 @@
-package id.vn.thongdanghoang.graceful;
+package id.vn.thongdanghoang.graceful.configs;
 
 import id.vn.thongdanghoang.graceful.securities.SecurityUser;
 import jakarta.annotation.Nonnull;
@@ -21,7 +21,9 @@ public class SpringAuditorAware implements AuditorAware<String> {
     }
 
     private String getSecurityUser(Authentication authentication) {
-        if (Objects.nonNull(authentication) && authentication.isAuthenticated() && authentication.getPrincipal() instanceof SecurityUser securityUser) {
+        if (Objects.nonNull(authentication)
+                && authentication.isAuthenticated()
+                && authentication.getPrincipal() instanceof SecurityUser securityUser) {
             return securityUser.getUsername();
         }
         return "unknown";

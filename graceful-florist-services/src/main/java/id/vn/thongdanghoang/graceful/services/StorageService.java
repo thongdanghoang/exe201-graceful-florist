@@ -1,8 +1,9 @@
-package id.vn.thongdanghoang.graceful;
+package id.vn.thongdanghoang.graceful.services;
 
 import io.minio.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -12,9 +13,12 @@ import java.io.InputStream;
 @Slf4j
 public class StorageService {
 
+    @Value("${minio.bucket.name}")
+    private String bucketName;
+
     private final MinioClient minioClient;
 
-    public void uploadFile(String bucketName, String objectName, InputStream inputStream, String contentType) {
+    public void uploadFile(String objectName, InputStream inputStream, String contentType) {
         try {
             boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             if (!found) {
@@ -31,7 +35,7 @@ public class StorageService {
         }
     }
 
-    public InputStream getFile(String bucketName, String objectName) {
+    public InputStream getFile(String objectName) {
         try {
             return minioClient.getObject(
                     GetObjectArgs.builder()

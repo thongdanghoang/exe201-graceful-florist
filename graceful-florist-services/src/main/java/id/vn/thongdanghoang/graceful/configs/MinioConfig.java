@@ -1,4 +1,4 @@
-package id.vn.thongdanghoang.graceful;
+package id.vn.thongdanghoang.graceful.configs;
 
 import io.minio.MinioClient;
 import org.springframework.beans.factory.annotation.Value;
