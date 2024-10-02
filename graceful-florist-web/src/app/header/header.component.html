@@ -30,8 +30,8 @@
                     <div class="font-sans text-xs font-semibold">Admin</div>
                 </div>
                 <mat-icon class="material-icons-outlined"
-                    >expand_circle_down</mat-icon
-                >
+                    >expand_circle_down
+                </mat-icon>
             </div>
         </div>
     </div>
@@ -68,9 +68,9 @@
                 aria-label="Example icon button with a user icon"
                 (click)="navigateToLoginPage()"
             >
-                <mat-icon color="primary">{{
-                    isLoggedIn ? "logout" : "person"
-                }}</mat-icon>
+                <mat-icon color="primary"
+                    >{{ isLoggedIn ? "logout" : "person" }}
+                </mat-icon>
             </button>
             <button
                 mat-icon-button
@@ -78,9 +78,12 @@
                 (click)="navigateToCart()"
             >
                 <ng-container *ngIf="cartItemCount > 0; else emptyCart">
-                    <mat-icon color="primary" [matBadge]="cartItemCount"
-                        >shopping_cart</mat-icon
-                    >
+                    <mat-icon
+                        color="primary"
+                        [matBadge]="cartItemCount"
+                        aria-hidden="false"
+                        >shopping_cart
+                    </mat-icon>
                 </ng-container>
                 <ng-template #emptyCart>
                     <mat-icon color="primary">shopping_cart</mat-icon>

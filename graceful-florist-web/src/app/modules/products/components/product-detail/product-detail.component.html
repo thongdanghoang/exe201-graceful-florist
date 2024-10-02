@@ -263,15 +263,15 @@
                                 comment of productDto.comments.results;
                                 track comment
                             ) {
-                                <div class="flex gap-2.5 p-5">
+                                <div class="flex items-start gap-2.5 p-5">
                                     <!-- User's avatar -->
                                     <img
-                                        style="
-                                            max-width: 60px;
-                                            max-height: 60px;
-                                        "
-                                        [src]="comment.user.avatar"
+                                        class="w-auto h-auto"
+                                        [ngSrc]="comment.user.avatar"
                                         [alt]="comment.user.name"
+                                        width="60"
+                                        height="60"
+                                        priority
                                     />
                                     <div class="flex flex-col gap-2.5">
                                         <!-- User's full name, rating, comment -->

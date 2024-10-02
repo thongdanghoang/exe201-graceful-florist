@@ -11,9 +11,12 @@
                 *ngFor="let item of mainColors"
                 (click)="selectColor(item.color)"
                 [ngClass]="{
-                    '': form.get('selectedMainColor')?.value === item.color,
+                    'text-primary border-primary':
+                        form.get('selectedMainColor')?.value === item.color,
+                    'border-neutral-400':
+                        form.get('selectedMainColor')?.value !== item.color,
                 }"
-                class="flex items-center p-2 gap-2 border-slate-500 border"
+                class="flex items-center p-2 gap-2 border"
                 style="border-radius: 32px"
             >
                 <svg-icon
@@ -317,8 +320,8 @@
             [src]="item.image"
             [alt]="item.name"
         />
-        <mat-radio-button color="primary" [name]="group" [value]="item.name">{{
-            item.name
-        }}</mat-radio-button>
+        <mat-radio-button color="primary" [name]="group" [value]="item.name"
+            >{{ item.name }}
+        </mat-radio-button>
     </label>
 </ng-template>
