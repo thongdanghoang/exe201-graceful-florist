@@ -3,7 +3,9 @@ import {SubscriptionAwareComponent} from '../../../core/subscription-aware.compo
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {Router} from '@angular/router';
-import {UserService} from '../../../../mock/mock-user.service';
+import {UserRole, UserService} from '../../../../mock/user.service';
+import {AuthService} from '../../services/auth.service';
+import {EMPTY, catchError} from 'rxjs';
 
 @Component({
   selector: 'graceful-florist-authorize',
@@ -32,7 +34,8 @@ export class AuthorizeComponent
   constructor(
     private readonly fb: FormBuilder,
     private readonly router: Router,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly authService: AuthService
   ) {
     // NOTE: Avoid complex logic or operations that depend on Angular bindings or lifecycle hooks
     super();
@@ -58,7 +61,7 @@ export class AuthorizeComponent
   ngOnInit(): void {
     this.currentTemplate = this.loginTemplate;
     if (this.userService.authenticated()) {
-      if (this.userService.getUser()?.role === 'admin') {
+      if (this.userService.getUser()?.roles.includes(UserRole.ADMIN)) {
         void this.router.navigate([AppRoutingConstants.ADMIN_PATH]);
       } else {
         void this.router.navigate([AppRoutingConstants.HOME_PATH]);
@@ -69,14 +72,26 @@ export class AuthorizeComponent
   protected onLogin(): void {
     if (this.loginForm.valid) {
       const {username, password} = this.loginForm.value;
-      const role = username.includes('admin') ? 'admin' : 'user';
-      const mockUser = {username, password, role};
-      this.userService.setUser(mockUser);
-      if (this.userService.getUser()?.role === 'admin') {
-        void this.router.navigate([AppRoutingConstants.ADMIN_PATH]);
-      } else {
-        void this.router.navigate([AppRoutingConstants.HOME_PATH]);
-      }
+      this.registerSubscription(
+        this.authService
+          .login(username, password)
+          .pipe(
+            catchError(error => {
+              if (error.status === 403) {
+                alert('Invalid username or password');
+              }
+              return EMPTY;
+            })
+          )
+          .subscribe(tokenResponse => {
+            this.userService.setToken(tokenResponse.token);
+            if (this.userService.getUser()?.roles.includes(UserRole.ADMIN)) {
+              void this.router.navigate([AppRoutingConstants.ADMIN_PATH]);
+            } else {
+              void this.router.navigate([AppRoutingConstants.HOME_PATH]);
+            }
+          })
+      );
     }
   }
 
@@ -99,8 +114,21 @@ export class AuthorizeComponent
   protected onSignUp(): void {
     // Handle sign-up logic
     if (this.registerForm.valid) {
-      // eslint-disable-next-line no-console
-      console.debug('Signing up with', this.registerForm.value);
+      const {fullName, username, password} = this.registerForm.value;
+      this.registerSubscription(
+        this.authService
+          .register(fullName, username, password)
+          .pipe(
+            catchError(error => {
+              alert(JSON.stringify(error));
+              return EMPTY;
+            })
+          )
+          .subscribe(() => {
+            alert('Account created successfully');
+            this.currentTemplate = this.loginTemplate;
+          })
+      );
     }
   }
 

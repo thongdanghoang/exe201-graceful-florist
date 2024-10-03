@@ -24,7 +24,7 @@ public class UserSecurityService implements UserDetailsService {
     private final PasswordEncoder encoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public SecurityUser loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<UserEntity> userDetail = repository.findByUsernameWithAuthorities(username);
 
         // Converting UserInfo to UserDetails

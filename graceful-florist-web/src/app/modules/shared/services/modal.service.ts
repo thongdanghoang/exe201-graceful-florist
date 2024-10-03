@@ -62,6 +62,7 @@ export class ModalService {
     this.closeInternal(instance, result);
     Arrays.remove(this.instances, instance);
   }
+
   closeAll(): void {
     for (const i of this.instances) {
       this.closeInternal(i);

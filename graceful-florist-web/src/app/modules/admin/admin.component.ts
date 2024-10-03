@@ -3,7 +3,7 @@ import {MenuItem} from '../shared/components/sidebar/sidebar.component';
 import {AppRoutingConstants} from '../../app-routing-constants';
 import {NavigationEnd, Router} from '@angular/router';
 import {SubscriptionAwareComponent} from '../core/subscription-aware.component';
-import {UserService} from '../../mock/mock-user.service';
+import {UserService} from '../../mock/user.service';
 
 @Component({
   selector: 'graceful-florist-admin',

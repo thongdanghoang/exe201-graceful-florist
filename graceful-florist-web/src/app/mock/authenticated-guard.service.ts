@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
 import {AppRoutingConstants} from '../app-routing-constants';
-import {UserService} from './mock-user.service';
+import {UserService} from './user.service';
 
 @Injectable({
   providedIn: 'root'

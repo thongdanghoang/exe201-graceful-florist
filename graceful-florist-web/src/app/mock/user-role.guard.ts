@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
 import {AppRoutingConstants} from '../app-routing-constants';
-import {UserService} from './mock-user.service';
+import {UserRole, UserService} from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class UserRoleGuard implements CanActivate {
 
   canActivate(): boolean {
     const user = this.mockUserService.getUser();
-    if (user && user.role === 'user') {
+    if (user?.roles.includes(UserRole.USER)) {
       return true;
     }
     if (user) {

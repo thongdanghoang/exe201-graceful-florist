@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AppRoutingConstants} from '../app-routing-constants';
-import {UserService} from '../mock/mock-user.service';
+import {UserRole, UserService} from '../mock/user.service';
 import {CartService} from '../modules/cart/services/cart.service';
 import {SubscriptionAwareComponent} from '../modules/core/subscription-aware.component';
 import {CartItemDto} from '../modules/cart/models/cart.dto';
@@ -17,6 +17,7 @@ export class HeaderComponent
 {
   cartItemCount: number = 0;
   protected readonly AppRoutingConstants = AppRoutingConstants;
+  protected readonly UserRole = UserRole;
 
   constructor(
     private readonly router: Router,
@@ -41,8 +42,8 @@ export class HeaderComponent
     return this.userService.authenticated();
   }
 
-  protected get userRole(): string {
-    return this.userService.getUser()?.role ?? '';
+  protected get userRoles(): string[] {
+    return this.userService.getUser()?.roles ?? [];
   }
 
   protected navigateToLoginPage(): void {
@@ -80,7 +81,7 @@ export class HeaderComponent
     void this.router.navigate([`${AppRoutingConstants.ORDERS_PATH}`]);
   }
 
-  protected navigatetoAdmin(): void {
+  protected navigateToAdmin(): void {
     void this.router.navigate([`${AppRoutingConstants.ADMIN_PATH}`]);
   }
 }

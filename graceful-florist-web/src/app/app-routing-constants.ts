@@ -1,5 +1,5 @@
 export class AppRoutingConstants {
-  public static readonly BASE_URL = '';
+  public static readonly BASE_URL = 'http://localhost:8080';
   public static readonly BACKEND_API_URL = `${AppRoutingConstants.BASE_URL}/api`;
 
   // app module
@@ -21,6 +21,11 @@ export class AppRoutingConstants {
 
   // auth module
   public static readonly AUTH_PATH = 'auth';
+  public static readonly LOGIN_PATH = 'sign-in';
+  public static readonly REGISTER_PATH = 'sign-up';
+
+  // images resource
+  public static readonly IMAGES_PATH = 'images';
 
   // dev module
   public static readonly DEV_PATH = 'dev';

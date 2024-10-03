@@ -1,7 +1,9 @@
 package id.vn.thongdanghoang.graceful.dtos;
 
+import jakarta.validation.constraints.NotNull;
+
 public record AuthRequest(
-        String username,
-        String password
+        @NotNull String username,
+        @NotNull String password
 ) {
 }

@@ -15,9 +15,10 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
 import {MatPaginatorIntl} from '@angular/material/paginator';
 import {MatPaginatorIntlImpl} from './modules/shared/components/mat-paginator-intl-impl/mat-paginator-intl-impl';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {HttpClient} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {UserService} from './mock/mock-user.service';
+import {UserService} from './mock/user.service';
+import {TokenInterceptor} from './mock/token.interceptor';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -48,7 +49,12 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     UserService,
     provideAnimationsAsync(),
     provideNativeDateAdapter(),
-    {provide: MatPaginatorIntl, useValue: MatPaginatorIntlImpl()}
+    {provide: MatPaginatorIntl, useValue: MatPaginatorIntlImpl()},
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

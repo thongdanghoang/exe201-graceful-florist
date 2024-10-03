@@ -1,9 +1,9 @@
-<ng-container *ngIf="userRole === 'admin'; else userHeader">
+<ng-container *ngIf="userRoles.includes(UserRole.ADMIN); else userHeader">
     <div class="hidden sm:flex items-center">
         <!--  Logo  -->
         <div
             class="w-64 font-sans text-base font-extrabold text-primary cursor-pointer"
-            (click)="navigatetoAdmin()"
+            (click)="navigateToAdmin()"
         >
             GRACEFUL-MS
         </div>
