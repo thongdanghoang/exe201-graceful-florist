@@ -61,12 +61,14 @@ export class ProductDetailComponent
 
   ngOnInit(): void {
     this.registerSubscriptions([
-      this.productService
-        .getProductById(this.route.snapshot.paramMap.get('id') as string)
-        .subscribe((productDto: ProductDetailDto): void => {
-          this.productDto = productDto;
-          this.mainImage = productDto.imageUrl;
-        }),
+      this.route.paramMap.subscribe(params => {
+        this.productService
+          .getProductById(params.get('id') as string)
+          .subscribe((productDto: ProductDetailDto): void => {
+            this.productDto = productDto;
+            this.mainImage = productDto.imageUrl;
+          });
+      }),
       this.productService
         .getProductComment(this.commentCriteria)
         .subscribe((comments: SearchResultDto<CommentDto>): void => {
@@ -101,9 +103,7 @@ export class ProductDetailComponent
   protected buyNow(): void {}
 
   protected onProductClick(product: ProductDto): void {
-    void this.router.navigate([
-      `${AppRoutingConstants.PRODUCTS_PATH}/${product.id}`
-    ]);
+    void this.router.navigate([`products/${product.id}`]);
   }
 
   protected changeMainImage(imageUrl: string): void {

@@ -20,7 +20,7 @@
                     />
                 </ng-container>
                 <ng-container *ngIf="productDto.images.length">
-                    <div class="flex gap-6 w-full">
+                    <div class="flex gap-6 w-full overflow-x-auto">
                         <img
                             *ngFor="let image of productDto.images"
                             [ngSrc]="image"
@@ -189,7 +189,7 @@
         </div>
     </ng-template>
     <div class="flex flex-col lg:flex-row gap-8">
-        <div class="flex flex-col rounded-lg gap-3.5 py-8 px-6 bg-white">
+        <div class="flex flex-col rounded-lg gap-3.5 py-8 px-6 bg-white h-fit">
             <div class="font-sans text-base font-extrabold">Đề Xuất</div>
             <ng-container
                 *ngIf="
