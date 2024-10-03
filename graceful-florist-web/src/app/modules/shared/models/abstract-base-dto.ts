@@ -5,6 +5,13 @@ export interface AbstractBaseDto {
   version: number;
 }
 
+export interface AbstractAuditableDTO extends AbstractBaseDto {
+  createdBy?: string;
+  createdDate?: Date;
+  lastModifiedDate?: Date;
+  lastModifiedBy?: string;
+}
+
 export interface SearchPageDto {
   offset: number;
   limit: number;
