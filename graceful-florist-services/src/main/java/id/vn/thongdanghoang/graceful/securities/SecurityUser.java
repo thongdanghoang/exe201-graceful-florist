@@ -2,6 +2,7 @@ package id.vn.thongdanghoang.graceful.securities;
 
 import id.vn.thongdanghoang.graceful.entities.AuthorityEntity;
 import id.vn.thongdanghoang.graceful.entities.UserEntity;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,13 +11,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
 public class SecurityUser implements UserDetails {
 
+    private final UserEntity userEntity;
     private final String username;
     private final String password;
     private final List<GrantedAuthority> authorities;
 
     public SecurityUser(UserEntity userEntity) {
+        this.userEntity = userEntity;
         this.username = userEntity.getUsername(); // Assuming 'name' is used as 'username'
         this.password = userEntity.getPassword();
         this.authorities = userEntity.getAuthorities()

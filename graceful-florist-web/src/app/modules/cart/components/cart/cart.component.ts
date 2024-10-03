@@ -4,7 +4,7 @@ import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {Router} from '@angular/router';
 import {CartService} from '../../services/cart.service';
-import {CartItemDto} from '../../models/cart.dto';
+import {CartItemDTO} from '../../models/cart.dto';
 
 @Component({
   selector: 'graceful-florist-cart',
@@ -27,30 +27,34 @@ export class CartComponent
     'actions'
   ];
   protected loading: boolean = true;
-  protected cartItems: CartItemDto[] = [];
-  protected selectedCartItems: CartItemDto[] = [];
+  protected cartItems: CartItemDTO[] = [];
+  protected selectedCartItems: CartItemDTO[] = [];
   private readonly cartService: CartService = inject(CartService);
   private readonly router: Router = inject(Router);
 
   ngOnInit(): void {
     this.registerSubscriptions([
-      this.cartService.getCart().subscribe((products: CartItemDto[]): void => {
-        this.cartItems = products;
-        this.loading = false;
-      })
+      this.cartService.cartItemsChanged.subscribe(
+        (cartItems: CartItemDTO[]): void => {
+          this.cartItems = cartItems;
+          this.loading = false;
+        }
+      )
     ]);
   }
 
-  protected isSelected(item: CartItemDto): boolean {
+  protected isSelected(item: CartItemDTO): boolean {
     return this.selectedCartItems.some(
-      (cartItem: CartItemDto): boolean => cartItem.id === item.id
+      (cartItem: CartItemDTO): boolean =>
+        cartItem.product.id === item.product.id
     );
   }
 
-  protected toggleSelection(item: CartItemDto): void {
+  protected toggleSelection(item: CartItemDTO): void {
     if (this.isSelected(item)) {
       this.selectedCartItems = this.selectedCartItems.filter(
-        (cartItem: CartItemDto): boolean => cartItem.id !== item.id
+        (cartItem: CartItemDTO): boolean =>
+          cartItem.product.id !== item.product.id
       );
     } else {
       this.selectedCartItems.push(item);
@@ -77,26 +81,29 @@ export class CartComponent
     }
   }
 
-  protected removeFromCart(item: CartItemDto): void {
-    this.cartService.removeFromCart(item.id);
+  protected removeFromCart(item: CartItemDTO): void {
+    item.quantity = 0;
+    this.registerSubscription(this.cartService.saveOrUpdate(item).subscribe());
     this.cartItems = this.cartItems.filter(
-      (cartItem: CartItemDto): boolean => cartItem.id !== item.id
+      (cartItem: CartItemDTO): boolean =>
+        cartItem.product.id !== item.product.id
     );
-
     // Update selectedCartItems
     this.selectedCartItems = this.selectedCartItems.filter(
-      (cartItem: CartItemDto): boolean => cartItem.id !== item.id
+      (cartItem: CartItemDTO): boolean =>
+        cartItem.product.id !== item.product.id
     );
   }
 
   protected onCartItemQuantityChanges(
     quantity: number,
-    item: CartItemDto
+    item: CartItemDTO
   ): void {
-    this.cartService.changeCartItemQuantity(item.id, quantity);
+    item.quantity = quantity;
+    this.registerSubscription(this.cartService.saveOrUpdate(item).subscribe());
     this.cartItems = this.cartItems.map(
-      (cartItem: CartItemDto): CartItemDto => {
-        if (cartItem.id === item.id) {
+      (cartItem: CartItemDTO): CartItemDTO => {
+        if (cartItem.product.id === item.product.id) {
           return {...cartItem, quantity};
         }
         return cartItem;
@@ -105,8 +112,8 @@ export class CartComponent
 
     // Update selectedCartItems
     this.selectedCartItems = this.selectedCartItems.map(
-      (cartItem: CartItemDto): CartItemDto => {
-        if (cartItem.id === item.id) {
+      (cartItem: CartItemDTO): CartItemDTO => {
+        if (cartItem.product.id === item.product.id) {
           return {...cartItem, quantity};
         }
         return cartItem;
@@ -116,8 +123,8 @@ export class CartComponent
 
   protected get totalSelectedValue(): number {
     return this.selectedCartItems.reduce(
-      (total: number, item: CartItemDto): number =>
-        total + item.price * item.quantity,
+      (total: number, item: CartItemDTO): number =>
+        total + item.product.price * item.quantity,
       0
     );
   }
@@ -127,8 +134,10 @@ export class CartComponent
   }
 
   protected navigateToCheckout(): void {
-    const selectedProducts = JSON.stringify(this.selectedCartItems);
-    const queryParams = {products: selectedProducts};
+    const productIDs = this.selectedCartItems
+      .map((item: CartItemDTO) => item.product.id)
+      .join(',');
+    const queryParams = {products: productIDs};
     void this.router
       .navigate([AppRoutingConstants.PAYMENT_PATH], {queryParams})
       .then();

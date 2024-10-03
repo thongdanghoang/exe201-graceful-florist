@@ -4,8 +4,9 @@ import {ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
-import {CartItemDto} from '../../../cart/models/cart.dto';
+import {CartItemDTO} from '../../../cart/models/cart.dto';
 import {PaymentMethod} from '../../models/payment.dto';
+import {CartService} from '../../../cart/services/cart.service';
 
 @Component({
   selector: 'graceful-florist-payment',
@@ -23,7 +24,10 @@ export class PaymentComponent
   ];
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
 
-  constructor(private readonly fb: FormBuilder) {
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly cartService: CartService
+  ) {
     super();
     this.paymentForm = this.fb.group({
       recipient: this.fb.group({
@@ -42,7 +46,7 @@ export class PaymentComponent
         deliveryTime: ['']
       }),
       message: [''],
-      method: [PaymentMethod.COD, Validators.required],
+      paymentMethod: [PaymentMethod.COD, Validators.required],
       products: ['', Validators.required]
     });
   }
@@ -50,10 +54,12 @@ export class PaymentComponent
   ngOnInit(): void {
     this.registerSubscriptions([
       this.route.queryParamMap.subscribe(params => {
-        const products = params.get('products');
-        if (products) {
-          const parsedProducts: CartItemDto[] = JSON.parse(products);
-          this.paymentForm.get('products')?.setValue(parsedProducts);
+        const productIDs = params.get('products')?.split(',');
+        if (productIDs) {
+          const cartItemDTOS = this.cartService.cartItemsChanged.value.filter(
+            item => productIDs.includes(item.product.id)
+          );
+          this.paymentForm.get('products')?.setValue(cartItemDTOS);
         }
       })
     ]);
@@ -65,14 +71,17 @@ export class PaymentComponent
     return this.paymentForm.get('products')?.value.length;
   }
 
-  protected get cartItems(): CartItemDto[] {
+  protected get cartItems(): CartItemDTO[] {
     return this.paymentForm.get('products')?.value;
   }
 
   protected get totalSelectedValue(): number {
+    if (!this.cartItems) {
+      return 0;
+    }
     return this.cartItems.reduce(
-      (total: number, item: CartItemDto): number =>
-        total + item.price * item.quantity,
+      (total: number, item: CartItemDTO): number =>
+        total + item.product.price * item.quantity,
       0
     );
   }

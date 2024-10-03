@@ -4,7 +4,7 @@ import {AppRoutingConstants} from '../app-routing-constants';
 import {UserRole, UserService} from '../mock/user.service';
 import {CartService} from '../modules/cart/services/cart.service';
 import {SubscriptionAwareComponent} from '../modules/core/subscription-aware.component';
-import {CartItemDto} from '../modules/cart/models/cart.dto';
+import {CartItemDTO} from '../modules/cart/models/cart.dto';
 
 @Component({
   selector: 'graceful-florist-header',
@@ -29,12 +29,11 @@ export class HeaderComponent
 
   ngOnInit(): void {
     this.registerSubscription(
-      this.cartService.cartItems$.subscribe((cartItems: CartItemDto[]) => {
-        this.cartItemCount = cartItems.reduce(
-          (count, item) => count + item.quantity,
-          0
-        );
-      })
+      this.cartService.cartItemsChanged.subscribe(
+        (cartItems: CartItemDTO[]): void => {
+          this.cartItemCount = cartItems.length;
+        }
+      )
     );
   }
 

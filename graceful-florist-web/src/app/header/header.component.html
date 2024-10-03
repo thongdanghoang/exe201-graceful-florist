@@ -73,8 +73,8 @@
                 </mat-icon>
             </button>
             <button
+                *ngIf="isLoggedIn"
                 mat-icon-button
-                aria-label="Example icon button with a cart icon"
                 (click)="navigateToCart()"
             >
                 <ng-container *ngIf="cartItemCount > 0; else emptyCart">

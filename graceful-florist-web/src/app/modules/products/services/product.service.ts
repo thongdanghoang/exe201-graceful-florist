@@ -194,20 +194,9 @@ export class ProductService {
       >(`${AppRoutingConstants.BACKEND_API_URL}/products`)
       .pipe(
         map((result: SearchResultDto<ProductDto>) => {
-          result.results = result.results.map(product => ({
-            ...product,
-            imageUrl: product.images.length
-              ? `${AppRoutingConstants.BACKEND_API_URL}/images/${product.images[0]}`
-              : '',
-            images: product.images.length
-              ? product.images
-                  .slice(1)
-                  .map(
-                    image =>
-                      `${AppRoutingConstants.BACKEND_API_URL}/images/${image}`
-                  )
-              : []
-          }));
+          result.results = result.results.map(product =>
+            this.mapProductImages(product)
+          );
           return result;
         })
       );
@@ -231,5 +220,21 @@ export class ProductService {
         result.results.filter(product => product.enabled)
       )
     );
+  }
+
+  private mapProductImages(product: ProductDto): ProductDto {
+    return {
+      ...product,
+      imageUrl: product.images.length
+        ? `${AppRoutingConstants.BACKEND_API_URL}/images/${product.images[0]}`
+        : '',
+      images: product.images.length
+        ? product.images
+            .slice(1)
+            .map(
+              image => `${AppRoutingConstants.BACKEND_API_URL}/images/${image}`
+            )
+        : []
+    };
   }
 }

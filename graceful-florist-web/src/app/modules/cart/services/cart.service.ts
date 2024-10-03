@@ -1,81 +1,76 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, delay, of} from 'rxjs';
-import {CartItemDto} from '../models/cart.dto';
+import {BehaviorSubject, Observable, map} from 'rxjs';
+import {CartItemDTO} from '../models/cart.dto';
+import {HttpClient} from '@angular/common/http';
+import {AppRoutingConstants} from '../../../app-routing-constants';
+import {tap} from 'rxjs/operators';
+import {ProductDto} from '../../products/models/product.dto';
+import {UserService} from '../../../mock/user.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  public cartItems$: Observable<CartItemDto[]>;
-  private readonly cartItemsSubject: BehaviorSubject<CartItemDto[]>;
-  private readonly CART_ITEMS_KEY = 'cartItems';
+  public readonly cartItemsChanged: BehaviorSubject<CartItemDTO[]>;
 
-  constructor() {
-    this.cartItemsSubject = new BehaviorSubject<CartItemDto[]>([]);
-    this.cartItems$ = this.cartItemsSubject.asObservable();
-    this.loadCartItems();
-  }
-
-  loadCartItems(): void {
-    const cartItemsJson = localStorage.getItem(this.CART_ITEMS_KEY);
-    const cartItems = cartItemsJson ? JSON.parse(cartItemsJson) : [];
-    this.cartItemsSubject.next(cartItems);
-  }
-
-  addToCart(items: CartItemDto[]): void {
-    const cartItems = this.cartItemsSubject.value;
-
-    items.forEach((newItem: CartItemDto): void => {
-      const index = cartItems.findIndex(
-        (cartItem: CartItemDto): boolean => cartItem.id === newItem.id
-      );
-      if (index !== -1) {
-        cartItems[index].quantity += newItem.quantity;
-      } else {
-        cartItems.push(newItem);
-      }
+  constructor(
+    private readonly httpClient: HttpClient,
+    private readonly userService: UserService
+  ) {
+    this.cartItemsChanged = new BehaviorSubject<CartItemDTO[]>([]);
+    this.userService.user$.subscribe(() => {
+      this.fetchCartItems().subscribe((cartItems: CartItemDTO[]): void => {
+        this.cartItemsChanged.next(cartItems);
+      });
     });
-
-    localStorage.setItem(this.CART_ITEMS_KEY, JSON.stringify(cartItems));
-    this.cartItemsSubject.next(cartItems);
   }
 
-  changeCartItemQuantity(id: string, quantity: number): void {
-    const cartItemsJson = localStorage.getItem(this.CART_ITEMS_KEY);
-    if (!cartItemsJson) {
-      return;
-    }
-    const cartItems = JSON.parse(cartItemsJson);
-    const index = cartItems.findIndex(
-      (cartItem: CartItemDto): boolean => cartItem.id === id
-    );
-    if (index === -1) {
-      return;
-    }
-    cartItems[index].quantity = quantity;
-    localStorage.setItem(this.CART_ITEMS_KEY, JSON.stringify(cartItems));
-    this.cartItemsSubject.next(cartItems);
+  fetchCartItems(): Observable<CartItemDTO[]> {
+    return this.httpClient
+      .get<
+        CartItemDTO[]
+      >(`${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.CART_PATH}`)
+      .pipe(
+        map((cartItems: CartItemDTO[]) =>
+          cartItems.map((item: CartItemDTO) => ({
+            ...item,
+            product: this.mapProductImages(item.product)
+          }))
+        )
+      );
   }
 
-  removeFromCart(id: string): void {
-    const cartItemsJson = localStorage.getItem(this.CART_ITEMS_KEY);
-    if (!cartItemsJson) {
-      return;
-    }
-    const cartItems = JSON.parse(cartItemsJson);
-    const index = cartItems.findIndex(
-      (cartItem: CartItemDto): boolean => cartItem.id === id
-    );
-    if (index === -1) {
-      return;
-    }
-    cartItems.splice(index, 1);
-    localStorage.setItem(this.CART_ITEMS_KEY, JSON.stringify(cartItems));
-    this.cartItemsSubject.next(cartItems);
+  saveOrUpdate(item: CartItemDTO): Observable<CartItemDTO[]> {
+    return this.httpClient
+      .put<
+        CartItemDTO[]
+      >(`${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.CART_PATH}`, item)
+      .pipe(
+        map((cartItems: CartItemDTO[]) =>
+          cartItems.map((item: CartItemDTO) => ({
+            ...item,
+            product: this.mapProductImages(item.product)
+          }))
+        ),
+        tap((cartItems: CartItemDTO[]): void => {
+          this.cartItemsChanged.next(cartItems);
+        })
+      );
   }
 
-  getCart(): Observable<CartItemDto[]> {
-    const cartItemsJson = localStorage.getItem(this.CART_ITEMS_KEY);
-    const cartItems = cartItemsJson ? JSON.parse(cartItemsJson) : [];
-    return of(cartItems).pipe(delay(1000));
+  private mapProductImages(product: ProductDto): ProductDto {
+    return {
+      ...product,
+      imageUrl: product.images.length
+        ? `${AppRoutingConstants.BACKEND_API_URL}/images/${product.images[0]}`
+        : '',
+      images: product.images.length
+        ? product.images
+            .slice(1)
+            .map(
+              image => `${AppRoutingConstants.BACKEND_API_URL}/images/${image}`
+            )
+        : []
+    };
   }
 }

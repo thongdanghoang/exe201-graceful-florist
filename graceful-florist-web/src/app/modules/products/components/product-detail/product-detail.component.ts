@@ -83,20 +83,31 @@ export class ProductDetailComponent
   }
 
   protected addToCart(): void {
-    this.cartService.addToCart([
-      {
-        ...(this.productDto as ProductDto),
-        quantity: 1
-      }
-    ]);
-    const snackBarRef = this._snackBar.open(
-      'Đã thêm vào giỏ hàng',
-      'Đi đến giỏ hàng'
-    );
+    const item = this.cartService.cartItemsChanged.value.filter(
+      item => item.product.id === this.productDto?.id
+    )[0];
+    if (item) {
+      item.quantity += 1;
+    }
     this.registerSubscription(
-      snackBarRef.onAction().subscribe((): void => {
-        void this.router.navigate([`${AppRoutingConstants.CART_PATH}`]);
-      })
+      this.cartService
+        .saveOrUpdate(
+          item ?? {
+            product: this.productDto as ProductDto,
+            quantity: 1
+          }
+        )
+        .subscribe(() => {
+          const snackBarRef = this._snackBar.open(
+            'Đã thêm vào giỏ hàng',
+            'Đi đến giỏ hàng'
+          );
+          this.registerSubscription(
+            snackBarRef.onAction().subscribe((): void => {
+              void this.router.navigate([`${AppRoutingConstants.CART_PATH}`]);
+            })
+          );
+        })
     );
   }
 

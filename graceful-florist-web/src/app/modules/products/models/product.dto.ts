@@ -1,14 +1,13 @@
 import {
-  AbstractBaseDto,
+  AbstractAuditableDTO,
   SearchResultDto
 } from '../../shared/models/abstract-base-dto';
 
-export interface ProductDto extends AbstractBaseDto {
+export interface ProductDto extends AbstractAuditableDTO {
   name: string;
   price: number;
   imageUrl?: string;
   images: string[];
-  createdDate?: Date;
   enabled: boolean;
   category?: string;
 }

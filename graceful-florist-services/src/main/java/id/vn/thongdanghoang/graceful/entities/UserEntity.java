@@ -37,6 +37,9 @@ public class UserEntity extends AbstractAuditableEntity {
     )
     private Set<AuthorityEntity> authorities = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<CartItemEntity> cartItems = new ArrayList<>();
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderEntity> orders = new ArrayList<>();
 
