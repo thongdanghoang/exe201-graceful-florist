@@ -115,7 +115,7 @@ CREATE TABLE graceful.orders
     shipping_price_id  UUID         NOT NULL,
     promotion_id       UUID,
     status             VARCHAR(255) NOT NULL,
-    total_price        INTEGER      NOT NULL,
+    total_price        BIGINT       NOT NULL,
     sender_name        VARCHAR(255) NOT NULL,
     sender_phone       VARCHAR(15)  NOT NULL,
     recipient_name     VARCHAR(255) NOT NULL,

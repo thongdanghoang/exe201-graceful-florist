@@ -1,12 +1,17 @@
 import {Component, OnInit, inject} from '@angular/core';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {CartItemDTO} from '../../../cart/models/cart.dto';
 import {PaymentMethod} from '../../models/payment.dto';
 import {CartService} from '../../../cart/services/cart.service';
+import {ModalService} from '../../../shared/services/modal.service';
+import {
+  PaymentModalComponent,
+  PaymentModalOptions
+} from '../payment-modal/payment-modal.component';
 
 @Component({
   selector: 'graceful-florist-payment',
@@ -18,6 +23,7 @@ export class PaymentComponent
   implements OnInit
 {
   protected paymentForm: FormGroup;
+  protected readonly PaymentMethod = PaymentMethod;
   protected breadcrumbs: BreadcrumbItem[] = [
     {label: 'Trang chủ', path: AppRoutingConstants.HOME_PATH},
     {label: 'Thanh toán'}
@@ -26,20 +32,22 @@ export class PaymentComponent
 
   constructor(
     private readonly fb: FormBuilder,
+    private readonly router: Router,
+    private readonly modalService: ModalService,
     private readonly cartService: CartService
   ) {
     super();
     this.paymentForm = this.fb.group({
       recipient: this.fb.group({
-        fullName: ['', Validators.required],
-        phone: ['', Validators.required],
-        district: ['', Validators.required],
-        ward: ['', Validators.required],
-        addressDetail: ['', Validators.required]
+        fullName: ['Ngan', Validators.required],
+        phone: ['0342288215', Validators.required],
+        district: ['9', Validators.required],
+        ward: ['Tan phu', Validators.required],
+        addressDetail: ['Topaz home 2', Validators.required]
       }),
       sender: this.fb.group({
-        fullName: ['', Validators.required],
-        phone: ['', Validators.required]
+        fullName: ['Thong', Validators.required],
+        phone: ['0333635470', Validators.required]
       }),
       deliveryDateTime: this.fb.group({
         deliveryDate: ['', Validators.required],
@@ -65,7 +73,36 @@ export class PaymentComponent
     ]);
   }
 
-  protected onPaymentSubmit(): void {}
+  protected onPaymentSubmit(): void {
+    if (this.paymentForm.invalid) {
+      return;
+    }
+    let products = this.paymentForm.get('products')?.value;
+    products = products.map((item: CartItemDTO) => {
+      return {
+        quantity: item.quantity,
+        product: {
+          id: item.product.id
+        }
+      };
+    });
+    this.paymentForm.get('products')?.setValue(products);
+    const options: PaymentModalOptions = {
+      title: 'Thanh Toán',
+      data: {
+        data: this.paymentForm.value,
+        submitUrl: `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PAYMENT_PATH}`
+      }
+    };
+    this.modalService.open(PaymentModalComponent, options).then(
+      (result: any) => {
+        if (result) {
+          void this.router.navigate([AppRoutingConstants.HOME_PATH]);
+        }
+      },
+      () => {}
+    );
+  }
 
   protected get cartItemsLength(): number {
     return this.paymentForm.get('products')?.value.length;

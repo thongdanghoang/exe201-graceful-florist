@@ -32,4 +32,14 @@ public class OrderItemEntity extends AbstractBaseEntity {
     @Column(name = "total_price", nullable = false)
     private int totalPrice;
 
+    public static OrderItemEntity of(OrderEntity order, ProductEntity product, int quantity, int price, int totalPrice) {
+        var orderItemEntity = new OrderItemEntity();
+        orderItemEntity.setOrder(order);
+        orderItemEntity.setProduct(product);
+        orderItemEntity.setQuantity(quantity);
+        orderItemEntity.setPrice(price);
+        orderItemEntity.setTotalPrice(totalPrice);
+        return orderItemEntity;
+    }
+
 }

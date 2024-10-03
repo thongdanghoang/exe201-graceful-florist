@@ -1,0 +1,94 @@
+<ng-container *ngIf="isConfirm; else confirmAddress">
+    <div class="h-fit">
+        <mat-dialog-content class="min-h-fit">
+            <div class="flex flex-col gap-7 items-center">
+                <div class="font-sans text-2xl font-bold">
+                    {{ options.title }}
+                </div>
+                <img
+                    ngSrc="assets/payment-qr.jpeg"
+                    alt="payment-qr"
+                    width="656"
+                    height="932"
+                    priority
+                    style="width: 328px; height: 466px"
+                    class="object-cover"
+                />
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+            <div class="flex flex-col gap-2 5 w-full">
+                <button
+                    [disabled]="formGroup.invalid"
+                    mat-flat-button
+                    color="primary"
+                    (click)="submit()"
+                >
+                    Hoàn Thành
+                </button>
+                <button class="!ml-0" mat-flat-button (click)="close()">
+                    Đóng
+                </button>
+            </div>
+        </mat-dialog-actions>
+    </div>
+</ng-container>
+<ng-template #confirmAddress>
+    <div class="p-20">
+        <mat-dialog-content>
+            <div class="flex flex-col gap-7 items-center">
+                <div class="font-sans text-2xl font-bold">
+                    Đây có phải là địa chỉ của bạn?
+                </div>
+                <div class="flex flex-col gap-2.5">
+                    <div
+                        class="flex flex-row gap-2.5 font-sans text-base font-bold leading-normal"
+                    >
+                        Giao hàng đến:
+                        <div
+                            class="flex flex-row gap-2.5 font-sans text-base font-medium leading-normal"
+                        >
+                            {{ recipientAddress }}
+                            <div
+                                class="font-sans text-base font-medium leading-normal text-primary"
+                            >
+                                {{ recipientName }}
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-row gap-2.5 font-sans text-base font-bold leading-normal"
+                    >
+                        Người đặt:
+                        <div
+                            class="flex flex-row gap-2.5 font-sans text-base font-medium leading-normal"
+                        >
+                            <div
+                                class="font-sans text-base font-medium leading-normal text-primary"
+                            >
+                                {{ senderName }}
+                            </div>
+                            {{ senderPhone }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-dialog-content>
+
+        <mat-dialog-actions>
+            <div class="flex flex-col gap-2 w-full">
+                <button
+                    [disabled]="formGroup.invalid"
+                    mat-flat-button
+                    color="primary"
+                    (click)="this.isConfirm = true"
+                >
+                    Đi Đến Thanh Toán
+                </button>
+                <button class="!ml-0" mat-flat-button (click)="close()">
+                    Quay Lại
+                </button>
+            </div></mat-dialog-actions
+        >
+    </div></ng-template
+>

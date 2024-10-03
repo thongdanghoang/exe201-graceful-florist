@@ -8,6 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -29,13 +34,16 @@ public class OrderEntity  extends AbstractAuditableEntity {
     @JoinColumn(name = "promotion_id")
     private PromotionEntity promotion;
 
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    private Set<OrderItemEntity> orderItems = new HashSet<>();
+
     @NotNull
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @Column(name = "total_price")
-    private int totalPrice;
+    private long totalPrice;
 
     @Column(name = "sender_name")
     private String senderName;

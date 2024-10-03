@@ -1,6 +1,5 @@
 <form
     [formGroup]="paymentForm"
-    (ngSubmit)="onPaymentSubmit()"
     class="container mx-auto flex-col flex gap-5 py-5"
 >
     <graceful-florist-breadcrumb [breadcrumbs]="breadcrumbs" />
@@ -195,13 +194,31 @@
                 formControlName="paymentMethod"
                 class="flex flex-col gap-2.5"
             >
-                <mat-radio-button value="cod" color="primary"
+                <mat-radio-button
+                    value="cod"
+                    color="primary"
+                    [checked]="
+                        this.paymentForm.get('paymentMethod')?.value ===
+                        PaymentMethod.COD
+                    "
                     >Thanh toán khi nhận hàng
                 </mat-radio-button>
-                <mat-radio-button value="momo" color="primary"
+                <mat-radio-button
+                    value="momo"
+                    color="primary"
+                    [checked]="
+                        this.paymentForm.get('paymentMethod')?.value ===
+                        PaymentMethod.MOMO
+                    "
                     >Thanh toán qua MoMo
                 </mat-radio-button>
-                <mat-radio-button value="zalopay" color="primary"
+                <mat-radio-button
+                    value="zalopay"
+                    color="primary"
+                    [checked]="
+                        this.paymentForm.get('paymentMethod')?.value ===
+                        PaymentMethod.VNPAY
+                    "
                     >Thanh toán qua ZaloPay
                 </mat-radio-button>
             </mat-radio-group>
@@ -254,7 +271,8 @@
                 [disabled]="paymentForm.invalid"
                 mat-flat-button
                 color="primary"
-                type="submit"
+                type="button"
+                (click)="onPaymentSubmit()"
             >
                 Đặt Hàng
             </button>

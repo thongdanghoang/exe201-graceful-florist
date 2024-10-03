@@ -3,7 +3,7 @@ package id.vn.thongdanghoang.graceful.web;
 import id.vn.thongdanghoang.graceful.dtos.SearchResultDto;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductDTO;
 import id.vn.thongdanghoang.graceful.mappers.ProductMapper;
-import id.vn.thongdanghoang.graceful.securities.services.ProductService;
+import id.vn.thongdanghoang.graceful.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

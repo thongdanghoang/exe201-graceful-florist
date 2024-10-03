@@ -1,4 +1,4 @@
-package id.vn.thongdanghoang.graceful.securities.services;
+package id.vn.thongdanghoang.graceful.services;
 
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
 

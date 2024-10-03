@@ -1,7 +1,12 @@
 import {ProductDto} from '../../products/models/product.dto';
 
 export enum OrderStatus {
-  PROCESSING = 'PROCESSING'
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  DEPOSITED = 'DEPOSITED',
+  DELIVERING = 'DELIVERING',
+  DELIVERED = 'DELIVERED',
+  CANCELLED = 'CANCELLED'
 }
 
 export enum OrderType {

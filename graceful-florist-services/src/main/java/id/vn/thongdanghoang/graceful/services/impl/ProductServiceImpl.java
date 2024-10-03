@@ -1,8 +1,8 @@
-package id.vn.thongdanghoang.graceful.securities.services.impl;
+package id.vn.thongdanghoang.graceful.services.impl;
 
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
 import id.vn.thongdanghoang.graceful.repositories.ProductRepository;
-import id.vn.thongdanghoang.graceful.securities.services.ProductService;
+import id.vn.thongdanghoang.graceful.services.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
