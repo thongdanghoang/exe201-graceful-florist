@@ -61,24 +61,24 @@
         <button
             class="!rounded-lg"
             mat-flat-button
-            [matMenuTriggerFor]="status"
+            [matMenuTriggerFor]="enabled"
             aria-label="Trạng thái"
         >
-            {{ statusFilterLabel | productStatus: "Trạng thái" }}
+            {{ enabledFilterLabel | productStatus: "Trạng thái" }}
             <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
         </button>
-        <mat-menu #status="matMenu">
-            <mat-chip-listbox class="mx-3" formControlName="status">
+        <mat-menu #enabled="matMenu">
+            <mat-chip-listbox class="mx-3" formControlName="enabled">
                 @for (status of productStatus; track status) {
                     <mat-chip-option
                         class="!rounded-lg !border"
                         [ngClass]="{
                             '!bg-primary':
                                 status ===
-                                this.filterFormGroups.get('status')?.value,
+                                this.filterFormGroups.get('enabled')?.value,
                             '!bg-white !border-slate-700':
                                 status !==
-                                this.filterFormGroups.get('status')?.value,
+                                this.filterFormGroups.get('enabled')?.value,
                         }"
                         [value]="status"
                         >{{ status | productStatus }}</mat-chip-option
@@ -105,6 +105,7 @@
         </div>
     </form>
     <graceful-florist-table
+        #productsTable
         (rowClicked)="openProductDetailModal($event)"
         [fetch]="fetchProduct"
         [sort]="sort"
@@ -113,7 +114,7 @@
             'select',
             'name',
             'createdDate',
-            'status',
+            'enabled',
             'price',
         ]"
     >
@@ -131,11 +132,11 @@
             {{ value | date: "dd/MM/yyyy" }}
         </ng-template>
 
-        <ng-template headerTableTemplate="status" let-column>
+        <ng-template headerTableTemplate="enabled" let-column>
             Trạng thái
         </ng-template>
-        <ng-template cellTableTemplate="status" let-value>
-            {{ value | productStatus }}
+        <ng-template cellTableTemplate="enabled" let-value>
+            {{ getEnabledFilterLabel(value) | productStatus }}
         </ng-template>
 
         <ng-template headerTableTemplate="price" let-column> Giá </ng-template>

@@ -8,19 +8,32 @@
             <div
                 class="flex flex-col gap-2.5 max-w-sm lg:max-w-xl 2xl:max-w-screen-md"
             >
-                <img [src]="mainImage" [alt]="productDto.name" />
-                <div class="flex gap-6 overflow-x-scroll w-full">
+                <ng-container *ngIf="mainImage">
                     <img
-                        *ngFor="let image of productDto.images"
-                        [ngSrc]="image"
+                        [ngSrc]="mainImage"
                         [alt]="productDto.name"
-                        class="object-cover"
-                        (click)="changeMainImage(image)"
+                        class="rounded-lg object-cover"
                         priority
-                        width="100"
-                        height="100"
+                        width="472"
+                        height="350"
+                        style="width: 472px; height: 350px"
                     />
-                </div>
+                </ng-container>
+                <ng-container *ngIf="productDto.images.length">
+                    <div class="flex gap-6 w-full">
+                        <img
+                            *ngFor="let image of productDto.images"
+                            [ngSrc]="image"
+                            [alt]="productDto.name"
+                            class="object-cover"
+                            (click)="changeMainImage(image)"
+                            priority
+                            width="100"
+                            height="100"
+                            style="width: 100px; height: 100px"
+                        />
+                    </div>
+                </ng-container>
             </div>
             <div class="flex flex-col gap-2.5 w-full">
                 <!--     Name, detail, reviews, purchase     -->
@@ -75,8 +88,13 @@
                             class="flex flex-col gap-2 5 justify-between items-center"
                         >
                             <img
-                                [src]="ingredient.imageUrl"
+                                [ngSrc]="ingredient.imageUrl"
                                 [alt]="ingredient.name"
+                                priority
+                                width="100"
+                                height="100"
+                                class="object-cover"
+                                style="width: 100px; height: 100px"
                             />
                             <div
                                 class="font-sans text-xs font-normal leading-normal text-slate-700"
@@ -186,8 +204,12 @@
                     >
                         <img
                             class="object-cover"
-                            src="{{ recommend.imageUrl }}"
+                            ngSrc="{{ recommend.imageUrl }}"
                             alt="{{ recommend.name }}"
+                            priority
+                            width="232"
+                            height="232"
+                            style="width: 232px; height: 232px"
                         />
                         <div class="flex flex-col">
                             <div
@@ -327,9 +349,16 @@
                                                 track image
                                             ) {
                                                 <img
-                                                    [src]="image"
+                                                    [ngSrc]="image"
                                                     [alt]="comment.user.name"
-                                                    class="object-cover max-w-28 max-h-28"
+                                                    priority
+                                                    width="100"
+                                                    height="100"
+                                                    class="object-cover"
+                                                    style="
+                                                        width: 100px;
+                                                        height: 100px;
+                                                    "
                                                 />
                                             }
                                         </div>

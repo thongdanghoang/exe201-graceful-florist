@@ -1,4 +1,4 @@
-import {Component, Injector} from '@angular/core';
+import {Component, Injector, inject} from '@angular/core';
 import {FormDialogOptions} from '../../../shared/services/modal.service';
 import {AbstractModalFormComponent} from '../../../shared/components/modal/abstract-modal-form.component';
 import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
@@ -9,6 +9,10 @@ import {
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {ProductService} from '../../../products/services/product.service';
+import {uuid} from '../../../../../../graceful-florist-type';
+import {catchError} from 'rxjs';
+import {AppRoutingConstants} from '../../../../app-routing-constants';
 
 export interface BasicModalOptions extends FormDialogOptions<ProductDetailDto> {
   title: string;
@@ -32,17 +36,18 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
   createProductFormControls: {
     [key: string]: AbstractControl<any, any>;
   } = {
+    version: this.formBuilder.control(0),
     name: this.formBuilder.control(null, [Validators.required]),
     description: this.formBuilder.control(null),
     price: this.formBuilder.control(null, [
       Validators.required,
       Validators.min(1000)
     ]),
-    categories: this.formBuilder.control(null, [Validators.required]),
-    ingredients: this.formBuilder.control(null, [Validators.required]),
-    isSelling: this.formBuilder.control(false),
-    mainImage: this.formBuilder.control(null, [Validators.required]),
-    images: this.formBuilder.control(null)
+    categories: this.formBuilder.control(null),
+    ingredients: this.formBuilder.control(null),
+    enabled: this.formBuilder.control(false),
+    imageUrl: this.formBuilder.control(null, [Validators.required]),
+    images: this.formBuilder.control([])
   };
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly allowAddCategory: boolean = false;
@@ -61,6 +66,7 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
     'Hoa lan',
     'Hoa cúc'
   ];
+  readonly productService: ProductService = inject(ProductService);
 
   constructor(injector: Injector) {
     super(injector);
@@ -69,28 +75,45 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
   protected onMainImageUpload(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      // const file = input.files[0];
-      // TODO: Upload image to server
-      this.formGroup
-        .get('mainImage')
-        ?.setValue(
-          'https://bloomsland.com.au/cdn/shop/articles/rose-meaning_b9a1bd31-488e-4961-8268-d8d109bb2f33.jpg?v=1717506684'
-        );
+      this.registerSubscription(
+        this.productService
+          .uploadImage(input.files[0])
+          .pipe(
+            catchError(error => {
+              alert(`Upload image failed${JSON.stringify(error)}`);
+              return [];
+            })
+          )
+          .subscribe((id: uuid) => {
+            this.formGroup
+              .get('imageUrl')
+              ?.setValue(`${AppRoutingConstants.BACKEND_API_URL}/images/${id}`);
+          })
+      );
     }
   }
 
   protected onImageUpload(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      // const file = input.files[0];
-      // TODO: Upload image to server
-      const images = this.formGroup.get('images')?.value ?? [];
-      this.formGroup
-        .get('images')
-        ?.setValue([
-          ...images,
-          'https://cms.interiorcompany.com/wp-content/uploads/2024/01/lincoln-red-rose-bush-types.jpg'
-        ]);
+      this.registerSubscription(
+        this.productService
+          .uploadImage(input.files[0])
+          .pipe(
+            catchError(error => {
+              alert(`Upload image failed${JSON.stringify(error)}`);
+              return [];
+            })
+          )
+          .subscribe((id: uuid) => {
+            this.formGroup
+              .get('images')
+              ?.setValue([
+                ...(this.formGroup.get('images')?.value || []),
+                `${AppRoutingConstants.BACKEND_API_URL}/images/${id}`
+              ]);
+          })
+      );
     }
   }
 
@@ -101,8 +124,18 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
     return {} as ProductDetailDto;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected override onSubmitFormDataSuccess(result: any): void {}
+  protected override initializeData(): void {
+    this.data = this.options?.data?.data;
+    if (!this.data) {
+      this.data = this.initDefaultData();
+    }
+    this.formGroup.patchValue(this.data);
+  }
+
+  protected override onSubmitFormDataSuccess(result: any): void {
+    this.formGroup.patchValue(result);
+    this.close(result);
+  }
 
   protected override prepareDataBeforeSubmit(): void {}
 
@@ -118,6 +151,22 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
     [key: string]: AbstractControl<any, any>;
   } {
     return this.createProductFormControls;
+  }
+
+  protected override submitFormMethod(): string {
+    return this.isEditMode ? 'PUT' : 'POST';
+  }
+
+  protected override getSubmitFormData(): any {
+    const formSubmitData = this.formGroup?.value;
+    formSubmitData.images = [
+      ...(formSubmitData.images || []),
+      formSubmitData.imageUrl
+    ];
+    formSubmitData.images = formSubmitData.images.map((image: string) =>
+      image.replace(`${AppRoutingConstants.BACKEND_API_URL}/images/`, '')
+    );
+    return formSubmitData;
   }
 
   protected override initializeFormValidation(
@@ -139,7 +188,7 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
   }
 
   protected get productStatusValue(): ProductStatus {
-    return this.formGroup.get('isSelling')?.value
+    return this.formGroup.get('enabled')?.value
       ? ProductStatus.SELLING
       : ProductStatus.NOT_SELLING;
   }

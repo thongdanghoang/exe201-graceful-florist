@@ -7,7 +7,9 @@ import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @NamedEntityGraph(
@@ -35,6 +37,9 @@ public class UserEntity extends AbstractAuditableEntity {
     )
     private Set<AuthorityEntity> authorities = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<OrderEntity> orders = new ArrayList<>();
+
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -50,10 +55,17 @@ public class UserEntity extends AbstractAuditableEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    public static UserEntity register(String username, String password) {
+    @Column(name = "address")
+    private String address;
+
+    public static UserEntity register(String username, String password, String fullName) {
         UserEntity user = new UserEntity();
         user.setUsername(username);
         user.setPassword(password);
+        String firstName = fullName.split(" ")[0];
+        String lastName = fullName.substring(firstName.length()).trim();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
         return user;
     }
 

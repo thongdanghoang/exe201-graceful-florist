@@ -1,13 +1,16 @@
-import {SearchResultDto} from '../../shared/models/abstract-base-dto';
+import {
+  AbstractBaseDto,
+  SearchResultDto
+} from '../../shared/models/abstract-base-dto';
 
-export interface ProductDto {
-  id: string;
+export interface ProductDto extends AbstractBaseDto {
   name: string;
   price: number;
   imageUrl?: string;
-  category?: string;
+  images: string[];
   createdDate?: Date;
-  status?: ProductStatus;
+  enabled: boolean;
+  category?: string;
 }
 
 export enum ProductStatus {
@@ -19,7 +22,6 @@ export interface ProductDetailDto extends ProductDto {
   detail: string;
   reviewCount: number;
   purchaseCount: number;
-  images: string[];
   ingredients: IngredientDto[];
   description: any;
   comments: SearchResultDto<CommentDto>;
