@@ -25,6 +25,10 @@ public class JpaUtils {
         return em;
     }
 
+    public static boolean isInitialized(Object object) {
+        return Hibernate.isInitialized(object);
+    }
+
     /**
      * Get the class of an instance or the underlying class
      * of a proxy (without initializing the proxy!). It is

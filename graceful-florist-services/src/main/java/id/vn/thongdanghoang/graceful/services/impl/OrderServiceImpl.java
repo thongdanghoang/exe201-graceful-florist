@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional(rollbackOn = Throwable.class)
@@ -18,7 +20,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderEntity> searchOrders() {
-        return orderRepository.findWithOrders();
+        return orderRepository.findOrdersForAdminManagement();
+    }
+
+    @Override
+    public Optional<OrderEntity> findOrderById(UUID id) {
+        return orderRepository.findByIdWithDetail(id);
+    }
+
+    @Override
+    public void update(OrderEntity order) {
+        orderRepository.save(order);
     }
 
     @Override

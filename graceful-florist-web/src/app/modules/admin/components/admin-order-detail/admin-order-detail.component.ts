@@ -14,7 +14,6 @@ export class AdminOrderDetailComponent
   implements OnInit
 {
   orderDto: OrderDto | undefined;
-  mainImage: string | undefined;
 
   protected readonly OrderStatus = OrderStatus;
 
@@ -36,10 +35,24 @@ export class AdminOrderDetailComponent
     ]);
   }
 
+  updateOrderStatus(status: OrderStatus): void {
+    if (this.orderDto) {
+      this.orderDto = {
+        ...this.orderDto,
+        status
+      };
+      void this.ordersService.updateOrderStatus(this.orderDto).subscribe();
+    }
+  }
+
   goBack(): void {
     void this.router.navigate([
       `${AppRoutingConstants.ADMIN_PATH}/${AppRoutingConstants.ORDERS_MANAGEMENT_PATH}`
     ]);
+  }
+
+  get productId(): string {
+    return this.orderDto?.id.toString().split('-')[0];
   }
 
   get orderStatus(): OrderStatus {

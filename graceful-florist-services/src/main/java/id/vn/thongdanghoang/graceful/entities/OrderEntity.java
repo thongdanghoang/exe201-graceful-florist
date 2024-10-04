@@ -7,7 +7,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,8 +19,8 @@ import java.util.Set;
 @NamedEntityGraph(
         name = OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH,
         attributeNodes = {
-                @NamedAttributeNode("orderItems"),
                 @NamedAttributeNode("user"),
+                @NamedAttributeNode("orderItems"),
         }
 )
 @Entity
@@ -43,7 +46,7 @@ public class OrderEntity  extends AbstractAuditableEntity {
     @JoinColumn(name = "promotion_id")
     private PromotionEntity promotion;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItemEntity> orderItems = new HashSet<>();
 
     @NotNull
@@ -72,5 +75,17 @@ public class OrderEntity  extends AbstractAuditableEntity {
     @Column(name = "payment_method")
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
+
+    @Column(name = "message")
+    private String message;
+
+    @Column(name = "delivery_date")
+    private LocalDate deliveryDate;
+
+    @Column(name = "delivery_time_from")
+    private LocalTime deliveryTimeFrom;
+
+    @Column(name = "delivery_time_to")
+    private LocalTime deliveryTimeTo;
 
 }

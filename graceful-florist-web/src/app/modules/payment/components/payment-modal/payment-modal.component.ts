@@ -31,7 +31,8 @@ export class PaymentModalComponent extends AbstractModalFormComponent<PaymentDto
     }),
     deliveryDateTime: this.formBuilder.group({
       deliveryDate: ['', Validators.required],
-      deliveryTime: ['']
+      deliveryTimeFrom: [''],
+      deliveryTimeTo: ['']
     }),
     message: this.formBuilder.control(''),
     paymentMethod: this.formBuilder.control(

@@ -51,7 +51,8 @@ export class PaymentComponent
       }),
       deliveryDateTime: this.fb.group({
         deliveryDate: ['', Validators.required],
-        deliveryTime: ['']
+        deliveryTimeFrom: ['09:00:00'],
+        deliveryTimeTo: ['']
       }),
       message: [''],
       paymentMethod: [PaymentMethod.COD, Validators.required],

@@ -19,8 +19,9 @@ export interface PaymentDto {
     phone: string;
   };
   deliveryDateTime: {
-    deliveryDate: string;
-    deliveryTime: string;
+    deliveryDate: Date;
+    deliveryTimeFrom: Date;
+    deliveryTimeTo: Date;
   };
   message: string;
   paymentMethod: PaymentMethod;

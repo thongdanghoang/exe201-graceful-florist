@@ -13,6 +13,7 @@ import {
   OrderStatus
 } from '../../../orders/models/order.dto';
 import {OrdersService} from '../../../orders/services/orders.service';
+import {uuid} from '../../../../../../graceful-florist-type';
 
 @Component({
   selector: 'graceful-florist-orders-management',
@@ -42,7 +43,7 @@ export class OrdersManagementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fetchProduct = this.ordersService.searchProducts.bind(
+    this.fetchProduct = this.ordersService.searchOrders.bind(
       this.ordersService
     );
     this.sort = {
@@ -59,6 +60,10 @@ export class OrdersManagementComponent implements OnInit {
   // It's seem mat-calendar is not work with reactive form
   onSelectedDateFilterChanged(value: any): void {
     this.filterFormGroups.get('optionalDate')?.setValue(value);
+  }
+
+  getProductId(id: uuid | undefined): string {
+    return id.toString().split('-')[0] ?? '';
   }
 
   get orderStatus(): OrderStatus[] {

@@ -17,6 +17,7 @@ public interface OrderMapper {
     OrderItemDTO toOrderItemDTO(OrderItemEntity orderItemEntity);
 
     @Mapping(target = "user", source = "user", ignore = true)
+    @Mapping(target = "orderItems", source = "orderItems", ignore = true)
     OrderDTO toOrderDTO(OrderEntity orderEntity);
 
     List<OrderDTO> toOrderDTOs(List<OrderEntity> orderEntities);
@@ -26,6 +27,9 @@ public interface OrderMapper {
     @Mapping(target = "recipientName", source = "paymentDTO.recipient.fullName")
     @Mapping(target = "recipientPhone", source = "paymentDTO.recipient.phone")
     @Mapping(target = "recipientAddress", source = "paymentDTO", qualifiedByName = "recipientAddress")
+    @Mapping(target = "deliveryDate", source = "deliveryDateTime.deliveryDate")
+    @Mapping(target = "deliveryTimeFrom", source = "deliveryDateTime.deliveryTimeFrom")
+    @Mapping(target = "deliveryTimeTo", source = "deliveryDateTime.deliveryTimeTo")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "version", ignore = true)
     OrderEntity payment(PaymentDTO paymentDTO);

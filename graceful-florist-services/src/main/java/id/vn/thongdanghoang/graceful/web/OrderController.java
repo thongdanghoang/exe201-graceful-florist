@@ -1,16 +1,19 @@
 package id.vn.thongdanghoang.graceful.web;
 
+import id.vn.thongdanghoang.graceful.dtos.RequestWrapper;
 import id.vn.thongdanghoang.graceful.dtos.SearchCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.SearchResultDto;
 import id.vn.thongdanghoang.graceful.dtos.orders.OrderDTO;
+import id.vn.thongdanghoang.graceful.enums.OrderStatus;
 import id.vn.thongdanghoang.graceful.mappers.OrderMapper;
-import id.vn.thongdanghoang.graceful.mappers.ProductMapper;
-import id.vn.thongdanghoang.graceful.mappers.UserMapper;
 import id.vn.thongdanghoang.graceful.services.OrderService;
-import id.vn.thongdanghoang.graceful.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 @RequestMapping("/api/orders")
 @CrossOrigin(origins = "*")
@@ -28,5 +31,27 @@ public class OrderController {
         var orderEntities = orderService.searchOrders();
         var orderDTOs = orderMapper.toOrderDTOs(orderEntities);
         return ResponseEntity.ok(SearchResultDto.of(orderDTOs, total));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDTO> getOrder(@PathVariable UUID id) {
+        var orderEntity = orderService.findOrderById(id);
+        if (orderEntity.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var orderDTO = orderMapper.toOrderDTO(orderEntity.get());
+        return ResponseEntity.ok(orderDTO);
+    }
+
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<Void> updateOrderStatus(@PathVariable UUID id, @RequestBody RequestWrapper<OrderStatus> orderStatusWrapper) {
+        var orderOptional = orderService.findOrderById(id);
+        if (orderOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var order = orderOptional.get();
+        order.setStatus(orderStatusWrapper.getValue());
+        orderService.update(order);
+        return ResponseEntity.noContent().build();
     }
 }

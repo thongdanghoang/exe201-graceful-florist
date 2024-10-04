@@ -1,4 +1,8 @@
 import {ProductDto} from '../../products/models/product.dto';
+import {
+  AbstractAuditableDTO,
+  AbstractBaseDto
+} from '../../shared/models/abstract-base-dto';
 
 export enum OrderStatus {
   PENDING = 'PENDING',
@@ -14,23 +18,22 @@ export enum OrderType {
   SPECIAL = 'SPECIAL'
 }
 
-export interface OrderDto {
-  id: string;
-  name: string;
-  phone: string;
-  address: string;
-  createdDate: Date;
+export interface OrderDto extends AbstractAuditableDTO {
+  recipientName: string;
+  recipientPhone: string;
+  recipientAddress: string;
   status: OrderStatus;
   type: OrderType;
-  products: OrderItemDto[];
-  total: number;
-  receivedDateTime: Date;
+  orderItems: OrderItemDto[];
+  totalPrice: number;
   message: string;
-  note: string;
+  deliveryDate: Date;
+  deliveryTimeFrom: Date;
+  deliveryTimeTo: Date;
 }
 
-export interface OrderItemDto extends ProductDto {
-  id: string;
+export interface OrderItemDto extends AbstractBaseDto {
+  product: ProductDto;
   name: string;
   detail: string;
   quantity: number;

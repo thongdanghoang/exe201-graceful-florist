@@ -21,7 +21,7 @@ export class OrderDetailComponent
   ngOnInit(): void {
     this.activatedRoute.data.subscribe((data: any): void => {
       this.orderDto = data.order;
-      this.orderItems = this.orderDto.products;
+      this.orderItems = this.orderDto.orderItems;
     });
   }
 }

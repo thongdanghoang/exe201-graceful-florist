@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.initDailyChartOptions();
     this.initMonthlyChartOptions();
-    this.fetchProduct = this.ordersService.searchProducts.bind(
+    this.fetchProduct = this.ordersService.searchOrders.bind(
       this.ordersService
     );
     this.sort = {
