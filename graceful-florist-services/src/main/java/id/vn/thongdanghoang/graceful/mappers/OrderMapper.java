@@ -1,11 +1,25 @@
 package id.vn.thongdanghoang.graceful.mappers;
 
-import id.vn.thongdanghoang.graceful.dtos.orders.PaymentDTO;
+import id.vn.thongdanghoang.graceful.dtos.orders.OrderDTO;
+import id.vn.thongdanghoang.graceful.dtos.orders.OrderItemDTO;
+import id.vn.thongdanghoang.graceful.dtos.payments.PaymentDTO;
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
+import id.vn.thongdanghoang.graceful.entities.OrderItemEntity;
 import org.mapstruct.*;
 
+import java.util.List;
+
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@DecoratedWith(OrderMapperDecorator.class)
 public interface OrderMapper {
+
+    @Mapping(target = "product", source = "product", ignore = true)
+    OrderItemDTO toOrderItemDTO(OrderItemEntity orderItemEntity);
+
+    @Mapping(target = "user", source = "user", ignore = true)
+    OrderDTO toOrderDTO(OrderEntity orderEntity);
+
+    List<OrderDTO> toOrderDTOs(List<OrderEntity> orderEntities);
 
     @Mapping(target = "senderName", source = "paymentDTO.sender.fullName")
     @Mapping(target = "senderPhone", source = "paymentDTO.sender.phone")

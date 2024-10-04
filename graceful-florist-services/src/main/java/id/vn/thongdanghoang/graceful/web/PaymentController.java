@@ -1,7 +1,6 @@
 package id.vn.thongdanghoang.graceful.web;
 
-import id.vn.thongdanghoang.graceful.dtos.orders.PaymentDTO;
-import id.vn.thongdanghoang.graceful.entities.OrderEntity;
+import id.vn.thongdanghoang.graceful.dtos.payments.PaymentDTO;
 import id.vn.thongdanghoang.graceful.entities.OrderItemEntity;
 import id.vn.thongdanghoang.graceful.enums.OrderStatus;
 import id.vn.thongdanghoang.graceful.mappers.OrderMapper;

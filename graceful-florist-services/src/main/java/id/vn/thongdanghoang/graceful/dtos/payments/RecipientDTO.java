@@ -1,4 +1,4 @@
-package id.vn.thongdanghoang.graceful.dtos.orders;
+package id.vn.thongdanghoang.graceful.dtos.payments;
 
 import lombok.Data;
 

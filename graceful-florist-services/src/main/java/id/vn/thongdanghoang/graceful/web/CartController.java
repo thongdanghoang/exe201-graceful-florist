@@ -37,7 +37,7 @@ public class CartController {
         return cartService
                 .getCartItems(userId).stream()
                 .map(cartEntity -> new CartItemDTO(
-                        productMapper.toProductDto(cartEntity.getProduct()),
+                        productMapper.toProductDTO(cartEntity.getProduct()),
                         cartEntity.getQuantity()))
                 .toList();
     }

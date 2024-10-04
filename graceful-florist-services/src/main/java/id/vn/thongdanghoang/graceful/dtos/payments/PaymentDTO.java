@@ -1,4 +1,4 @@
-package id.vn.thongdanghoang.graceful.dtos.orders;
+package id.vn.thongdanghoang.graceful.dtos.payments;
 
 import id.vn.thongdanghoang.graceful.dtos.AbstractAuditableDTO;
 import id.vn.thongdanghoang.graceful.dtos.carts.CartItemDTO;

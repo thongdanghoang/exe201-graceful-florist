@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public interface ProductMapper {
 
     @Mapping(target = "images", source = "images", qualifiedByName = "toImageIDs")
-    ProductDTO toProductDto(ProductEntity productEntity);
+    ProductDTO toProductDTO(ProductEntity productEntity);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "toImages")

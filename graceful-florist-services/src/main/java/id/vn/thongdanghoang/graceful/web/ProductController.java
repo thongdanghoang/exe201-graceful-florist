@@ -31,7 +31,7 @@ public class ProductController {
     public ResponseEntity<ProductDTO> getProductById(@PathVariable UUID id) {
         var productEntity = service.getProductById(id);
         if (productEntity.isPresent()) {
-            var productDTO = mapper.toProductDto(productEntity.get());
+            var productDTO = mapper.toProductDTO(productEntity.get());
             return ResponseEntity.ok(productDTO);
         }
         return ResponseEntity.notFound().build();
@@ -41,7 +41,7 @@ public class ProductController {
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
         var productEntity = mapper.toProductEntity(productDTO);
         var createdProductEntity = service.createProduct(productEntity);
-        var createdProductDTO = mapper.toProductDto(createdProductEntity);
+        var createdProductDTO = mapper.toProductDTO(createdProductEntity);
         return ResponseEntity.ok(createdProductDTO);
     }
 
@@ -52,7 +52,7 @@ public class ProductController {
         if(product.isPresent()){
             var productEntity = mapper.toProductEntity(productDTO, product.get());
             var updatedProductEntity = service.updateProduct(productEntity);
-            var updatedProductDTO = mapper.toProductDto(updatedProductEntity);
+            var updatedProductDTO = mapper.toProductDTO(updatedProductEntity);
             return ResponseEntity.ok(updatedProductDTO);
         }
         return ResponseEntity.notFound().build();
