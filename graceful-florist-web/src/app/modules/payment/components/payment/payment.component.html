@@ -195,7 +195,7 @@
                 class="flex flex-col gap-2.5"
             >
                 <mat-radio-button
-                    value="cod"
+                    [value]="PaymentMethod.COD"
                     color="primary"
                     [checked]="
                         this.paymentForm.get('paymentMethod')?.value ===
@@ -204,7 +204,7 @@
                     >Thanh toán khi nhận hàng
                 </mat-radio-button>
                 <mat-radio-button
-                    value="momo"
+                    [value]="PaymentMethod.MOMO"
                     color="primary"
                     [checked]="
                         this.paymentForm.get('paymentMethod')?.value ===
@@ -213,13 +213,13 @@
                     >Thanh toán qua MoMo
                 </mat-radio-button>
                 <mat-radio-button
-                    value="zalopay"
+                    [value]="PaymentMethod.VNPAY"
                     color="primary"
                     [checked]="
                         this.paymentForm.get('paymentMethod')?.value ===
                         PaymentMethod.VNPAY
                     "
-                    >Thanh toán qua ZaloPay
+                    >Thanh toán qua VNPay
                 </mat-radio-button>
             </mat-radio-group>
         </div>

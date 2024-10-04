@@ -1,4 +1,3 @@
-// src/app/interceptors/token.interceptor.ts
 import {Injectable} from '@angular/core';
 import {
   HttpEvent,
@@ -6,12 +5,17 @@ import {
   HttpInterceptor,
   HttpRequest
 } from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {UserService} from './user.service';
+import {Router} from '@angular/router';
+import {AppRoutingConstants} from '../app-routing-constants';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly router: Router
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -19,6 +23,13 @@ export class TokenInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('accessToken');
     if (token && req.url.startsWith('http://localhost:8080/api')) {
+      const decodedToken = this.userService.decodeToken(token);
+      if (decodedToken && decodedToken.exp * 1000 < Date.now()) {
+        this.userService.clearUser();
+        void this.router.navigate([`${AppRoutingConstants.AUTH_PATH}`]);
+        return throwError('Token expired');
+      }
+
       const cloned = req.clone({
         headers: req.headers.set('Authorization', `Bearer ${token}`)
       });

@@ -4,7 +4,7 @@ import {SharedModule} from '../shared/shared.module';
 import {PaymentRoutingModule} from './payment-routing.module';
 import {PaymentComponent} from './components/payment/payment.component';
 import {ProductService} from '../products/services/product.service';
-import { PaymentModalComponent } from './components/payment-modal/payment-modal.component';
+import {PaymentModalComponent} from './components/payment-modal/payment-modal.component';
 
 @NgModule({
   declarations: [PaymentComponent, PaymentModalComponent],

@@ -4,6 +4,7 @@ import {PaymentDto, PaymentMethod} from '../../models/payment.dto';
 import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
 import {FormDialogOptions} from '../../../shared/services/modal.service';
 import {ProductDetailDto} from '../../../products/models/product.dto';
+import {CartService} from '../../../cart/services/cart.service';
 
 export interface PaymentModalOptions
   extends FormDialogOptions<ProductDetailDto> {}
@@ -42,8 +43,11 @@ export class PaymentModalComponent extends AbstractModalFormComponent<PaymentDto
 
   protected isConfirm = false;
 
+  protected readonly cartService: CartService;
+
   constructor(injector: Injector) {
     super(injector);
+    this.cartService = injector.get(CartService);
   }
 
   protected get recipientAddress(): string {
@@ -75,6 +79,7 @@ export class PaymentModalComponent extends AbstractModalFormComponent<PaymentDto
     return {} as PaymentDto;
   }
   protected override onSubmitFormDataSuccess(result: any): void {
+    this.registerSubscription(this.cartService.fetchCartItems().subscribe());
     this.formGroup.patchValue(result);
     this.close(result);
   }

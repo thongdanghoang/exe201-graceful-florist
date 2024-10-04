@@ -36,7 +36,10 @@ export class CartService {
             ...item,
             product: this.mapProductImages(item.product)
           }))
-        )
+        ),
+        tap((cartItems: CartItemDTO[]): void => {
+          this.cartItemsChanged.next(cartItems);
+        })
       );
   }
 
