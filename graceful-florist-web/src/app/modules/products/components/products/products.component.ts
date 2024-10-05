@@ -5,15 +5,15 @@ import {
   SearchCriteriaDto,
   SearchResultDto
 } from '../../../shared/models/abstract-base-dto';
-import {
-  ProductCriteriaDto,
-  ProductDto,
-  ProductStatus
-} from '../../models/product.dto';
+import {ProductCriteriaDto, ProductDto} from '../../models/product.dto';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {Router} from '@angular/router';
+import {CategoryService} from '../../../admin/services/category.service';
+import {CategoryDto, CategoryType} from '../../../admin/model/category.dto';
+import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'graceful-florist-products',
@@ -24,6 +24,15 @@ export class ProductsComponent
   extends SubscriptionAwareComponent
   implements OnInit
 {
+  filterFormControls: {
+    [key: string]: AbstractControl<any, any>;
+  } = {
+    selectedCategoryFlowers: this.formBuilder.control([]),
+    selectedCategoryColors: this.formBuilder.control([]),
+    selectedCategoryThemes: this.formBuilder.control([])
+  };
+  filterFormGroups: FormGroup = this.formBuilder.group(this.filterFormControls);
+
   protected criteria: SearchCriteriaDto<ProductCriteriaDto>;
   protected products: SearchResultDto<ProductDto> | undefined;
   protected breadcrumbs: BreadcrumbItem[] = [
@@ -31,26 +40,12 @@ export class ProductsComponent
     {label: 'Sản Phẩm', path: AppRoutingConstants.DEV_PATH}
   ];
   protected readonly panelOpenState = signal(false);
-  protected readonly flowersByTheme: string[] = [
-    'Hoa cho cặp đôi',
-    'Hoa Xin Lỗi',
-    'Hoa Sinh Nhật',
-    'Hoa Chúc Mừng',
-    'Hoa kỷ niệm ngày cưới',
-    'Hoa chia buồn'
-  ];
-  protected readonly decorators: string[] = [
-    'Giỏ hoa để bàn',
-    'Bó hoa',
-    'Bình hoa',
-    'Giỏ hoa',
-    'Trái cây',
-    'Hộp hoa'
-  ];
-  protected readonly selectedFilters: string[] = ['Hoa cho cặp đôi'];
+  protected readonly categories: CategoryDto[] = [];
 
   constructor(
+    private readonly formBuilder: FormBuilder,
     private readonly productService: ProductService,
+    private readonly categoryService: CategoryService,
     private readonly router: Router
   ) {
     super();
@@ -63,18 +58,104 @@ export class ProductsComponent
         column: 'name',
         direction: 'asc'
       },
-      criteria: {status: ProductStatus.SELLING}
+      criteria: {categories: []}
     };
   }
 
   ngOnInit(): void {
-    this.registerSubscription(
-      this.productService
-        .searchProducts(this.criteria)
-        .subscribe((results: SearchResultDto<ProductDto>): void => {
-          this.products = results;
-        })
+    this.registerSubscriptions([
+      this.search(),
+      this.categoryService
+        .getEnabledCategories()
+        .subscribe((categories: CategoryDto[]): void => {
+          this.categories.push(...categories);
+        }),
+      this.filterFormGroups.valueChanges.subscribe((value: any): void => {
+        this.criteria.criteria.categories = [
+          ...(Array.isArray(value.selectedCategoryFlowers)
+            ? value.selectedCategoryFlowers
+            : []),
+          ...(Array.isArray(value.selectedCategoryColors)
+            ? value.selectedCategoryColors
+            : []),
+          ...(Array.isArray(value.selectedCategoryThemes)
+            ? value.selectedCategoryThemes
+            : [])
+        ];
+        this.registerSubscription(this.search());
+      })
+    ]);
+  }
+
+  search(): Subscription {
+    return this.productService
+      .searchProducts(this.criteria)
+      .subscribe((results: SearchResultDto<ProductDto>): void => {
+        this.products = results;
+      });
+  }
+
+  get categoryFlowers(): CategoryDto[] {
+    return this.categories.filter(
+      (category: CategoryDto): boolean => category.type === CategoryType.FLOWER
     );
+  }
+
+  get categoryColors(): CategoryDto[] {
+    return this.categories.filter(
+      (category: CategoryDto): boolean => category.type === CategoryType.COLOR
+    );
+  }
+
+  get categoryThemes(): CategoryDto[] {
+    return this.categories.filter(
+      (category: CategoryDto): boolean => category.type === CategoryType.THEME
+    );
+  }
+
+  get selectedFilters(): CategoryDto[] {
+    return [
+      ...(this.filterFormGroups.get('selectedCategoryFlowers')?.value ?? []),
+      ...(this.filterFormGroups.get('selectedCategoryColors')?.value ?? []),
+      ...(this.filterFormGroups.get('selectedCategoryThemes')?.value ?? [])
+    ];
+  }
+
+  removeSelectedFilter(category: CategoryDto): void {
+    this.filterFormGroups
+      .get('selectedCategoryFlowers')
+      ?.setValue(
+        this.filterFormGroups
+          .get('selectedCategoryFlowers')
+          ?.value.filter(
+            (selectedCategory: CategoryDto): boolean =>
+              selectedCategory.id !== category.id
+          )
+      );
+    this.filterFormGroups
+      .get('selectedCategoryColors')
+      ?.setValue(
+        this.filterFormGroups
+          .get('selectedCategoryColors')
+          ?.value.filter(
+            (selectedCategory: CategoryDto): boolean =>
+              selectedCategory.id !== category.id
+          )
+      );
+    this.filterFormGroups
+      .get('selectedCategoryThemes')
+      ?.setValue(
+        this.filterFormGroups
+          .get('selectedCategoryThemes')
+          ?.value.filter(
+            (selectedCategory: CategoryDto): boolean =>
+              selectedCategory.id !== category.id
+          )
+      );
+  }
+
+  resetFilters(): void {
+    this.filterFormGroups.reset();
   }
 
   generateRange(count: number): number[] {

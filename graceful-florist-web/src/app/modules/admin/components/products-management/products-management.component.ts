@@ -62,7 +62,9 @@ export class ProductsManagementComponent implements OnInit {
       column: 'name',
       direction: 'asc'
     };
-    this.criteria = {};
+    this.criteria = {
+      categories: []
+    };
   }
 
   // It's seem mat-calendar is not work with reactive form

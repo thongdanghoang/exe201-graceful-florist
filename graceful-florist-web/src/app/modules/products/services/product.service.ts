@@ -212,7 +212,7 @@ export class ProductService {
     return this.searchProducts({
       sort: {column: 'createdDate', direction: 'desc'},
       page: {pageNumber: 0, pageSize: 5},
-      criteria: {status: ProductStatus.SELLING}
+      criteria: {status: ProductStatus.SELLING, categories: []}
     }).pipe(
       map((result: SearchResultDto<ProductDto>): ProductDto[] =>
         result.results.filter(product => product.enabled)

@@ -1,7 +1,9 @@
 package id.vn.thongdanghoang.graceful.dtos.products;
 
 
-public record ProductCriteria (
+import java.util.List;
 
+public record ProductCriteria (
+    List<CategoryDTO> categories
 ) {
 }

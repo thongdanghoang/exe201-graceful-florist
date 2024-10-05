@@ -16,7 +16,7 @@ public interface ProductService {
 
     ProductEntity updateProduct(ProductEntity productEntity);
 
-    Page<ProductEntity> searchProducts(Pageable page);
+    Page<ProductEntity> searchProducts(Set<UUID> categories, Pageable page);
 
     Optional<ProductEntity> getProductById(UUID id);
 

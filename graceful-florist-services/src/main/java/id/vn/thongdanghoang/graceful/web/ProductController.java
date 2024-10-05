@@ -3,19 +3,25 @@ package id.vn.thongdanghoang.graceful.web;
 import id.vn.thongdanghoang.graceful.dtos.SearchCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.SearchResultDto;
 import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
+import id.vn.thongdanghoang.graceful.dtos.products.ProductCriteria;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductDTO;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.mappers.CommonMapper;
 import id.vn.thongdanghoang.graceful.mappers.ProductMapper;
+import id.vn.thongdanghoang.graceful.securities.SecurityUser;
 import id.vn.thongdanghoang.graceful.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api/products")
 @CrossOrigin(origins = "*")
@@ -28,9 +34,15 @@ public class ProductController {
     private final CommonMapper commonMapper;
 
     @PostMapping("/search")
-    public ResponseEntity<SearchResultDto<ProductDTO>> searchProducts(@RequestBody SearchCriteriaDto<Void> searchCriteria) {
+    public ResponseEntity<SearchResultDto<ProductDTO>> searchProducts(@RequestBody SearchCriteriaDto<ProductCriteria> searchCriteria) {
+        var categories = searchCriteria.getCriteria()
+                .categories().stream()
+                .map(CategoryDTO::getId)
+                .collect(Collectors.toSet());
+        var pageable = commonMapper
+                .toPageable(searchCriteria.getPage(), searchCriteria.getSort());
         var productEntities = service
-                .searchProducts(commonMapper.toPageable(searchCriteria.getPage(), searchCriteria.getSort()));
+                .searchProducts(categories, pageable);
         var productsSearchResult = SearchResultDto
                 .of(mapper.toProductDTOs(productEntities.toList()), productEntities.getTotalElements());
         return ResponseEntity.ok(productsSearchResult);
@@ -69,7 +81,7 @@ public class ProductController {
     }
 
     @GetMapping("/categories")
-    public ResponseEntity<List<CategoryDTO>> getCategories() {
+    public ResponseEntity<List<CategoryDTO>> getCategoriesOverview() {
         var categoryDTOs = service
                 .getEnabledCategories().stream()
                 .map(mapper::toCategoryDTO)
@@ -90,7 +102,7 @@ public class ProductController {
     }
 
     @PostMapping("/categories")
-    public ResponseEntity<CategoryDTO> getCategories(@RequestBody @Valid CategoryDTO category) {
+    public ResponseEntity<CategoryDTO> saveOrUpdateCategory(@RequestBody @Valid CategoryDTO category) {
         CategoryEntity categoryEntity = service
                 .saveOrUpdateCategory(mapper.toCategoryEntity(category));
         return ResponseEntity.ok(

@@ -20,9 +20,19 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
             SELECT p
             FROM ProductEntity p
             JOIN p.categories c
-            WHERE c IN :categories
+            WHERE c.id IN :categories
             """)
-    Page<ProductEntity> searchByCategories(Set<CategoryEntity> categories, Pageable pageable);
+    Page<ProductEntity> searchByCategories(Set<UUID> categories, Pageable pageable);
+
+    @Query("""
+            SELECT p
+            FROM ProductEntity p
+            JOIN p.categories c
+            WHERE c.id IN :categories AND p.enabled = true
+            """)
+    Page<ProductEntity> searchEnabledByCategories(Set<UUID> categories, Pageable pageable);
+
+    Page<ProductEntity> findAllByEnabledTrue(Pageable pageable);
 
     @EntityGraph(ProductEntity.PRODUCT_DETAIL_ENTITY_GRAPH)
     @Query("SELECT p FROM ProductEntity p WHERE p.id = :id")

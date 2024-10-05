@@ -2,6 +2,7 @@ import {
   AbstractAuditableDTO,
   SearchResultDto
 } from '../../shared/models/abstract-base-dto';
+import {CategoryDto} from '../../admin/model/category.dto';
 
 export interface ProductDto extends AbstractAuditableDTO {
   name: string;
@@ -54,4 +55,5 @@ export interface UserDto {
 
 export interface ProductCriteriaDto {
   status?: ProductStatus;
+  categories: CategoryDto[];
 }

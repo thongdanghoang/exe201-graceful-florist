@@ -3,7 +3,10 @@
     <graceful-florist-tab-category />
     <div class="flex flex-col gap-3.5 sm:flex-row">
         <!--   BỘ LỌC TÌM KIẾM   -->
-        <div class="w-full flex flex-col gap-3.5 p-4 h-fit bg-white rounded-lg">
+        <form
+            [formGroup]="filterFormGroups"
+            class="w-full flex flex-col gap-3.5 p-4 h-fit bg-white rounded-lg"
+        >
             <div class="flex gap-1 py-2">
                 <mat-icon>filter_alt</mat-icon>
                 <div class="font-sans text-base leading-normal font-bold">
@@ -15,28 +18,35 @@
                 <div class="font-base text-base font-normal leading-normal">
                     Bộ lọc đang chọn
                 </div>
-                <button class="!text-gray-500" mat-button>
+                <button
+                    class="!text-gray-500"
+                    mat-button
+                    (click)="resetFilters()"
+                >
                     xóa bộ lọc
                     <mat-icon iconPositionEnd>close</mat-icon>
                 </button>
             </div>
             <mat-chip-set aria-label="Bộ lọc đang chọn">
-                @for (selected of selectedFilters; track selected) {
-                    <mat-chip-row class="!rounded-lg !bg-primary">
-                        <div
-                            class="font-sans text-white font-bold text-xs leading-normal"
-                        >
-                            {{ selected }}
-                        </div>
-                        <button
-                            class="!text-white"
-                            matChipRemove
-                            [attr.aria-label]="'remove ' + selected"
-                        >
-                            <mat-icon>cancel</mat-icon>
-                        </button>
-                    </mat-chip-row>
-                }
+                <mat-chip-row
+                    class="!rounded-lg !bg-primary"
+                    *ngFor="let selected of selectedFilters"
+                    (removed)="removeSelectedFilter(selected)"
+                    [value]="selected"
+                >
+                    <div
+                        class="font-sans text-white font-bold text-xs leading-normal"
+                    >
+                        {{ selected.name }}
+                    </div>
+                    <button
+                        class="!text-white"
+                        matChipRemove
+                        [attr.aria-label]="'remove ' + selected.name"
+                    >
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
             </mat-chip-set>
             <mat-divider />
             <mat-accordion class="*:!shadow-none" displayMode="flat">
@@ -55,10 +65,16 @@
                             </div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <mat-chip-listbox aria-label="Hoa theo chủ đề">
-                        @for (theme of flowersByTheme; track theme) {
-                            <mat-chip-option>{{ theme }}</mat-chip-option>
-                        }
+                    <mat-chip-listbox
+                        formControlName="selectedCategoryThemes"
+                        [multiple]="true"
+                    >
+                        <mat-chip-option
+                            *ngFor="let theme of categoryThemes"
+                            [value]="theme"
+                        >
+                            {{ theme.name }}
+                        </mat-chip-option>
                     </mat-chip-listbox>
                 </mat-expansion-panel>
                 <mat-expansion-panel
@@ -76,7 +92,16 @@
                             </div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <p>I'm visible because I am open</p>
+                    <mat-chip-listbox
+                        formControlName="selectedCategoryFlowers"
+                        [multiple]="true"
+                    >
+                        @for (flower of categoryFlowers; track flower) {
+                            <mat-chip-option [value]="flower">{{
+                                flower.name
+                            }}</mat-chip-option>
+                        }
+                    </mat-chip-listbox>
                 </mat-expansion-panel>
                 <mat-expansion-panel
                     class="*:!pl-0"
@@ -93,7 +118,16 @@
                             </div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <p>I'm visible because I am open</p>
+                    <mat-chip-listbox
+                        formControlName="selectedCategoryColors"
+                        [multiple]="true"
+                    >
+                        @for (color of categoryColors; track color) {
+                            <mat-chip-option [value]="color">{{
+                                color.name
+                            }}</mat-chip-option>
+                        }
+                    </mat-chip-listbox>
                 </mat-expansion-panel>
                 <mat-expansion-panel
                     class="*:!pl-0"
@@ -110,14 +144,10 @@
                             </div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <mat-chip-listbox aria-label="Trang trí">
-                        @for (decorator of decorators; track decorator) {
-                            <mat-chip-option>{{ decorator }}</mat-chip-option>
-                        }
-                    </mat-chip-listbox>
+                    <p>Unsupported Type</p>
                 </mat-expansion-panel>
             </mat-accordion>
-        </div>
+        </form>
         <div class="min-w-fit gap-3.5 flex flex-col">
             <img
                 class="hidden sm:block"
@@ -206,43 +236,48 @@
                         </div>
                     </ng-template>
                 </ng-template>
-                <ng-container
-                    *ngIf="
-                        products && products.results.length;
-                        else productSkeletonLoading
-                    "
-                >
-                    @for (product of products.results; track product) {
-                        <ng-container *ngIf="product.enabled"
-                            ><div
-                                class="flex flex-col gap-3 items-center cursor-pointer hover:shadow hover:bg-white p-2 rounded-lg"
-                                (click)="onProductClick(product)"
-                            >
-                                <ng-container *ngIf="product.imageUrl"
-                                    ><img
-                                        ngSrc="{{ product.imageUrl }}"
-                                        alt="{{ product.name }}"
-                                        width="232"
-                                        height="232"
-                                        priority
-                                        class="object-cover"
-                                        style="width: 232px; height: 232px"
-                                /></ng-container>
-                                <div class="flex flex-col w-full">
-                                    <div
-                                        class="font-sans text-xl font-bold leading-normal whitespace-nowrap"
-                                    >
-                                        {{ product.name }}
-                                    </div>
-                                    <div
-                                        class="font-sans text-base font-medium leading-normal text-slate-600"
-                                    >
-                                        {{ product.price | vndCurrency }}
+                <ng-container *ngIf="products; else productSkeletonLoading">
+                    <ng-container
+                        *ngIf="products.results.length > 0; else noProducts"
+                    >
+                        <ng-container *ngFor="let product of products.results">
+                            <ng-container *ngIf="product.enabled">
+                                <div
+                                    class="flex flex-col gap-3 items-center cursor-pointer hover:shadow hover:bg-white p-2 rounded-lg"
+                                    (click)="onProductClick(product)"
+                                >
+                                    <ng-container *ngIf="product.imageUrl">
+                                        <img
+                                            ngSrc="{{ product.imageUrl }}"
+                                            alt="{{ product.name }}"
+                                            width="232"
+                                            height="232"
+                                            priority
+                                            class="object-cover"
+                                            style="width: 232px; height: 232px"
+                                        />
+                                    </ng-container>
+                                    <div class="flex flex-col w-full">
+                                        <div
+                                            class="font-sans text-xl font-bold leading-normal whitespace-nowrap"
+                                        >
+                                            {{ product.name }}
+                                        </div>
+                                        <div
+                                            class="font-sans text-base font-medium leading-normal text-slate-600"
+                                        >
+                                            {{ product.price | vndCurrency }}
+                                        </div>
                                     </div>
                                 </div>
-                            </div></ng-container
-                        >
-                    }
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                    <ng-template #noProducts>
+                        <p class="font-sans text-xl text-gray-500">
+                            Không tìm thấy sản phẩm nào.
+                        </p>
+                    </ng-template>
                 </ng-container>
             </div>
             <ng-template #productSkeletonLoading></ng-template>
