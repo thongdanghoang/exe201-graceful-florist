@@ -55,6 +55,7 @@ import {OrderStatusPipe} from './pipes/order-status.pipe';
 import {OrderTypePipe} from './pipes/order-type.pipe';
 import {CategoryTypePipe} from './pipes/category-type.pipe';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {ImageUrlTransformPipe} from './pipes/image-url-transform.pipe';
 
 const matModules = [
   MatTableModule,
@@ -107,7 +108,8 @@ const sharedModules = [
   ProductStatusPipe,
   OrderStatusPipe,
   OrderTypePipe,
-  CategoryTypePipe
+  CategoryTypePipe,
+  ImageUrlTransformPipe
 ];
 
 @NgModule({
