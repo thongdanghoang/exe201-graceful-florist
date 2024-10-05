@@ -14,17 +14,21 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@DecoratedWith(ProductMapperDecorator.class)
 public interface ProductMapper {
 
+    @Mapping(target = "categories", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "toImageIDs")
     ProductDTO toProductDTO(ProductEntity productEntity);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "toImages")
+    @Mapping(target = "categories", ignore = true)
     ProductEntity toProductEntity(ProductDTO productDTO);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "toImages")
+    @Mapping(target = "categories", ignore = true)
     ProductEntity toProductEntity(ProductDTO productDTO, @MappingTarget ProductEntity productEntity);
 
     CategoryDTO toCategoryDTO(CategoryEntity categoryEntity);

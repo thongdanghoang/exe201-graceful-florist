@@ -1,4 +1,4 @@
-import {Component, Injector, inject} from '@angular/core';
+import {Component, Injector, OnInit, inject} from '@angular/core';
 import {FormDialogOptions} from '../../../shared/services/modal.service';
 import {AbstractModalFormComponent} from '../../../shared/components/modal/abstract-modal-form.component';
 import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
@@ -13,6 +13,8 @@ import {ProductService} from '../../../products/services/product.service';
 import {uuid} from '../../../../../../graceful-florist-type';
 import {catchError} from 'rxjs';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
+import {CategoryService} from '../../services/category.service';
+import {CategoryDto} from '../../model/category.dto';
 
 export interface BasicModalOptions extends FormDialogOptions<ProductDetailDto> {
   title: string;
@@ -32,7 +34,10 @@ export interface BasicModalOptions extends FormDialogOptions<ProductDetailDto> {
   templateUrl: './product-detail-modal.component.html',
   styleUrl: './product-detail-modal.component.css'
 })
-export class ProductDetailModalComponent extends AbstractModalFormComponent<ProductDetailDto> {
+export class ProductDetailModalComponent
+  extends AbstractModalFormComponent<ProductDetailDto>
+  implements OnInit
+{
   createProductFormControls: {
     [key: string]: AbstractControl<any, any>;
   } = {
@@ -43,22 +48,16 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
       Validators.required,
       Validators.min(1000)
     ]),
-    categories: this.formBuilder.control(null),
+    categories: this.formBuilder.control(null, [Validators.required]),
     ingredients: this.formBuilder.control(null),
     enabled: this.formBuilder.control(false),
     imageUrl: this.formBuilder.control(null, [Validators.required]),
     images: this.formBuilder.control([])
   };
+  allCategories: CategoryDto[] = [];
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly allowAddCategory: boolean = false;
   readonly allowAddIngredient: boolean = false;
-  readonly allCategories: string[] = [
-    'Hoa Khai Trương',
-    'Hoa hồng',
-    'Hoa ly',
-    'Hoa lan',
-    'Hoa cúc'
-  ];
   readonly allIngredients: string[] = [
     'Hoa Khai Trương',
     'Hoa hồng',
@@ -67,9 +66,19 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
     'Hoa cúc'
   ];
   readonly productService: ProductService = inject(ProductService);
+  readonly categoryService: CategoryService = inject(CategoryService);
 
   constructor(injector: Injector) {
     super(injector);
+  }
+
+  override ngOnInit(): void {
+    super.ngOnInit();
+    this.registerSubscription(
+      this.categoryService
+        .getEnabledCategories()
+        .subscribe(categories => (this.allCategories = categories))
+    );
   }
 
   protected onMainImageUpload(event: Event): void {
@@ -118,18 +127,24 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
   }
 
   protected override initDefaultData(): ProductDetailDto {
-    if (this.options.data?.data) {
-      return this.options.data.data;
-    }
     return {} as ProductDetailDto;
   }
 
   protected override initializeData(): void {
-    this.data = this.options?.data?.data;
-    if (!this.data) {
-      this.data = this.initDefaultData();
+    if (this.options?.data?.data.id) {
+      this.registerSubscription(
+        this.productService.getProductById(this.options.data.data.id).subscribe(
+          (product: ProductDetailDto): void => {
+            this.data = product;
+            this.formGroup.patchValue(product);
+          },
+          (): void => {
+            this.initDefaultData();
+          }
+        )
+      );
     }
-    this.formGroup.patchValue(this.data);
+    this.data = this.initDefaultData();
   }
 
   protected override onSubmitFormDataSuccess(result: any): void {
@@ -180,11 +195,39 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
     return [];
   }
 
-  protected get filteredCategories(): string[] {
-    const categories = this.formGroup.get('categories')?.value || [];
+  protected get filteredCategories(): CategoryDto[] {
+    const selectedCategories = this.formGroup.get('categories')?.value || [];
     return this.allCategories.filter(
-      category => !categories.includes(category)
+      category =>
+        !selectedCategories.some(
+          (selected: CategoryDto) => selected.id === category.id
+        )
     );
+  }
+
+  protected onSelectedCategory(event: MatAutocompleteSelectedEvent): void {
+    const selectedCategory = this.allCategories.find(
+      category => category.name === event.option.viewValue
+    );
+    if (selectedCategory) {
+      const categories = this.formGroup.get('categories')?.value || [];
+      this.formGroup
+        .get('categories')
+        ?.setValue([...categories, selectedCategory]);
+    }
+    event.option.deselect();
+  }
+
+  protected removeCategory(category: CategoryDto): void {
+    const categories = this.formGroup.get('categories')?.value || [];
+    const index = categories.findIndex(
+      (cat: CategoryDto) => cat.id === category.id
+    );
+
+    if (index >= 0) {
+      categories.splice(index, 1);
+      this.formGroup.get('categories')?.setValue(categories);
+    }
   }
 
   protected get productStatusValue(): ProductStatus {
@@ -203,24 +246,6 @@ export class ProductDetailModalComponent extends AbstractModalFormComponent<Prod
       this.formGroup.get('categories')?.setValue([...categories, value]);
     }
     event.chipInput.clear();
-  }
-
-  protected onSelectedCategory(event: MatAutocompleteSelectedEvent): void {
-    const categories = this.formGroup.get('categories')?.value || [];
-    this.formGroup
-      .get('categories')
-      ?.setValue([...categories, event.option.viewValue]);
-    event.option.deselect();
-  }
-
-  protected removeCategory(category: string): void {
-    const categories = this.formGroup.get('categories')?.value || [];
-    const index = categories.indexOf(category);
-
-    if (index >= 0) {
-      categories.splice(index, 1);
-      this.formGroup.get('categories')?.setValue(categories);
-    }
   }
 
   protected get filteredIngredients(): string[] {

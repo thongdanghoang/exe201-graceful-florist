@@ -23,9 +23,9 @@ public interface ProductService {
 
     CategoryEntity saveOrUpdateCategory(CategoryEntity categoryEntity);
 
-    List<CategoryEntity> getCategories();
+    List<CategoryEntity> getEnabledCategories();
 
-    List<CategoryEntity> getCategories(Pageable page);
+    List<CategoryEntity> getEnabledCategories(Pageable page);
 
     Set<CategoryEntity> searchCategoriesByCategoriesID(Set<UUID> categoriesID);
 

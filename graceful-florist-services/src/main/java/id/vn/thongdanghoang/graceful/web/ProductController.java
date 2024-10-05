@@ -35,7 +35,8 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable UUID id) {
-        var productEntity = service.getProductById(id);
+        var productEntity = service
+                .getProductById(id);
         if (productEntity.isPresent()) {
             var productDTO = mapper.toProductDTO(productEntity.get());
             return ResponseEntity.ok(productDTO);
@@ -67,7 +68,7 @@ public class ProductController {
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryDTO>> getCategories() {
         var categoryDTOs = service
-                .getCategories().stream()
+                .getEnabledCategories().stream()
                 .map(mapper::toCategoryDTO)
                 .toList();
         return ResponseEntity.ok(categoryDTOs);
@@ -75,7 +76,8 @@ public class ProductController {
 
     @PostMapping("/categories/search")
     public ResponseEntity<SearchResultDto<CategoryDTO>> searchCategories(@RequestBody SearchCriteriaDto<Void> searchCriteria) {
-        var categoryEntities = service.getCategories(PageRequest.of(0, 100));
+        var categoryEntities = service
+                .getEnabledCategories(PageRequest.of(0, 100));
         var categoryDTOs = categoryEntities.stream()
                 .map(mapper::toCategoryDTO)
                 .toList();
@@ -86,8 +88,10 @@ public class ProductController {
 
     @PostMapping("/categories")
     public ResponseEntity<CategoryDTO> getCategories(@RequestBody @Valid CategoryDTO category) {
-        CategoryEntity categoryEntity = service.saveOrUpdateCategory(mapper.toCategoryEntity(category));
-        return ResponseEntity.ok(mapper.toCategoryDTO(categoryEntity));
+        CategoryEntity categoryEntity = service
+                .saveOrUpdateCategory(mapper.toCategoryEntity(category));
+        return ResponseEntity.ok(
+                mapper.toCategoryDTO(categoryEntity));
     }
 
 }

@@ -10,7 +10,14 @@ import org.hibernate.annotations.FetchMode;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
+
+@NamedEntityGraph(
+        name = ProductEntity.PRODUCT_DETAIL_ENTITY_GRAPH,
+        attributeNodes = {
+                @NamedAttributeNode("categories"),
+                @NamedAttributeNode("ingredients")
+        }
+)
 @Entity
 @Getter
 @Setter
@@ -18,21 +25,25 @@ import java.util.UUID;
 @Table(name = "products", schema = "graceful")
 public class ProductEntity extends AbstractAuditableEntity {
 
+    public static final String PRODUCT_DETAIL_ENTITY_GRAPH = "product-detail-entity-graph";
+
     @ManyToMany
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(
-        name = "products_categories",
-        joinColumns = @JoinColumn(name = "product_id"),
-        inverseJoinColumns = @JoinColumn(name = "category_id")
+            name = "products_categories",
+            schema = "graceful",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private Set<CategoryEntity> categories = new HashSet<>();
 
     @ManyToMany
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(
-        name = "products_ingredients",
-        joinColumns = @JoinColumn(name = "product_id"),
-        inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+            name = "products_ingredients",
+            schema = "graceful",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private Set<IngredientEntity> ingredients = new HashSet<>();
 

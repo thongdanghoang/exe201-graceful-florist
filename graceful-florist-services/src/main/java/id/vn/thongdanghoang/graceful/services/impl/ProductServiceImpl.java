@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Optional<ProductEntity> getProductById(UUID id) {
-        return repository.findById(id);
+        return repository.findByIdWithDetail(id);
     }
 
     @Override
@@ -56,12 +56,12 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<CategoryEntity> getCategories() {
+    public List<CategoryEntity> getEnabledCategories() {
         return categoryRepository.findEnabledCategories();
     }
 
     @Override
-    public List<CategoryEntity> getCategories(Pageable page) {
+    public List<CategoryEntity> getEnabledCategories(Pageable page) {
         return categoryRepository.findAll();
     }
 

@@ -23,6 +23,12 @@ export class CategoryService {
     );
   }
 
+  getEnabledCategories(): Observable<CategoryDto[]> {
+    return this.httpClient.get<CategoryDto[]>(
+      `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.CATEGORY_PATH}`
+    );
+  }
+
   getCategory(id: string): Observable<CategoryDto> {
     return this.httpClient.get<CategoryDto>(
       `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.CATEGORY_PATH}/${id}`

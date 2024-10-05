@@ -93,11 +93,12 @@
                 <mat-chip-row
                     *ngFor="let category of formGroup.get('categories')?.value"
                     (removed)="removeCategory(category)"
+                    [value]="category"
                 >
-                    {{ category }}
+                    {{ category.name }}
                     <button
                         matChipRemove
-                        [attr.aria-label]="'remove ' + category"
+                        [attr.aria-label]="'remove ' + category.name"
                     >
                         <mat-icon>cancel</mat-icon>
                     </button>
@@ -116,9 +117,9 @@
                 (optionSelected)="onSelectedCategory($event)"
             >
                 <mat-option
-                    *ngFor="let catergory of filteredCategories"
-                    [value]="catergory"
-                    >{{ catergory }}</mat-option
+                    *ngFor="let category of filteredCategories"
+                    [value]="category"
+                    >{{ category.name }}</mat-option
                 >
             </mat-autocomplete>
         </mat-form-field>
