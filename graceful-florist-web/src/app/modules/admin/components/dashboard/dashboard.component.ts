@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
       this.ordersService
     );
     this.sort = {
-      column: 'name',
+      column: 'lastModifiedDate',
       direction: 'asc'
     };
     this.criteria = {} as OrderCriteriaDto;

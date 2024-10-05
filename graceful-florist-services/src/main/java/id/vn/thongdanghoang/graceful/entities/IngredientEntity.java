@@ -1,8 +1,7 @@
 package id.vn.thongdanghoang.graceful.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import id.vn.thongdanghoang.graceful.enums.IngredientType;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,5 +23,10 @@ public class IngredientEntity extends AbstractAuditableEntity {
     @NotNull
     @Column(name = "image")
     private UUID image;
+
+    @NotNull
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private IngredientType type;
 
 }
