@@ -5,6 +5,7 @@ import id.vn.thongdanghoang.graceful.repositories.OrderRepository;
 import id.vn.thongdanghoang.graceful.services.OrderService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +20,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     @Override
-    public List<OrderEntity> searchOrders() {
-        return orderRepository.findOrdersForAdminManagement();
+    public List<OrderEntity> searchOrders(Pageable page) {
+        return orderRepository.findOrdersForAdminManagement(page);
     }
 
     @Override

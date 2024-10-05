@@ -97,7 +97,7 @@ public class ProductController {
                 .map(mapper::toCategoryDTO)
                 .toList();
         var categoriesSearchResult = SearchResultDto
-                .of(categoryDTOs, categoryDTOs.size());
+                .of(categoryDTOs, categoryEntities.getTotalElements());
         return ResponseEntity.ok(categoriesSearchResult);
     }
 

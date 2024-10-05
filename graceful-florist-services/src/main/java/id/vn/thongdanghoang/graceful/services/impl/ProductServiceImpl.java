@@ -66,8 +66,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<CategoryEntity> getEnabledCategories(Pageable page) {
-        return categoryRepository.findAll();
+    public Page<CategoryEntity> getEnabledCategories(Pageable page) {
+        return categoryRepository.findAll(page);
     }
 
     @Override

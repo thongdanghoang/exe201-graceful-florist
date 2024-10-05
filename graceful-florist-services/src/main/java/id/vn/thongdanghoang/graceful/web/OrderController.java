@@ -5,9 +5,11 @@ import id.vn.thongdanghoang.graceful.dtos.SearchCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.SearchResultDto;
 import id.vn.thongdanghoang.graceful.dtos.orders.OrderDTO;
 import id.vn.thongdanghoang.graceful.enums.OrderStatus;
+import id.vn.thongdanghoang.graceful.mappers.CommonMapper;
 import id.vn.thongdanghoang.graceful.mappers.OrderMapper;
 import id.vn.thongdanghoang.graceful.services.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +25,14 @@ public class OrderController {
 
     private final OrderService orderService;
     private final OrderMapper orderMapper;
-
+    private final CommonMapper commonMapper;
 
     @PostMapping
     public ResponseEntity<SearchResultDto<OrderDTO>> searchOrders(@RequestBody SearchCriteriaDto<Void> searchCriteria) {
+        var pageable = commonMapper
+                .toPageable(searchCriteria.getPage(), searchCriteria.getSort());
         long total = orderService.countOrders();
-        var orderEntities = orderService.searchOrders();
+        var orderEntities = orderService.searchOrders(pageable);
         var orderDTOs = orderMapper.toOrderDTOs(orderEntities);
         return ResponseEntity.ok(SearchResultDto.of(orderDTOs, total));
     }

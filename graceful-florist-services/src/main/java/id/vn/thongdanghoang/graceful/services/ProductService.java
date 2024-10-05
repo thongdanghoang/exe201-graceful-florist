@@ -24,7 +24,7 @@ public interface ProductService {
 
     List<CategoryEntity> getEnabledCategories();
 
-    List<CategoryEntity> getEnabledCategories(Pageable page);
+    Page<CategoryEntity> getEnabledCategories(Pageable page);
 
     Set<CategoryEntity> searchCategoriesByCategoriesID(Set<UUID> categoriesID);
 

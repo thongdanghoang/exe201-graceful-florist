@@ -47,7 +47,7 @@ export class OrdersManagementComponent implements OnInit {
       this.ordersService
     );
     this.sort = {
-      column: 'name',
+      column: 'deliveryDate',
       direction: 'asc'
     };
     this.criteria = {} as OrderCriteriaDto;

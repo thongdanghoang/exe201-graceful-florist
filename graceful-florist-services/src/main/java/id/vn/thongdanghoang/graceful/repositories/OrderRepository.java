@@ -2,6 +2,7 @@ package id.vn.thongdanghoang.graceful.repositories;
 
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID> {
 
     @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)
     @Query("SELECT o FROM OrderEntity o")
-    List<OrderEntity> findOrdersForAdminManagement();
+    List<OrderEntity> findOrdersForAdminManagement(Pageable page);
 
     @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)
     @Query("SELECT o FROM OrderEntity o WHERE o.id = :id")

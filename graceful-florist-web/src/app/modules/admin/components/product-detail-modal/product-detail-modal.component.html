@@ -106,7 +106,7 @@
             </mat-chip-grid>
             <mat-error></mat-error>
             <input
-                placeholder="New Catergory..."
+                formControlName="searchCategoryKeyword"
                 [matChipInputFor]="categories"
                 (matChipInputTokenEnd)="onAddCategory($event)"
                 [matAutocomplete]="autoCategories"

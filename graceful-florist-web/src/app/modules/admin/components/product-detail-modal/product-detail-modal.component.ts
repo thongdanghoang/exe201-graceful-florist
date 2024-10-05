@@ -52,9 +52,11 @@ export class ProductDetailModalComponent
     ingredients: this.formBuilder.control(null),
     enabled: this.formBuilder.control(false),
     imageUrl: this.formBuilder.control(null, [Validators.required]),
-    images: this.formBuilder.control([])
+    images: this.formBuilder.control([]),
+    searchCategoryKeyword: this.formBuilder.control(null)
   };
   allCategories: CategoryDto[] = [];
+  filteredCategories: CategoryDto[] = [];
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly allowAddCategory: boolean = false;
   readonly allowAddIngredient: boolean = false;
@@ -74,11 +76,29 @@ export class ProductDetailModalComponent
 
   override ngOnInit(): void {
     super.ngOnInit();
-    this.registerSubscription(
+    this.registerSubscriptions([
       this.categoryService
         .getEnabledCategories()
         .subscribe(categories => (this.allCategories = categories))
-    );
+    ]);
+    this.formGroup
+      .get('searchCategoryKeyword')
+      ?.valueChanges.subscribe(inputValue => {
+        const selectedCategories =
+          this.formGroup.get('categories')?.value || [];
+        this.filteredCategories = this.allCategories
+          .filter(category =>
+            this.normalizeText(category.name).includes(
+              this.normalizeText(inputValue)
+            )
+          )
+          .filter(
+            category =>
+              !selectedCategories.some(
+                (selected: CategoryDto) => selected.id === category.id
+              )
+          );
+      });
   }
 
   protected onMainImageUpload(event: Event): void {
@@ -195,16 +215,6 @@ export class ProductDetailModalComponent
     return [];
   }
 
-  protected get filteredCategories(): CategoryDto[] {
-    const selectedCategories = this.formGroup.get('categories')?.value || [];
-    return this.allCategories.filter(
-      category =>
-        !selectedCategories.some(
-          (selected: CategoryDto) => selected.id === category.id
-        )
-    );
-  }
-
   protected onSelectedCategory(event: MatAutocompleteSelectedEvent): void {
     const selectedCategory = this.allCategories.find(
       category => category.name === event.option.viewValue
@@ -286,5 +296,12 @@ export class ProductDetailModalComponent
       ingredients.splice(index, 1);
       this.formGroup.get('ingredients')?.setValue(ingredients);
     }
+  }
+
+  private normalizeText(text: string): string {
+    return text
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
   }
 }
