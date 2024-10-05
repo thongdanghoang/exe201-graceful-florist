@@ -2,6 +2,7 @@ package id.vn.thongdanghoang.graceful.services;
 
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -15,11 +16,9 @@ public interface ProductService {
 
     ProductEntity updateProduct(ProductEntity productEntity);
 
-    List<ProductEntity> searchProducts();
+    Page<ProductEntity> searchProducts(Pageable page);
 
     Optional<ProductEntity> getProductById(UUID id);
-
-    long countProducts();
 
     CategoryEntity saveOrUpdateCategory(CategoryEntity categoryEntity);
 

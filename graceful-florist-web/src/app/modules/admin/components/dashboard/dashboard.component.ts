@@ -11,6 +11,7 @@ import {OrderCriteriaDto, OrderDto} from '../../../orders/models/order.dto';
 import {Observable} from 'rxjs';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {OrdersService} from '../../../orders/services/orders.service';
+import {uuid} from '../../../../../../graceful-florist-type';
 
 @Component({
   selector: 'graceful-florist-dashboard',
@@ -205,6 +206,10 @@ export class DashboardComponent implements OnInit {
       {length: 12},
       () => Math.floor(Math.random() * 50000) + 10000
     );
+  }
+
+  getProductId(id: uuid | undefined): string {
+    return id.toString().split('-')[0] ?? '';
   }
 
   openAdminOrder(): void {

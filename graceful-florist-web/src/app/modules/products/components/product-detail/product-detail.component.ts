@@ -46,8 +46,8 @@ export class ProductDetailComponent
     super();
     this.commentCriteria = {
       page: {
-        limit: 5,
-        offset: 0
+        pageSize: 5,
+        pageNumber: 0
       },
       sort: {
         column: 'name',
@@ -122,9 +122,8 @@ export class ProductDetailComponent
   }
 
   protected onCommentPageChange(pageEvent: PageEvent): void {
-    this.commentCriteria.page.limit = pageEvent.pageSize;
-    this.commentCriteria.page.offset =
-      pageEvent.pageIndex * this.commentCriteria.page.limit;
+    this.commentCriteria.page.pageSize = pageEvent.pageSize;
+    this.commentCriteria.page.pageNumber = pageEvent.pageIndex;
     this.registerSubscription(
       this.productService
         .getProductComment(this.commentCriteria)

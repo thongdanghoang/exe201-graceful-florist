@@ -79,7 +79,7 @@
     </table>
     <mat-paginator
         [length]="searchResult.total"
-        [pageSize]="searchCriteria.page.limit"
+        [pageSize]="searchCriteria.page.pageSize"
         (page)="onPageChange($event)"
         [pageSizeOptions]="pageSizeOptions"
         showFirstLastButtons

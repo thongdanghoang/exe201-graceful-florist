@@ -186,12 +186,10 @@ export class ProductService {
   searchProducts(
     criteria: SearchCriteriaDto<ProductCriteriaDto>
   ): Observable<SearchResultDto<ProductDto>> {
-    // eslint-disable-next-line no-console
-    console.debug(criteria);
     return this.httpClient
-      .get<
+      .post<
         SearchResultDto<ProductDto>
-      >(`${AppRoutingConstants.BACKEND_API_URL}/products`)
+      >(`${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PRODUCTS_PATH}/search`, criteria)
       .pipe(
         map((result: SearchResultDto<ProductDto>) => {
           result.results = result.results.map(product =>
@@ -213,7 +211,7 @@ export class ProductService {
   getRecommendedProducts(): Observable<ProductDto[]> {
     return this.searchProducts({
       sort: {column: 'createdDate', direction: 'desc'},
-      page: {offset: 0, limit: 5},
+      page: {pageNumber: 0, pageSize: 5},
       criteria: {status: ProductStatus.SELLING}
     }).pipe(
       map((result: SearchResultDto<ProductDto>): ProductDto[] =>

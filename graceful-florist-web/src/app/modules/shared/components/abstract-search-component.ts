@@ -33,8 +33,8 @@ export abstract class AbstractSearchComponent<C, R>
     this.searchCriteria = {
       criteria: this.criteria,
       page: {
-        offset: 0,
-        limit: 10
+        pageNumber: 0,
+        pageSize: 10
       }
     } as SearchCriteriaDto<C>;
   }
@@ -101,6 +101,6 @@ export abstract class AbstractSearchComponent<C, R>
   protected abstract initSearchDto(): void;
 
   protected resetPage(): void {
-    this.searchCriteria.page.offset = 0;
+    this.searchCriteria.page.pageNumber = 0;
   }
 }

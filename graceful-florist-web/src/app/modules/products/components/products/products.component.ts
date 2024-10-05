@@ -56,8 +56,8 @@ export class ProductsComponent
     super();
     this.criteria = {
       page: {
-        limit: 12,
-        offset: 0
+        pageSize: 12,
+        pageNumber: 0
       },
       sort: {
         column: 'name',
@@ -82,8 +82,8 @@ export class ProductsComponent
   }
 
   onPageChange(pageEvent: PageEvent): void {
-    this.criteria.page.limit = pageEvent.pageSize;
-    this.criteria.page.offset = pageEvent.pageIndex * this.criteria.page.limit;
+    this.criteria.page.pageSize = pageEvent.pageSize;
+    this.criteria.page.pageNumber = pageEvent.pageIndex;
     this.registerSubscription(
       this.productService
         .searchProducts(this.criteria)

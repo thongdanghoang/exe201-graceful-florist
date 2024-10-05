@@ -381,7 +381,7 @@
                             <mat-paginator
                                 (page)="onCommentPageChange($event)"
                                 [length]="productDto.comments.total"
-                                [pageSize]="commentCriteria.page.limit"
+                                [pageSize]="commentCriteria.page.pageSize"
                                 [pageSizeOptions]="[5, 10, 25, 100]"
                                 [showFirstLastButtons]="true"
                                 [hidePageSize]="false"

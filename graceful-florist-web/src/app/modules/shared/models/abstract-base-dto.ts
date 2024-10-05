@@ -13,8 +13,8 @@ export interface AbstractAuditableDTO extends AbstractBaseDto {
 }
 
 export interface SearchPageDto {
-  offset: number;
-  limit: number;
+  pageNumber: number;
+  pageSize: number;
 }
 
 export interface SortDto {

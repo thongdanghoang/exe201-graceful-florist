@@ -73,8 +73,8 @@
         [criteria]="criteria"
         [displayedColumns]="[
             'id',
-            'name',
-            'address',
+            'recipientName',
+            'recipientAddress',
             'createdDate',
             'type',
             'status',
@@ -84,20 +84,20 @@
             Mã đơn hàng
         </ng-template>
         <ng-template cellTableTemplate="id" let-value>
-            {{ value }}
+            {{ getProductId(value) }}
         </ng-template>
 
-        <ng-template headerTableTemplate="name" let-column>
+        <ng-template headerTableTemplate="recipientName" let-column>
             Tên khách hàng
         </ng-template>
-        <ng-template cellTableTemplate="name" let-value>
+        <ng-template cellTableTemplate="recipientName" let-value>
             {{ value }}
         </ng-template>
 
-        <ng-template headerTableTemplate="address" let-column>
+        <ng-template headerTableTemplate="recipientAddress" let-column>
             Địa chỉ
         </ng-template>
-        <ng-template cellTableTemplate="address" let-value>
+        <ng-template cellTableTemplate="recipientAddress" let-value>
             {{ value }}
         </ng-template>
 

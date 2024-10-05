@@ -5,6 +5,7 @@ import id.vn.thongdanghoang.graceful.dtos.SearchResultDto;
 import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductDTO;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
+import id.vn.thongdanghoang.graceful.mappers.CommonMapper;
 import id.vn.thongdanghoang.graceful.mappers.ProductMapper;
 import id.vn.thongdanghoang.graceful.services.ProductService;
 import jakarta.validation.Valid;
@@ -24,12 +25,14 @@ public class ProductController {
 
     private final ProductService service;
     private final ProductMapper mapper;
+    private final CommonMapper commonMapper;
 
-    @GetMapping
-    public ResponseEntity<SearchResultDto<ProductDTO>> searchProducts() {
-        var productEntities = service.searchProducts();
+    @PostMapping("/search")
+    public ResponseEntity<SearchResultDto<ProductDTO>> searchProducts(@RequestBody SearchCriteriaDto<Void> searchCriteria) {
+        var productEntities = service
+                .searchProducts(commonMapper.toPageable(searchCriteria.getPage(), searchCriteria.getSort()));
         var productsSearchResult = SearchResultDto
-                .of(mapper.toProductDTOs(productEntities), service.countProducts());
+                .of(mapper.toProductDTOs(productEntities.toList()), productEntities.getTotalElements());
         return ResponseEntity.ok(productsSearchResult);
     }
 
@@ -77,7 +80,7 @@ public class ProductController {
     @PostMapping("/categories/search")
     public ResponseEntity<SearchResultDto<CategoryDTO>> searchCategories(@RequestBody SearchCriteriaDto<Void> searchCriteria) {
         var categoryEntities = service
-                .getEnabledCategories(PageRequest.of(0, 100));
+                .getEnabledCategories(commonMapper.toPageable(searchCriteria.getPage(), searchCriteria.getSort()));
         var categoryDTOs = categoryEntities.stream()
                 .map(mapper::toCategoryDTO)
                 .toList();

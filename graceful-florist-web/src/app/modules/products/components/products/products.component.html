@@ -178,7 +178,7 @@
                 <mat-paginator
                     class="!bg-transparent"
                     [length]="products?.total ?? 0"
-                    [pageSize]="criteria.page.limit"
+                    [pageSize]="criteria.page.pageSize"
                     (page)="onPageChange($event)"
                     [showFirstLastButtons]="false"
                     [hidePageSize]="true"
@@ -251,7 +251,7 @@
                 <mat-paginator
                     class="!bg-transparent"
                     [length]="products?.total"
-                    [pageSize]="criteria.page.limit"
+                    [pageSize]="criteria.page.pageSize"
                     (page)="onPageChange($event)"
                     [showFirstLastButtons]="true"
                     [hidePageSize]="true"

@@ -8,7 +8,6 @@ import id.vn.thongdanghoang.graceful.services.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -33,11 +32,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<ProductEntity> searchProducts() {
-        //pageNumber, pageSize
-        PageRequest pageRequest = PageRequest.of(0, 25);
-        Page<ProductEntity> productEntities = repository.searchByCategories(new HashSet<>(), pageRequest);
-        return repository.findAll();
+    public Page<ProductEntity> searchProducts(Pageable page) {
+        return repository.findAll(page);
     }
 
     @Override
@@ -45,10 +41,6 @@ public class ProductServiceImpl implements ProductService{
         return repository.findByIdWithDetail(id);
     }
 
-    @Override
-    public long countProducts() {
-        return repository.count();
-    }
 
     @Override
     public CategoryEntity saveOrUpdateCategory(CategoryEntity categoryEntity) {

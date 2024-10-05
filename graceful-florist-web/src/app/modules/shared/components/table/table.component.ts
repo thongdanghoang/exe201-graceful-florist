@@ -99,9 +99,8 @@ export class TableComponent<C, R>
   }
 
   onPageChange(pageEvent: PageEvent): void {
-    this.searchCriteria.page.limit = pageEvent.pageSize;
-    this.searchCriteria.page.offset =
-      pageEvent.pageIndex * this.searchCriteria.page.limit;
+    this.searchCriteria.page.pageSize = pageEvent.pageSize;
+    this.searchCriteria.page.pageNumber = pageEvent.pageIndex;
     this.search();
   }
 
@@ -143,8 +142,8 @@ export class TableComponent<C, R>
 
   protected override initSearchDto(): void {
     const pageDto: SearchPageDto = {
-      offset: 0,
-      limit: this.systemPageSize
+      pageNumber: 0,
+      pageSize: this.systemPageSize
     };
     this.searchCriteria = {
       page: pageDto,
