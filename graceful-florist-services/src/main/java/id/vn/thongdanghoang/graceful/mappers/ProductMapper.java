@@ -1,6 +1,8 @@
 package id.vn.thongdanghoang.graceful.mappers;
 
+import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductDTO;
+import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.*;
@@ -24,6 +26,10 @@ public interface ProductMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "toImages")
     ProductEntity toProductEntity(ProductDTO productDTO, @MappingTarget ProductEntity productEntity);
+
+    CategoryDTO toCategoryDTO(CategoryEntity categoryEntity);
+
+    CategoryEntity toCategoryEntity(CategoryDTO categoryDTO);
 
     List<ProductDTO> toProductDTOs(List<ProductEntity> productEntities);
 

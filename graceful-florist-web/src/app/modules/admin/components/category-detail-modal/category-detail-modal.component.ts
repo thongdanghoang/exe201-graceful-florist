@@ -2,7 +2,7 @@ import {Component, Injector} from '@angular/core';
 import {AbstractModalFormComponent} from '../../../shared/components/modal/abstract-modal-form.component';
 import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
 import {FormDialogOptions} from '../../../shared/services/modal.service';
-import {CategoryDto, CategoryTypeDto} from '../../model/category.dto';
+import {CategoryDto, CategoryType} from '../../model/category.dto';
 
 export interface CategoryModalOptions extends FormDialogOptions<CategoryDto> {
   title: string;
@@ -15,9 +15,11 @@ export class CategoryDetailModalComponent extends AbstractModalFormComponent<Cat
   categoryFormControls: {
     [key: string]: AbstractControl<any, any>;
   } = {
+    id: this.formBuilder.control(null),
+    version: this.formBuilder.control(null),
     name: this.formBuilder.control(null, [Validators.required]),
     type: this.formBuilder.control(null, [Validators.required]),
-    enabled: this.formBuilder.control(null, [Validators.required])
+    enabled: this.formBuilder.control(false)
   };
 
   constructor(injector: Injector) {
@@ -28,8 +30,12 @@ export class CategoryDetailModalComponent extends AbstractModalFormComponent<Cat
     return !!this.options?.data?.data.id;
   }
 
-  protected get categoriesType(): CategoryTypeDto[] {
-    return Object.values(CategoryTypeDto);
+  protected get categoriesType(): CategoryType[] {
+    return Object.values(CategoryType);
+  }
+
+  protected override onSubmitFormDataSuccess(result: any): void {
+    this.close(result);
   }
 
   protected override initDefaultData(): CategoryDto {
@@ -55,9 +61,6 @@ export class CategoryDetailModalComponent extends AbstractModalFormComponent<Cat
   protected override validateForm(): string[] {
     return [];
   }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected override onSubmitFormDataSuccess(result: any): void {}
 
   protected override prepareDataBeforeSubmit(): void {}
 

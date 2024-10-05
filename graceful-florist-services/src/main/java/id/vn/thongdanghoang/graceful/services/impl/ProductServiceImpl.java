@@ -1,15 +1,18 @@
 package id.vn.thongdanghoang.graceful.services.impl;
 
+import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
+import id.vn.thongdanghoang.graceful.repositories.CategoryRepository;
 import id.vn.thongdanghoang.graceful.repositories.ProductRepository;
 import id.vn.thongdanghoang.graceful.services.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional(rollbackOn = Throwable.class)
@@ -17,6 +20,7 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository repository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public ProductEntity createProduct(ProductEntity productEntity) {
@@ -30,6 +34,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<ProductEntity> searchProducts() {
+        //pageNumber, pageSize
+        PageRequest pageRequest = PageRequest.of(0, 25);
+        Page<ProductEntity> productEntities = repository.searchByCategories(new HashSet<>(), pageRequest);
         return repository.findAll();
     }
 
@@ -41,5 +48,25 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public long countProducts() {
         return repository.count();
+    }
+
+    @Override
+    public CategoryEntity saveOrUpdateCategory(CategoryEntity categoryEntity) {
+        return categoryRepository.save(categoryEntity);
+    }
+
+    @Override
+    public List<CategoryEntity> getCategories() {
+        return categoryRepository.findEnabledCategories();
+    }
+
+    @Override
+    public List<CategoryEntity> getCategories(Pageable page) {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public Set<CategoryEntity> searchCategoriesByCategoriesID(Set<UUID> categoriesID) {
+        return Set.of();
     }
 }

@@ -1,11 +1,12 @@
-export interface CategoryDto {
-  id: string;
+import {AbstractAuditableDTO} from '../../shared/models/abstract-base-dto';
+
+export interface CategoryDto extends AbstractAuditableDTO {
   name: string;
-  type: CategoryTypeDto;
+  type: CategoryType;
   enabled: boolean;
 }
 
-export enum CategoryTypeDto {
+export enum CategoryType {
   FLOWER = 'FLOWER',
   THEME = 'THEME',
   COLOR = 'COLOR'
@@ -13,6 +14,6 @@ export enum CategoryTypeDto {
 
 export interface CategoryCriteriaDto {
   name?: string;
-  type?: CategoryTypeDto;
+  type?: CategoryType;
   enabled?: boolean;
 }

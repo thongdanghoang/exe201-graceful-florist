@@ -1,17 +1,17 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {CategoryTypeDto} from '../../admin/model/category.dto';
+import {CategoryType} from '../../admin/model/category.dto';
 
 @Pipe({
   name: 'categoryType'
 })
 export class CategoryTypePipe implements PipeTransform {
-  transform(value: CategoryTypeDto, defaultValue: string = ''): string {
+  transform(value: CategoryType, defaultValue: string = ''): string {
     switch (value) {
-      case CategoryTypeDto.FLOWER:
+      case CategoryType.FLOWER:
         return 'Loại hoa';
-      case CategoryTypeDto.COLOR:
+      case CategoryType.COLOR:
         return 'Màu sắc';
-      case CategoryTypeDto.THEME:
+      case CategoryType.THEME:
         return 'Chủ đề';
       default:
         return defaultValue;

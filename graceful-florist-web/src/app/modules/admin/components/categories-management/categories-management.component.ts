@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {CategoryService} from '../../services/category.service';
 import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
 import {ModalService} from '../../../shared/services/modal.service';
@@ -11,17 +11,18 @@ import {Observable} from 'rxjs';
 import {
   CategoryCriteriaDto,
   CategoryDto,
-  CategoryTypeDto
+  CategoryType
 } from '../../model/category.dto';
 import {
   CategoryDetailModalComponent,
   CategoryModalOptions
 } from '../category-detail-modal/category-detail-modal.component';
+import {AppRoutingConstants} from '../../../../app-routing-constants';
+import {TableComponent} from '../../../shared/components/table/table.component';
 
 @Component({
   selector: 'graceful-florist-categories-management',
-  templateUrl: './categories-management.component.html',
-  styleUrl: './categories-management.component.css'
+  templateUrl: './categories-management.component.html'
 })
 export class CategoriesManagementComponent implements OnInit {
   filterFormControls: {
@@ -38,6 +39,11 @@ export class CategoriesManagementComponent implements OnInit {
   ) => Observable<SearchResultDto<CategoryDto>>;
   sort!: SortDto;
   criteria!: CategoryCriteriaDto;
+
+  @ViewChild('categoriesTable') categoriesTable!: TableComponent<
+    CategoryCriteriaDto,
+    CategoryDto
+  >;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -56,19 +62,29 @@ export class CategoriesManagementComponent implements OnInit {
     this.criteria = {};
   }
 
-  get typeValue(): CategoryTypeDto {
+  get typeValue(): CategoryType {
     return this.filterFormGroups.get('type')?.value;
   }
 
-  get categoriesType(): CategoryTypeDto[] {
-    return Object.values(CategoryTypeDto);
+  get categoriesType(): CategoryType[] {
+    return Object.values(CategoryType);
   }
 
   onAddCategoryClicked(): void {
-    const options = {
-      title: 'Tạo mới danh mục'
+    const options: CategoryModalOptions = {
+      title: 'Tạo mới danh mục',
+      data: {
+        data: {} as CategoryDto,
+        submitUrl: `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.CATEGORY_PATH}`
+      }
     };
-    void this.modalService.open(CategoryDetailModalComponent, options);
+    void this.modalService
+      .open(CategoryDetailModalComponent, options)
+      .then((result: any): void => {
+        if (result) {
+          this.categoriesTable.submit();
+        }
+      });
   }
 
   openCategoryDetailModal(category: CategoryDto): void {
@@ -76,10 +92,17 @@ export class CategoriesManagementComponent implements OnInit {
     const options: CategoryModalOptions = {
       title: 'Sửa danh mục',
       data: {
-        data: category
+        data: category,
+        submitUrl: `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.CATEGORY_PATH}`
       }
     };
-    void this.modalService.open(CategoryDetailModalComponent, options);
+    void this.modalService
+      .open(CategoryDetailModalComponent, options)
+      .then((result: any): void => {
+        if (result) {
+          this.categoriesTable.submit();
+        }
+      });
   }
 
   resetFilter(): void {
