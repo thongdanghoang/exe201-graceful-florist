@@ -59,8 +59,8 @@ export class ProductsManagementComponent implements OnInit {
       this.productService
     );
     this.sort = {
-      column: 'name',
-      direction: 'asc'
+      column: 'lastModifiedDate',
+      direction: 'desc'
     };
     this.criteria = {
       categories: []
