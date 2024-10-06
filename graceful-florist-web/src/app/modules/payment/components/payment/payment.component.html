@@ -293,9 +293,9 @@
 </ng-template>
 <ng-template #cartItem let-product="product" let-quantity="quantity">
     <div class="flex gap-2">
-        <ng-container *ngIf="product.imageUrl">
+        <ng-container *ngIf="product.mainImage">
             <img
-                [ngSrc]="product.imageUrl"
+                [ngSrc]="product.mainImage | imageUrlTransform"
                 alt="product"
                 priority
                 width="100"

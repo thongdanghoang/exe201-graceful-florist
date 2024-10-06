@@ -51,7 +51,7 @@ export class ProductDetailModalComponent
     categories: this.formBuilder.control(null, [Validators.required]),
     ingredients: this.formBuilder.control(null),
     enabled: this.formBuilder.control(false),
-    imageUrl: this.formBuilder.control(null, [Validators.required]),
+    mainImage: this.formBuilder.control(null, [Validators.required]),
     images: this.formBuilder.control([]),
     searchCategoryKeyword: this.formBuilder.control(null)
   };
@@ -114,9 +114,7 @@ export class ProductDetailModalComponent
             })
           )
           .subscribe((id: uuid) => {
-            this.formGroup
-              .get('imageUrl')
-              ?.setValue(`${AppRoutingConstants.BACKEND_API_URL}/images/${id}`);
+            this.formGroup.get('mainImage')?.setValue(id);
           })
       );
     }
@@ -137,10 +135,7 @@ export class ProductDetailModalComponent
           .subscribe((id: uuid) => {
             this.formGroup
               .get('images')
-              ?.setValue([
-                ...(this.formGroup.get('images')?.value || []),
-                `${AppRoutingConstants.BACKEND_API_URL}/images/${id}`
-              ]);
+              ?.setValue([...(this.formGroup.get('images')?.value || []), id]);
           })
       );
     }
@@ -194,12 +189,12 @@ export class ProductDetailModalComponent
 
   protected override getSubmitFormData(): any {
     const formSubmitData = this.formGroup?.value;
-    formSubmitData.images = [
-      ...(formSubmitData.images || []),
-      formSubmitData.imageUrl
-    ];
     formSubmitData.images = formSubmitData.images.map((image: string) =>
       image.replace(`${AppRoutingConstants.BACKEND_API_URL}/images/`, '')
+    );
+    formSubmitData.mainImage = formSubmitData.mainImage.replace(
+      `${AppRoutingConstants.BACKEND_API_URL}/images/`,
+      ''
     );
     return formSubmitData;
   }

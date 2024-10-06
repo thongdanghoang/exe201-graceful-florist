@@ -3,12 +3,13 @@ import {
   SearchResultDto
 } from '../../shared/models/abstract-base-dto';
 import {CategoryDto} from '../../admin/model/category.dto';
+import {uuid} from '../../../../../graceful-florist-type';
 
 export interface ProductDto extends AbstractAuditableDTO {
   name: string;
   price: number;
-  imageUrl?: string;
-  images: string[];
+  mainImage: uuid;
+  images: uuid[];
   enabled: boolean;
   category?: string;
 }
@@ -30,7 +31,9 @@ export interface ProductDetailDto extends ProductDto {
 export interface IngredientDto {
   id: string;
   name: string;
-  imageUrl: string;
+  image: uuid;
+  price: number;
+  type: IngredientType;
 }
 
 export interface CommentDto {
@@ -56,4 +59,11 @@ export interface UserDto {
 export interface ProductCriteriaDto {
   status?: ProductStatus;
   categories: CategoryDto[];
+}
+
+export enum IngredientType {
+  MAIN_FLOWER = 'MAIN_FLOWER',
+  SECONDARY_FLOWER = 'SECONDARY_FLOWER',
+  BACKGROUND_FLOWER = 'BACKGROUND_FLOWER',
+  ACCESSORIES = 'ACCESSORIES'
 }

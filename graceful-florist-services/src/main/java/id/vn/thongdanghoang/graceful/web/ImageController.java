@@ -29,6 +29,7 @@ import java.util.Objects;
 public class ImageController {
     private final StorageService storageService;
     private final ProductService productService;
+    private final IngredientMapper ingma;
     private final ProductMapper proma;
 
     @PostMapping()
@@ -55,6 +56,26 @@ public class ImageController {
                 product.setName(Objects.requireNonNull(file.getOriginalFilename()).split("\\.")[1]);
                 productService.createProduct(product);
                 responses.add(proma.toProductDTO(product));
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().build();
+            }
+        }
+        return new ResponseEntity<>(responses, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/ingredients")
+    public ResponseEntity<List<IngredientDTO>> ingredients(@RequestParam("files") MultipartFile[] files) {
+        List<IngredientDTO> responses = new ArrayList<>();
+        for (MultipartFile file : files) {
+            try (InputStream inputStream = file.getInputStream()) {
+                var imageId = storageService.uploadFile(inputStream, file.getContentType());
+                var ingredient = new IngredientEntity();
+                ingredient.setImage(imageId);
+                ingredient.setPrice(0);
+                ingredient.setName(Objects.requireNonNull(file.getOriginalFilename()).replace(".jpg", ""));
+                ingredient.setType(IngredientType.MAIN_FLOWER);
+                productService.addIngredient(ingredient);
+                responses.add(ingma.toIngredientDTO(ingredient));
             } catch (Exception e) {
                 return ResponseEntity.badRequest().build();
             }

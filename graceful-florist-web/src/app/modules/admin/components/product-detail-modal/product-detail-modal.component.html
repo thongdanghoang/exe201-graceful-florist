@@ -5,14 +5,14 @@
     <form [formGroup]="formGroup" class="flex flex-col gap-4 w-fit">
         <!-- Upload images -->
         <div class="flex flex-col gap-2">
-            <ng-container *ngIf="!formGroup.get('imageUrl')?.value">
+            <ng-container *ngIf="!formGroup.get('mainImage')?.value">
                 <mat-error
-                    *ngIf="formGroup.get('imageUrl')?.errors?.['required']"
+                    *ngIf="formGroup.get('mainImage')?.errors?.['required']"
                     >Hình ảnh là bắt buộc</mat-error
                 >
             </ng-container>
             <ng-container
-                *ngIf="!formGroup.get('imageUrl')?.value; else imageUrl"
+                *ngIf="!formGroup.get('mainImage')?.value; else mainImage"
             >
                 <div
                     class="rounded-lg flex justify-center items-center border border-neutral-500 hover:border-primary hover:cursor-pointer *:hover:text-primary"
@@ -29,10 +29,12 @@
                     />
                 </div>
             </ng-container>
-            <ng-template #imageUrl>
+            <ng-template #mainImage>
                 <img
                     alt="product image"
-                    [ngSrc]="formGroup.get('imageUrl')?.value"
+                    [ngSrc]="
+                        formGroup.get('mainImage')?.value | imageUrlTransform
+                    "
                     class="rounded-lg object-cover"
                     priority
                     width="472"
@@ -47,14 +49,14 @@
                     <img
                         class="rounded-lg"
                         alt="product image"
-                        [ngSrc]="image"
+                        [ngSrc]="image | imageUrlTransform"
                         priority
                         width="100"
                         height="100"
                         style="width: 100px; height: 100px"
                     />
                 </ng-container>
-                <ng-container *ngIf="formGroup.get('imageUrl')?.value">
+                <ng-container *ngIf="formGroup.get('mainImage')?.value">
                     <div
                         class="rounded-lg flex justify-center items-center border border-neutral-500 hover:border-primary hover:cursor-pointer *:hover:text-primary"
                         style="width: 100px; height: 100px"

@@ -10,7 +10,7 @@
             >
                 <ng-container *ngIf="mainImage">
                     <img
-                        [ngSrc]="mainImage"
+                        [ngSrc]="mainImage | imageUrlTransform"
                         [alt]="productDto.name"
                         class="rounded-lg object-cover"
                         priority
@@ -23,7 +23,7 @@
                     <div class="flex gap-6 w-full overflow-x-auto">
                         <img
                             *ngFor="let image of productDto.images"
-                            [ngSrc]="image"
+                            [ngSrc]="image | imageUrlTransform"
                             [alt]="productDto.name"
                             class="object-cover"
                             (click)="changeMainImage(image)"
@@ -88,7 +88,7 @@
                             class="flex flex-col gap-2 5 justify-between items-center"
                         >
                             <img
-                                [ngSrc]="ingredient.imageUrl"
+                                [ngSrc]="ingredient.image | imageUrlTransform"
                                 [alt]="ingredient.name"
                                 priority
                                 width="100"
@@ -204,7 +204,9 @@
                     >
                         <img
                             class="object-cover"
-                            ngSrc="{{ recommend.imageUrl }}"
+                            ngSrc="{{
+                                recommend.mainImage | imageUrlTransform
+                            }}"
                             alt="{{ recommend.name }}"
                             priority
                             width="232"

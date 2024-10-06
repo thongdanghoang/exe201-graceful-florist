@@ -17,6 +17,7 @@ import {
 import {PageEvent} from '@angular/material/paginator';
 import {CartService} from '../../../cart/services/cart.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {uuid} from '../../../../../../graceful-florist-type';
 
 @Component({
   selector: 'graceful-florist-product-detail',
@@ -29,7 +30,7 @@ export class ProductDetailComponent
 {
   protected productDto: ProductDetailDto | undefined;
   protected commentCriteria: SearchCriteriaDto<CommentSearchCriteriaDto>;
-  protected mainImage: string | undefined;
+  protected mainImage: uuid | undefined;
   protected recommendedProducts: ProductDto[] = [];
   protected breadcrumbs: BreadcrumbItem[] = [
     {label: 'Trang chủ', path: AppRoutingConstants.HOME_PATH},
@@ -66,7 +67,7 @@ export class ProductDetailComponent
           .getProductById(params.get('id') as string)
           .subscribe((productDto: ProductDetailDto): void => {
             this.productDto = productDto;
-            this.mainImage = productDto.imageUrl;
+            this.mainImage = productDto.mainImage;
           });
       }),
       this.productService
@@ -117,7 +118,7 @@ export class ProductDetailComponent
     void this.router.navigate([`products/${product.id}`]);
   }
 
-  protected changeMainImage(imageUrl: string): void {
+  protected changeMainImage(imageUrl: uuid): void {
     this.mainImage = imageUrl;
   }
 

@@ -23,26 +23,9 @@ export class ProductService {
   constructor(private readonly httpClient: HttpClient) {}
 
   getProductById(id: uuid): Observable<ProductDetailDto> {
-    return this.httpClient
-      .get<ProductDetailDto>(
-        `${AppRoutingConstants.BACKEND_API_URL}/products/${id}`
-      )
-      .pipe(
-        map((product: ProductDetailDto) => ({
-          ...product,
-          imageUrl: product.images.length
-            ? `${AppRoutingConstants.BACKEND_API_URL}/images/${product.images[0]}`
-            : '',
-          images: product.images.length
-            ? product.images
-                .slice(1)
-                .map(
-                  image =>
-                    `${AppRoutingConstants.BACKEND_API_URL}/images/${image}`
-                )
-            : []
-        }))
-      );
+    return this.httpClient.get<ProductDetailDto>(
+      `${AppRoutingConstants.BACKEND_API_URL}/products/${id}`
+    );
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -186,18 +169,10 @@ export class ProductService {
   searchProducts(
     criteria: SearchCriteriaDto<ProductCriteriaDto>
   ): Observable<SearchResultDto<ProductDto>> {
-    return this.httpClient
-      .post<
-        SearchResultDto<ProductDto>
-      >(`${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PRODUCTS_PATH}/search`, criteria)
-      .pipe(
-        map((result: SearchResultDto<ProductDto>) => {
-          result.results = result.results.map(product =>
-            this.mapProductImages(product)
-          );
-          return result;
-        })
-      );
+    return this.httpClient.post<SearchResultDto<ProductDto>>(
+      `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PRODUCTS_PATH}/search`,
+      criteria
+    );
   }
 
   uploadImage(image: File): Observable<uuid> {
@@ -218,21 +193,5 @@ export class ProductService {
         result.results.filter(product => product.enabled)
       )
     );
-  }
-
-  private mapProductImages(product: ProductDto): ProductDto {
-    return {
-      ...product,
-      imageUrl: product.images.length
-        ? `${AppRoutingConstants.BACKEND_API_URL}/images/${product.images[0]}`
-        : '',
-      images: product.images.length
-        ? product.images
-            .slice(1)
-            .map(
-              image => `${AppRoutingConstants.BACKEND_API_URL}/images/${image}`
-            )
-        : []
-    };
   }
 }
