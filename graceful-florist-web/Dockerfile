@@ -1,6 +1,9 @@
 FROM docker.io/bitnami/nginx:1.25
 
-ADD dist/graceful-florist-web/browser /app/graceful-florist-web
+ADD dist/graceful-florist-web/browser /app
 COPY nginx.conf /opt/bitnami/nginx/conf/nginx.conf
+
+USER root
+RUN chown 1001 /opt/bitnami/nginx/conf/nginx.conf
 
 USER 1001
