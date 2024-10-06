@@ -8,10 +8,7 @@ import {CartItemDTO} from '../../../cart/models/cart.dto';
 import {PaymentMethod} from '../../models/payment.dto';
 import {CartService} from '../../../cart/services/cart.service';
 import {ModalService} from '../../../shared/services/modal.service';
-import {
-  PaymentModalComponent,
-  PaymentModalOptions
-} from '../payment-modal/payment-modal.component';
+import {PaymentModalComponent} from '../payment-modal/payment-modal.component';
 
 @Component({
   selector: 'graceful-florist-payment',
@@ -106,16 +103,15 @@ export class PaymentComponent
       };
     });
     this.paymentForm.get('products')?.setValue(products);
-    const options: PaymentModalOptions = {
-      title: 'Thanh Toán',
-      data: {
-        data: this.paymentForm.value,
-        submitUrl: `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PAYMENT_PATH}`
-      }
-    };
     void this.modalService
-      .open(PaymentModalComponent, options)
-      .then((result: any) => {
+      .open(PaymentModalComponent, {
+        title: 'Thanh Toán',
+        data: {
+          data: this.paymentForm.value,
+          submitUrl: `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PAYMENT_PATH}`
+        }
+      })
+      .then((result: any): void => {
         if (result) {
           this.registerSubscription(
             this.cartService
