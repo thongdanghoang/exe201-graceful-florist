@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RequestMapping("/api/images")
 @CrossOrigin(origins = "*")
@@ -31,6 +29,7 @@ public class ImageController {
     private final ProductService productService;
     private final IngredientMapper ingma;
     private final ProductMapper proma;
+    private static final Map<UUID, byte[]> cache = new HashMap<>();
 
     @PostMapping()
     public ResponseEntity<UploadImageResponse> uploadImage(@RequestParam("file") MultipartFile file) {
@@ -85,10 +84,16 @@ public class ImageController {
 
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> downloadImage(@PathVariable("id") String imageId) {
+        if (cache.containsKey(UUID.fromString(imageId))) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(cache.get(UUID.fromString(imageId)));
+        }
         try (InputStream inputStream = storageService.getFile(imageId)) {
             byte[] bytes = inputStream.readAllBytes();
+            cache.put(UUID.fromString(imageId), bytes);
             return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG) // Adjust the content type as needed
+                    .contentType(MediaType.IMAGE_JPEG)
                     .body(bytes);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

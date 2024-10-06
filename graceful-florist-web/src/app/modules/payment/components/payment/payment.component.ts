@@ -39,15 +39,15 @@ export class PaymentComponent
     super();
     this.paymentForm = this.fb.group({
       recipient: this.fb.group({
-        fullName: ['Ngan', Validators.required],
-        phone: ['0342288215', Validators.required],
-        district: ['9', Validators.required],
-        ward: ['Tan phu', Validators.required],
-        addressDetail: ['Topaz home 2', Validators.required]
+        fullName: ['', Validators.required],
+        phone: ['', Validators.required],
+        district: ['', Validators.required],
+        ward: ['', Validators.required],
+        addressDetail: ['', Validators.required]
       }),
       sender: this.fb.group({
-        fullName: ['Thong', Validators.required],
-        phone: ['0333635470', Validators.required]
+        fullName: ['', Validators.required],
+        phone: ['', Validators.required]
       }),
       deliveryDateTime: this.fb.group({
         deliveryDate: ['', Validators.required],
@@ -72,6 +72,24 @@ export class PaymentComponent
         }
       })
     ]);
+    this.paymentForm.valueChanges.subscribe(() => {
+      // eslint-disable-next-line no-console
+      console.log(this.paymentForm.value);
+    });
+  }
+
+  protected deliveryTimeFromChanged(deliveryTimeFrom: Date): void {
+    this.paymentForm
+      .get('deliveryDateTime')
+      ?.get('deliveryTimeFrom')
+      ?.setValue(deliveryTimeFrom);
+  }
+
+  protected deliveryTimeToChanged(deliveryTimeTo: Date): void {
+    this.paymentForm
+      .get('deliveryDateTime')
+      ?.get('deliveryTimeTo')
+      ?.setValue(deliveryTimeTo);
   }
 
   protected onPaymentSubmit(): void {
@@ -95,14 +113,20 @@ export class PaymentComponent
         submitUrl: `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PAYMENT_PATH}`
       }
     };
-    this.modalService.open(PaymentModalComponent, options).then(
-      (result: any) => {
+    void this.modalService
+      .open(PaymentModalComponent, options)
+      .then((result: any) => {
         if (result) {
-          void this.router.navigate([AppRoutingConstants.HOME_PATH]);
+          this.registerSubscription(
+            this.cartService
+              .fetchCartItems()
+              .subscribe((cartItems: CartItemDTO[]): void => {
+                this.cartService.cartItemsChanged.next(cartItems);
+                void this.router.navigate([AppRoutingConstants.HOME_PATH]);
+              })
+          );
         }
-      },
-      () => {}
-    );
+      });
   }
 
   protected get cartItemsLength(): number {

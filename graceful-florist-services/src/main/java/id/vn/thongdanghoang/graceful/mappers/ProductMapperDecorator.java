@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -59,12 +61,17 @@ public abstract class ProductMapperDecorator implements ProductMapper {
 
     private void setIngredients(ProductEntity productEntity, ProductDTO productDTO) {
         if (Objects.nonNull(productDTO.getIngredients()) && !productDTO.getIngredients().isEmpty()) {
+            Map<UUID, Integer> ingredients = productDTO
+                    .getIngredients().stream()
+                    .collect(Collectors.toMap(IngredientDTO::getId, IngredientDTO::getQuantity));
             var productIngredientEntities = ingredientRepository
-                    .findAllById(productDTO.getIngredients().stream()
-                            .map(IngredientDTO::getId)
-                            .collect(Collectors.toSet()))
-                    .stream().map(ingredient -> this.toProductIngredientEntity(ingredient, productEntity))
-                            .collect(Collectors.toSet());
+                    .findAllById(ingredients.keySet())
+                    .stream().map(ingredient -> {
+                        var productIngredient = this.toProductIngredientEntity(ingredient, productEntity);
+                        productIngredient.setQuantity(ingredients.get(ingredient.getId()));
+                        return productIngredient;
+                    })
+                    .collect(Collectors.toSet());
             productEntity.setIngredients(productIngredientEntities);
         }
     }

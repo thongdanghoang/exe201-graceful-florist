@@ -29,11 +29,12 @@ export interface ProductDetailDto extends ProductDto {
 }
 
 export interface IngredientDto {
-  id: string;
+  id: uuid;
   name: string;
   image: uuid;
   price: number;
   type: IngredientType;
+  quantity?: number;
 }
 
 export interface CommentDto {
@@ -65,5 +66,7 @@ export enum IngredientType {
   MAIN_FLOWER = 'MAIN_FLOWER',
   SECONDARY_FLOWER = 'SECONDARY_FLOWER',
   BACKGROUND_FLOWER = 'BACKGROUND_FLOWER',
-  ACCESSORIES = 'ACCESSORIES'
+  ACCESSORIES = 'ACCESSORIES',
+  LAYOUT = 'LAYOUT',
+  PACKAGING = 'PACKAGING'
 }

@@ -136,7 +136,12 @@
                     <div class="font-sans text-xs font-normal">
                         Thời Gian Giao Hàng
                     </div>
-                    <graceful-florist-date-time-picker />
+                    <graceful-florist-date-time-picker
+                        (deliveryTimeFromChanged)="
+                            deliveryTimeFromChanged($event)
+                        "
+                        (deliveryTimeToChanged)="deliveryTimeToChanged($event)"
+                    />
                 </div>
             </div>
         </div>

@@ -8,22 +8,20 @@
         </div>
         <div class="flex flex-col sm:flex-row gap-2.5">
             <button
-                *ngFor="let item of mainColors"
-                (click)="selectColor(item.color)"
+                *ngFor="let colorCategory of mainColors"
+                (click)="selectColor(colorCategory)"
                 [ngClass]="{
                     'text-primary border-primary':
-                        form.get('selectedMainColor')?.value === item.color,
+                        form.get('color')?.value === colorCategory,
                     'border-neutral-400':
-                        form.get('selectedMainColor')?.value !== item.color,
+                        form.get('color')?.value !== colorCategory,
                 }"
-                class="flex items-center p-2 gap-2 border"
+                class="flex justify-center items-center p-2 gap-2 border min-w-20"
                 style="border-radius: 32px"
             >
-                <svg-icon
-                    [src]="'assets/circle-' + item.color + '.svg'"
-                ></svg-icon>
+                <!--                <svg-icon></svg-icon>-->
                 <span class="font-sans text-base leading-normal">{{
-                    item.label
+                    colorCategory.name
                 }}</span>
             </button>
         </div>
@@ -34,9 +32,9 @@
             <div class="flex items-center">
                 <mat-checkbox
                     [checked]="
-                        selectedFlowersToBeRemovedFromForm.length > 0 &&
-                        selectedFlowersToBeRemovedFromForm.length ===
-                            selectedFlowers.length
+                        this.selectedMainFlowers.size > 0 &&
+                        this.selectedMainFlowers.size ===
+                            mainFlowersFormValue.length
                     "
                     (change)="onSelectAllFlowers($event.checked)"
                     class=""
@@ -45,13 +43,11 @@
                 <div
                     class="px-6 py-2 font-sans text-2xl font-semibold leading-normal"
                 >
-                    Hoa đã chọn ({{
-                        selectedFlowersToBeRemovedFromForm.length
-                    }})
+                    Hoa đã chọn ({{ selectedMainFlowers.size }})
                 </div>
                 <button
-                    (click)="removeAllFlowers()"
-                    *ngIf="selectedFlowersToBeRemovedFromForm.length > 0"
+                    (click)="removeAllFlowersFromSelectedList()"
+                    *ngIf="selectedMainFlowers.size > 0"
                     mat-flat-button
                     color="primary"
                 >
@@ -59,44 +55,48 @@
                 </button>
             </div>
             <ng-container
-                *ngIf="selectedFlowers.length; else noSelectedFlowers"
+                *ngIf="mainFlowersFormValue.length > 0; else noSelectedFlowers"
             >
                 <div
-                    *ngFor="
-                        let flower of selectedFlowers.controls;
-                        let i = index
-                    "
+                    *ngFor="let flower of mainFlowersFormValue; let i = index"
                     class="flex py-4 px-6 gap-6 items-center"
                 >
                     <mat-checkbox
-                        [checked]="isSelectedInFlowerList(flower)"
+                        [checked]="this.selectedMainFlowers.has(flower.id)"
                         (change)="onSelectFlower(flower, $event.checked)"
                         class=""
                         color="primary"
                     ></mat-checkbox>
                     <div class="flex gap-4 items-center">
                         <img
-                            class="w-24 h-24 object-cover"
-                            [src]="flower.value.image"
-                            [alt]="flower.value.name"
+                            class="object-cover"
+                            [ngSrc]="flower.image | imageUrlTransform"
+                            [alt]="flower.name"
+                            priority
+                            width="100"
+                            height="100"
+                            style="width: 100px; height: 100px"
                         />
                         <div class="flex gap-7 items-center">
                             <div class="flex flex-col">
                                 <div class="font-sans text-lg font-medium">
-                                    {{ flower.value.name }}
+                                    {{ flower.name }}
                                 </div>
-                                <div class="font-sans text-base font-normal">
-                                    {{ flower.value.detail }}
-                                </div>
+                                <!--                                <div class="font-sans text-base font-normal">-->
+                                <!--                                    {{ flower.detail }}-->
+                                <!--                                </div>-->
                             </div>
                             <div class="flex gap-1.5 items-center">
                                 <graceful-florist-counter
                                     [count]="1"
+                                    (countChanged)="
+                                        onCountChanged($event, flower)
+                                    "
                                 ></graceful-florist-counter>
                                 <button
                                     mat-icon-button
                                     color="primary"
-                                    (click)="removeFlower(i)"
+                                    (click)="removeFlower(flower)"
                                 >
                                     <mat-icon>delete_forever</mat-icon>
                                 </button>
@@ -114,18 +114,25 @@
             >
                 Loại hoa
             </div>
-            <div class="grid grid-cols-2 gap-6 py-4 px-6">
+            <div
+                class="grid grid-cols-2 gap-6 py-4 px-6 overflow-y-auto"
+                style="max-height: 608px"
+            >
                 <div
                     *ngFor="let flower of flowers"
                     class="flex flex-col items-center"
-                    (click)="selectFlower(flower)"
+                    (click)="onMainFlowerClick(flower)"
                 >
                     <img
                         [ngClass]="{
-                            'border-4 border-primary': isSelectedFlower(flower),
+                            'border-4 border-primary':
+                                isSelectedFlowerInFormControl(flower),
                         }"
-                        src="{{ flower.image }}"
+                        ngSrc="{{ flower.image | imageUrlTransform }}"
                         alt="{{ flower.name }}"
+                        priority
+                        width="60"
+                        height="60"
                         class="object-cover rounded-full"
                         style="width: 60px; height: 60px"
                     />
@@ -150,13 +157,13 @@
             </div>
             <mat-radio-group
                 class="grid grid-cols-3 gap-10"
-                formControlName="selectedLayoutStyle"
+                formControlName="layout"
             >
-                <div *ngFor="let item of layoutStyles">
+                <div *ngFor="let item of layouts">
                     <ng-container
                         *ngTemplateOutlet="
                             flowerRadioCardTemplate;
-                            context: { item, group: 'layoutStyles' }
+                            context: { item, group: 'layout' }
                         "
                     ></ng-container>
                 </div>
@@ -173,13 +180,13 @@
             </div>
             <mat-radio-group
                 class="grid grid-cols-3 gap-10"
-                formControlName="selectedFlowerAndGreenLeaf"
+                formControlName="secondaryFlower"
             >
                 <div *ngFor="let item of flowersAndGreenLeaves">
                     <ng-container
                         *ngTemplateOutlet="
                             flowerRadioCardTemplate;
-                            context: { item, group: 'flowersAndGreenLeaves' }
+                            context: { item, group: 'secondaryFlower' }
                         "
                     ></ng-container>
                 </div>
@@ -193,28 +200,28 @@
         </div>
         <div class="flex flex-col sm:flex-row gap-8">
             <div class="flex flex-col gap-8 w-full sm:w-1/2">
-                <mat-radio-group
-                    class="flex flex-col sm:flex-row gap-8"
-                    aria-label="Lời nhắn"
-                    formControlName="selectedMessageCard"
-                >
-                    <mat-radio-button
-                        *ngFor="let option of messageCardOptions"
-                        color="primary"
-                        [value]="option.value"
-                    >
-                        <div
-                            class="font-base text-xs font-normal capitalize"
-                            [ngClass]="{
-                                'text-primary':
-                                    form.get('selectedMessageCard')?.value ===
-                                    option.value,
-                            }"
-                        >
-                            {{ option.label }}
-                        </div>
-                    </mat-radio-button>
-                </mat-radio-group>
+                <!--                <mat-radio-group-->
+                <!--                    class="flex flex-col sm:flex-row gap-8"-->
+                <!--                    aria-label="Lời nhắn"-->
+                <!--                    formControlName="selectedMessageCard"-->
+                <!--                >-->
+                <!--                    <mat-radio-button-->
+                <!--                        *ngFor="let option of messageCardOptions"-->
+                <!--                        color="primary"-->
+                <!--                        [value]="option.value"-->
+                <!--                    >-->
+                <!--                        <div-->
+                <!--                            class="font-base text-xs font-normal capitalize"-->
+                <!--                            [ngClass]="{-->
+                <!--                                'text-primary':-->
+                <!--                                    form.get('selectedMessageCard')?.value ===-->
+                <!--                                    option.value,-->
+                <!--                            }"-->
+                <!--                        >-->
+                <!--                            {{ option.label }}-->
+                <!--                        </div>-->
+                <!--                    </mat-radio-button>-->
+                <!--                </mat-radio-group>-->
                 <div
                     class="*:text-sm *:font-sans *:font-normal *:text-neutral-400 *:leading-relaxed"
                 >
@@ -262,13 +269,13 @@
             </div>
             <mat-radio-group
                 class="grid grid-cols-3 gap-10"
-                formControlName="selectedWrappingPaper"
+                formControlName="wrapper"
             >
-                <div *ngFor="let item of wrappingPaper">
+                <div *ngFor="let item of wrappers">
                     <ng-container
                         *ngTemplateOutlet="
                             flowerRadioCardTemplate;
-                            context: { item, group: 'wrappingPaper' }
+                            context: { item, group: 'wrapper' }
                         "
                     ></ng-container>
                 </div>
@@ -283,20 +290,27 @@
             </div>
             <mat-radio-group
                 class="grid grid-cols-3 gap-10"
-                formControlName="selectedBowStyle"
+                formControlName="accessories"
             >
-                <div *ngFor="let item of bowStyle">
+                <div *ngFor="let item of accessories">
                     <ng-container
                         *ngTemplateOutlet="
                             flowerRadioCardTemplate;
-                            context: { item, group: 'bowStyle' }
+                            context: { item, group: 'accessories' }
                         "
                     ></ng-container>
                 </div>
             </mat-radio-group>
         </div>
     </div>
-    <button mat-flat-button color="primary">Tiếp Theo</button>
+    <button
+        [disabled]="form.invalid"
+        (click)="submit()"
+        mat-flat-button
+        color="primary"
+    >
+        Tiếp Theo
+    </button>
 </div>
 <ng-template #noSelectedFlowers>
     <div class="mx-auto flex flex-col gap-4 items-center">
@@ -313,12 +327,16 @@
 <ng-template #flowerRadioCardTemplate let-item="item" let-group="group">
     <label
         class="flex flex-col items-center justify-start gap-5"
-        (click)="selectRadioButton(item.name, group)"
+        (click)="selectRadioButton(item, group)"
     >
         <img
-            class="object-cover w-24 h-24"
-            [src]="item.image"
+            class="object-cover"
+            [ngSrc]="item.image | imageUrlTransform"
             [alt]="item.name"
+            priority
+            width="100"
+            height="100"
+            style="width: 100px; height: 100px"
         />
         <mat-radio-button color="primary" [name]="group" [value]="item.name"
             >{{ item.name }}

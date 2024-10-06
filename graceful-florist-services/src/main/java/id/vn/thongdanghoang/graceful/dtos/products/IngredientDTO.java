@@ -17,6 +17,8 @@ public class IngredientDTO extends AbstractAuditableDTO {
 
     private int price;
 
+    private int quantity = 1;
+
     @NotNull
     private IngredientType type;
 }
