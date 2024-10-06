@@ -33,6 +33,9 @@ public abstract class ProductMapperDecorator implements ProductMapper {
     @Autowired
     private IngredientMapper ingredientMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public ProductEntity updateProduct(ProductDTO productDTO, ProductEntity productEntity) {
         var productDelegated = delegate.updateProduct(productDTO, productEntity);
@@ -93,6 +96,9 @@ public abstract class ProductMapperDecorator implements ProductMapper {
                             .map(ProductIngredientEntity::getIngredient)
                             .map(ingredientMapper::toIngredientDTO)
                             .collect(Collectors.toSet()));
+        }
+        if(Objects.nonNull(productEntity.getOwner())) {
+            productDTO.setOwner(userMapper.toUserDto(productEntity.getOwner()));
         }
         return productDTO;
     }

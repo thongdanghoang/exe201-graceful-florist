@@ -3,6 +3,7 @@ package id.vn.thongdanghoang.graceful.services;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.entities.IngredientEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
+import id.vn.thongdanghoang.graceful.entities.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,7 +20,7 @@ public interface ProductService {
 
     Optional<ProductEntity> getProductById(UUID id);
 
-    Page<ProductEntity> searchProducts(Set<UUID> categories, Pageable page);
+    Page<ProductEntity> searchProducts(Set<UUID> categories, Pageable page, UserEntity user);
 
     CategoryEntity saveOrUpdateCategory(CategoryEntity categoryEntity);
 

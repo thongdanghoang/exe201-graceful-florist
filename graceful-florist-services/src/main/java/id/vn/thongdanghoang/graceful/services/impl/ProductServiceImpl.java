@@ -3,6 +3,7 @@ package id.vn.thongdanghoang.graceful.services.impl;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.entities.IngredientEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
+import id.vn.thongdanghoang.graceful.entities.UserEntity;
 import id.vn.thongdanghoang.graceful.repositories.CategoryRepository;
 import id.vn.thongdanghoang.graceful.repositories.IngredientRepository;
 import id.vn.thongdanghoang.graceful.repositories.ProductRepository;
@@ -42,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductEntity> searchProducts(Set<UUID> categories, Pageable page) {
+    public Page<ProductEntity> searchProducts(Set<UUID> categories, Pageable page, UserEntity user) {
         var securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         boolean isAdmin = securityUser.getAuthorities().stream().map(Object::toString).anyMatch("ROLE_ADMIN"::equals);
         if (isAdmin) {

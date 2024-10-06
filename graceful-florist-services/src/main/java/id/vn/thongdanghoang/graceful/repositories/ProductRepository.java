@@ -1,6 +1,5 @@
 package id.vn.thongdanghoang.graceful.repositories;
 
-import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,9 +28,16 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
             FROM ProductEntity p
             JOIN p.categories c
             WHERE c.id IN :categories AND p.enabled = true
+            AND p.owner IS NULL
             """)
     Page<ProductEntity> searchEnabledByCategories(Set<UUID> categories, Pageable pageable);
 
+    @Query("""
+            SELECT p
+            FROM ProductEntity p
+            WHERE p.enabled = true
+            AND p.owner IS NULL
+            """)
     Page<ProductEntity> findAllByEnabledTrue(Pageable pageable);
 
     @EntityGraph(ProductEntity.PRODUCT_DETAIL_ENTITY_GRAPH)

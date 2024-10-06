@@ -1,6 +1,7 @@
 package id.vn.thongdanghoang.graceful.dtos.products;
 
 import id.vn.thongdanghoang.graceful.dtos.AbstractAuditableDTO;
+import id.vn.thongdanghoang.graceful.dtos.users.UserDTO;
 import lombok.Data;
 
 import java.util.Set;
@@ -16,4 +17,5 @@ public class ProductDTO extends AbstractAuditableDTO {
     private boolean enabled;
     private Set<CategoryDTO> categories;
     private Set<IngredientDTO> ingredients;
+    private UserDTO owner;
 }

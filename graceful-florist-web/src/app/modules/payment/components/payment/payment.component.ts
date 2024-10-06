@@ -62,10 +62,17 @@ export class PaymentComponent
       this.route.queryParamMap.subscribe(params => {
         const productIDs = params.get('products')?.split(',');
         if (productIDs) {
-          const cartItemDTOS = this.cartService.cartItemsChanged.value.filter(
-            item => productIDs.includes(item.product.id)
+          this.registerSubscription(
+            this.cartService
+              .fetchCartItems()
+              .subscribe((cartItems: CartItemDTO[]): void => {
+                const products = cartItems.filter(
+                  (item: CartItemDTO): boolean =>
+                    productIDs.includes(item.product.id)
+                );
+                this.paymentForm.get('products')?.setValue(products);
+              })
           );
-          this.paymentForm.get('products')?.setValue(cartItemDTOS);
         }
       })
     ]);

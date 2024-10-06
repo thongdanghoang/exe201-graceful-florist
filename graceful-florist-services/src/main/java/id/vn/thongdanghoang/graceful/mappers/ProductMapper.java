@@ -21,18 +21,21 @@ public interface ProductMapper {
 
     @Mapping(target = "categories", ignore = true)
     @Mapping(target = "ingredients", ignore = true)
+    @Mapping(target = "owner", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "toImageIDs")
     ProductDTO toProductDTO(ProductEntity productEntity);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "categories", ignore = true)
     @Mapping(target = "ingredients", ignore = true)
+    @Mapping(target = "owner", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "toImages")
     ProductEntity createProduct(ProductDTO productDTO);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "categories", ignore = true)
     @Mapping(target = "ingredients", ignore = true)
+    @Mapping(target = "owner", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "toImages")
     ProductEntity updateProduct(ProductDTO productDTO, @MappingTarget ProductEntity productEntity);
 

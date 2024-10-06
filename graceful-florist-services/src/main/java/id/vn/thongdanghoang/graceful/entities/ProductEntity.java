@@ -16,6 +16,7 @@ import java.util.UUID;
         name = ProductEntity.PRODUCT_DETAIL_ENTITY_GRAPH,
         attributeNodes = {
                 @NamedAttributeNode("categories"),
+                @NamedAttributeNode("owner"),
                 @NamedAttributeNode(value = "ingredients", subgraph = ProductEntity.PRODUCT_INGREDIENT_ENTITY_GRAPH)
         },
         subgraphs = {
@@ -50,6 +51,10 @@ public class ProductEntity extends AbstractAuditableEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
     private Set<ProductIngredientEntity> ingredients = new HashSet<>();
+
+    @OneToOne
+    @JoinColumn(name = "owner_id", updatable = false)
+    private UserEntity owner;
 
     @Column(name = "images")
     private String images;

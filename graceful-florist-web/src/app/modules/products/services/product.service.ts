@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {
   IngredientDto,
   ProductCriteriaDto,
+  ProductCustomDTO,
   ProductDetailDto,
   ProductDto,
   ProductStatus
@@ -20,6 +21,13 @@ import {uuid} from '../../../../../graceful-florist-type';
 })
 export class ProductService {
   constructor(private readonly httpClient: HttpClient) {}
+
+  addCustomProduct(product: ProductCustomDTO): Observable<ProductDto> {
+    return this.httpClient.post<ProductDto>(
+      `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PRODUCTS_PATH}/custom`,
+      product
+    );
+  }
 
   getProductById(id: uuid): Observable<ProductDetailDto> {
     return this.httpClient.get<ProductDetailDto>(

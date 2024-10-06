@@ -36,6 +36,7 @@
                         this.selectedMainFlowers.size ===
                             mainFlowersFormValue.length
                     "
+                    [disabled]="mainFlowersFormValue.length === 0"
                     (change)="onSelectAllFlowers($event.checked)"
                     class=""
                     color="primary"

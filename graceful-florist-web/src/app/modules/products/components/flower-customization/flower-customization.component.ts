@@ -7,12 +7,18 @@ import {
 } from '@angular/forms';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
-import {IngredientDto, IngredientType} from '../../models/product.dto';
+import {
+  IngredientDto,
+  IngredientType,
+  ProductCustomDTO
+} from '../../models/product.dto';
 import {ProductService} from '../../services/product.service';
 import {CategoryService} from '../../../admin/services/category.service';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {CategoryDto, CategoryType} from '../../../admin/model/category.dto';
 import {uuid} from '../../../../../../graceful-florist-type';
+import {Router} from '@angular/router';
+import {CartService} from '../../../cart/services/cart.service';
 
 @Component({
   selector: 'graceful-florist-flower-customization',
@@ -54,7 +60,9 @@ export class FlowerCustomizationComponent
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly productService: ProductService,
-    private readonly categoryService: CategoryService
+    private readonly categoryService: CategoryService,
+    private readonly cartService: CartService,
+    private readonly router: Router
   ) {
     super();
   }
@@ -203,5 +211,25 @@ export class FlowerCustomizationComponent
   submit(): void {
     // eslint-disable-next-line no-console
     console.log(this.form.value);
+    const payload: ProductCustomDTO = {
+      price: 0,
+      description: this.form.get('message')?.value,
+      categories: [this.form.get('color')?.value],
+      ingredients: [
+        ...(this.form.get('mainFlowers')?.value ?? []),
+        ...(this.form.get('accessories')?.value ?? []),
+        this.form.get('secondaryFlower')?.value
+        // this.form.get('layout')?.value,
+        // this.form.get('wrapper')?.value
+      ]
+    };
+    this.registerSubscription(
+      this.productService.addCustomProduct(payload).subscribe((): void => {
+        this.cartService.fetchCartItems().subscribe((cartItems: any): void => {
+          this.cartService.cartItemsChanged.next(cartItems);
+          void this.router.navigate([`${AppRoutingConstants.CART_PATH}`]);
+        });
+      })
+    );
   }
 }
