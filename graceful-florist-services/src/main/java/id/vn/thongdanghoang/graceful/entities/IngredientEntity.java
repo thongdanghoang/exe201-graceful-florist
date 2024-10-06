@@ -25,6 +25,10 @@ public class IngredientEntity extends AbstractAuditableEntity {
     private UUID image;
 
     @NotNull
+    @Column(name = "price")
+    private int price;
+
+    @NotNull
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private IngredientType type;

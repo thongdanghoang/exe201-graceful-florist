@@ -8,18 +8,13 @@ import id.vn.thongdanghoang.graceful.dtos.products.ProductDTO;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.mappers.CommonMapper;
 import id.vn.thongdanghoang.graceful.mappers.ProductMapper;
-import id.vn.thongdanghoang.graceful.securities.SecurityUser;
 import id.vn.thongdanghoang.graceful.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -61,7 +56,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
-        var productEntity = mapper.toProductEntity(productDTO);
+        var productEntity = mapper.createProduct(productDTO);
         var createdProductEntity = service.createProduct(productEntity);
         var createdProductDTO = mapper.toProductDTO(createdProductEntity);
         return ResponseEntity.ok(createdProductDTO);
@@ -72,7 +67,7 @@ public class ProductController {
                                                     @RequestBody ProductDTO productDTO) {
         var product = service.getProductById(id);
         if (product.isPresent()) {
-            var productEntity = mapper.toProductEntity(productDTO, product.get());
+            var productEntity = mapper.updateProduct(productDTO, product.get());
             var updatedProductEntity = service.updateProduct(productEntity);
             var updatedProductDTO = mapper.toProductDTO(updatedProductEntity);
             return ResponseEntity.ok(updatedProductDTO);

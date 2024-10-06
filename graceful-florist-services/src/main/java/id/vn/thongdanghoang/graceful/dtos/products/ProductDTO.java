@@ -9,6 +9,7 @@ import java.util.UUID;
 @Data
 public class ProductDTO extends AbstractAuditableDTO {
     private Set<UUID> images;
+    private UUID mainImage;
     private String name;
     private String description;
     private int price;

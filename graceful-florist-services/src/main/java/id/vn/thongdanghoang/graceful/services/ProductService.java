@@ -1,6 +1,7 @@
 package id.vn.thongdanghoang.graceful.services;
 
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
+import id.vn.thongdanghoang.graceful.entities.IngredientEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,9 +17,9 @@ public interface ProductService {
 
     ProductEntity updateProduct(ProductEntity productEntity);
 
-    Page<ProductEntity> searchProducts(Set<UUID> categories, Pageable page);
-
     Optional<ProductEntity> getProductById(UUID id);
+
+    Page<ProductEntity> searchProducts(Set<UUID> categories, Pageable page);
 
     CategoryEntity saveOrUpdateCategory(CategoryEntity categoryEntity);
 
@@ -27,5 +28,7 @@ public interface ProductService {
     Page<CategoryEntity> getEnabledCategories(Pageable page);
 
     Set<CategoryEntity> searchCategoriesByCategoriesID(Set<UUID> categoriesID);
+
+    IngredientEntity addIngredient(IngredientEntity ingredientEntity);
 
 }

@@ -1,8 +1,10 @@
 package id.vn.thongdanghoang.graceful.services.impl;
 
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
+import id.vn.thongdanghoang.graceful.entities.IngredientEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
 import id.vn.thongdanghoang.graceful.repositories.CategoryRepository;
+import id.vn.thongdanghoang.graceful.repositories.IngredientRepository;
 import id.vn.thongdanghoang.graceful.repositories.ProductRepository;
 import id.vn.thongdanghoang.graceful.securities.SecurityUser;
 import id.vn.thongdanghoang.graceful.services.ProductService;
@@ -22,6 +24,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
     private final CategoryRepository categoryRepository;
+    private final IngredientRepository ingredientRepository;
 
     @Override
     public ProductEntity createProduct(ProductEntity productEntity) {
@@ -31,6 +34,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductEntity updateProduct(ProductEntity productEntity) {
         return repository.save(productEntity);
+    }
+
+    @Override
+    public Optional<ProductEntity> getProductById(UUID id) {
+        return repository.findByIdWithDetail(id);
     }
 
     @Override
@@ -50,12 +58,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<ProductEntity> getProductById(UUID id) {
-        return repository.findByIdWithDetail(id);
-    }
-
-
-    @Override
     public CategoryEntity saveOrUpdateCategory(CategoryEntity categoryEntity) {
         return categoryRepository.save(categoryEntity);
     }
@@ -73,5 +75,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Set<CategoryEntity> searchCategoriesByCategoriesID(Set<UUID> categoriesID) {
         return Set.of();
+    }
+
+    @Override
+    public IngredientEntity addIngredient(IngredientEntity ingredientEntity) {
+        return ingredientRepository.save(ingredientEntity);
     }
 }

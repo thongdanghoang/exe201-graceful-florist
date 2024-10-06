@@ -15,6 +15,8 @@ public class IngredientDTO extends AbstractAuditableDTO {
     @NotNull
     private UUID image;
 
+    private int price;
+
     @NotNull
     private IngredientType type;
 }

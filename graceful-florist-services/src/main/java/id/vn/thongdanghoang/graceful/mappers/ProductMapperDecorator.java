@@ -23,8 +23,8 @@ public abstract class ProductMapperDecorator implements ProductMapper {
     private CategoryRepository categoryRepository;
 
     @Override
-    public ProductEntity toProductEntity(ProductDTO productDTO, ProductEntity productEntity) {
-        var productDelegated = delegate.toProductEntity(productDTO, productEntity);
+    public ProductEntity updateProduct(ProductDTO productDTO, ProductEntity productEntity) {
+        var productDelegated = delegate.updateProduct(productDTO, productEntity);
         if(Objects.nonNull(productDTO.getCategories()) && !productDTO.getCategories().isEmpty()) {
             productDelegated.setCategories(
                     categoryRepository.findAllById(
@@ -36,8 +36,8 @@ public abstract class ProductMapperDecorator implements ProductMapper {
     }
 
     @Override
-    public ProductEntity toProductEntity(ProductDTO productDTO) {
-        var productEntity = delegate.toProductEntity(productDTO);
+    public ProductEntity createProduct(ProductDTO productDTO) {
+        var productEntity = delegate.createProduct(productDTO);
         if(Objects.nonNull(productDTO.getCategories()) && !productDTO.getCategories().isEmpty()) {
             productEntity.setCategories(
                     categoryRepository.findAllById(

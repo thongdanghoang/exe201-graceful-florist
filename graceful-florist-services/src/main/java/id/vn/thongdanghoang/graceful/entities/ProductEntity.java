@@ -10,6 +10,7 @@ import org.hibernate.annotations.FetchMode;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @NamedEntityGraph(
         name = ProductEntity.PRODUCT_DETAIL_ENTITY_GRAPH,
@@ -49,6 +50,9 @@ public class ProductEntity extends AbstractAuditableEntity {
 
     @Column(name = "images")
     private String images;
+
+    @Column(name = "main_image")
+    private UUID mainImage;
 
     @NotNull
     @Column(name = "name")

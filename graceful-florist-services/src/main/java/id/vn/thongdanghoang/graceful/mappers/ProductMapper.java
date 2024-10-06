@@ -24,12 +24,12 @@ public interface ProductMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "toImages")
     @Mapping(target = "categories", ignore = true)
-    ProductEntity toProductEntity(ProductDTO productDTO);
+    ProductEntity createProduct(ProductDTO productDTO);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "toImages")
     @Mapping(target = "categories", ignore = true)
-    ProductEntity toProductEntity(ProductDTO productDTO, @MappingTarget ProductEntity productEntity);
+    ProductEntity updateProduct(ProductDTO productDTO, @MappingTarget ProductEntity productEntity);
 
     CategoryDTO toCategoryDTO(CategoryEntity categoryEntity);
 
