@@ -25,8 +25,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@RequestMapping("/api/products")
-@CrossOrigin(origins = "*")
+@RequestMapping("/products")
 @RestController
 @RequiredArgsConstructor
 public class ProductController {

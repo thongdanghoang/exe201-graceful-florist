@@ -9,16 +9,12 @@ import id.vn.thongdanghoang.graceful.mappers.CommonMapper;
 import id.vn.thongdanghoang.graceful.mappers.OrderMapper;
 import id.vn.thongdanghoang.graceful.services.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
-@RequestMapping("/api/orders")
-@CrossOrigin(origins = "*")
+@RequestMapping("/orders")
 @RestController
 @RequiredArgsConstructor
 public class OrderController {
