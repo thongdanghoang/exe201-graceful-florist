@@ -3,7 +3,9 @@ package id.vn.thongdanghoang.graceful.mappers;
 import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductDTO;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
+import id.vn.thongdanghoang.graceful.entities.IngredientEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
+import id.vn.thongdanghoang.graceful.entities.ProductIngredientEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.*;
 
@@ -18,17 +20,20 @@ import java.util.stream.Collectors;
 public interface ProductMapper {
 
     @Mapping(target = "categories", ignore = true)
+    @Mapping(target = "ingredients", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "toImageIDs")
     ProductDTO toProductDTO(ProductEntity productEntity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "images", source = "images", qualifiedByName = "toImages")
     @Mapping(target = "categories", ignore = true)
+    @Mapping(target = "ingredients", ignore = true)
+    @Mapping(target = "images", source = "images", qualifiedByName = "toImages")
     ProductEntity createProduct(ProductDTO productDTO);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "images", source = "images", qualifiedByName = "toImages")
     @Mapping(target = "categories", ignore = true)
+    @Mapping(target = "ingredients", ignore = true)
+    @Mapping(target = "images", source = "images", qualifiedByName = "toImages")
     ProductEntity updateProduct(ProductDTO productDTO, @MappingTarget ProductEntity productEntity);
 
     CategoryDTO toCategoryDTO(CategoryEntity categoryEntity);
@@ -36,6 +41,13 @@ public interface ProductMapper {
     CategoryEntity toCategoryEntity(CategoryDTO categoryDTO);
 
     List<ProductDTO> toProductDTOs(List<ProductEntity> productEntities);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "transientHashCodeLeaked", ignore = true)
+    @Mapping(target = "product", source = "productEntity")
+    @Mapping(target = "ingredient", source = "ingredientEntity")
+    ProductIngredientEntity toProductIngredientEntity(IngredientEntity ingredientEntity, ProductEntity productEntity);
 
     @Named("toImageIDs")
     default Set<UUID> toImageIDs(String images) {

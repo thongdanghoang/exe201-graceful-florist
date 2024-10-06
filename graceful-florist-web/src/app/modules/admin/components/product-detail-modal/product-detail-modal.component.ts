@@ -3,6 +3,7 @@ import {FormDialogOptions} from '../../../shared/services/modal.service';
 import {AbstractModalFormComponent} from '../../../shared/components/modal/abstract-modal-form.component';
 import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
 import {
+  IngredientDto,
   ProductDetailDto,
   ProductStatus
 } from '../../../products/models/product.dto';
@@ -11,7 +12,7 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {ProductService} from '../../../products/services/product.service';
 import {uuid} from '../../../../../../graceful-florist-type';
-import {catchError} from 'rxjs';
+import {Subscription, catchError} from 'rxjs';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {CategoryService} from '../../services/category.service';
 import {CategoryDto} from '../../model/category.dto';
@@ -53,20 +54,18 @@ export class ProductDetailModalComponent
     enabled: this.formBuilder.control(false),
     mainImage: this.formBuilder.control(null, [Validators.required]),
     images: this.formBuilder.control([]),
-    searchCategoryKeyword: this.formBuilder.control(null)
+    searchCategoryKeyword: this.formBuilder.control(null),
+    searchIngredientKeyword: this.formBuilder.control(null)
   };
   allCategories: CategoryDto[] = [];
   filteredCategories: CategoryDto[] = [];
+  ingredients: IngredientDto[] = [];
+  filteredIngredients: IngredientDto[] = [];
+
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly allowAddCategory: boolean = false;
   readonly allowAddIngredient: boolean = false;
-  readonly allIngredients: string[] = [
-    'Hoa Khai Trương',
-    'Hoa hồng',
-    'Hoa ly',
-    'Hoa lan',
-    'Hoa cúc'
-  ];
+
   readonly productService: ProductService = inject(ProductService);
   readonly categoryService: CategoryService = inject(CategoryService);
 
@@ -79,9 +78,25 @@ export class ProductDetailModalComponent
     this.registerSubscriptions([
       this.categoryService
         .getEnabledCategories()
-        .subscribe(categories => (this.allCategories = categories))
+        .subscribe(categories => (this.allCategories = categories)),
+      this.productService
+        .getIngredients()
+        .subscribe(ingredients => (this.ingredients = ingredients))
     ]);
-    this.formGroup
+    const categoryAutocompleteSubscription =
+      this.categoryAutocompleteSubscription();
+    if (categoryAutocompleteSubscription) {
+      this.registerSubscription(categoryAutocompleteSubscription);
+    }
+    const ingredientAutocompleteSubscription =
+      this.ingredientAutocompleteSubscription();
+    if (ingredientAutocompleteSubscription) {
+      this.registerSubscription(ingredientAutocompleteSubscription);
+    }
+  }
+
+  categoryAutocompleteSubscription(): Subscription | undefined {
+    return this.formGroup
       .get('searchCategoryKeyword')
       ?.valueChanges.subscribe(inputValue => {
         const selectedCategories =
@@ -96,6 +111,27 @@ export class ProductDetailModalComponent
             category =>
               !selectedCategories.some(
                 (selected: CategoryDto) => selected.id === category.id
+              )
+          );
+      });
+  }
+
+  ingredientAutocompleteSubscription(): Subscription | undefined {
+    return this.formGroup
+      .get('searchIngredientKeyword')
+      ?.valueChanges.subscribe(inputValue => {
+        const selectedIngredients =
+          this.formGroup.get('ingredients')?.value || [];
+        this.filteredIngredients = this.ingredients
+          .filter(ingredient =>
+            this.normalizeText(ingredient.name).includes(
+              this.normalizeText(inputValue)
+            )
+          )
+          .filter(
+            ingredient =>
+              !selectedIngredients.some(
+                (selected: IngredientDto) => selected.id === ingredient.id
               )
           );
       });
@@ -253,13 +289,6 @@ export class ProductDetailModalComponent
     event.chipInput.clear();
   }
 
-  protected get filteredIngredients(): string[] {
-    const ingredients = this.formGroup.get('ingredients')?.value || [];
-    return this.allIngredients.filter(
-      ingredient => !ingredients.includes(ingredient)
-    );
-  }
-
   protected get isEditMode(): boolean {
     return !!this.options?.data?.data.id;
   }
@@ -277,16 +306,23 @@ export class ProductDetailModalComponent
   }
 
   protected onSelectedIngredient(event: MatAutocompleteSelectedEvent): void {
-    const ingredients = this.formGroup.get('ingredients')?.value || [];
-    this.formGroup
-      .get('ingredients')
-      ?.setValue([...ingredients, event.option.viewValue]);
+    const selectedIngredient = this.ingredients.find(
+      ingredient => ingredient.name === event.option.viewValue
+    );
+    if (selectedIngredient) {
+      const ingredients = this.formGroup.get('ingredients')?.value || [];
+      this.formGroup
+        .get('ingredients')
+        ?.setValue([...ingredients, selectedIngredient]);
+    }
     event.option.deselect();
   }
 
-  protected removeIngredient(ingredient: string): void {
+  protected removeIngredient(ingredient: IngredientDto): void {
     const ingredients = this.formGroup.get('ingredients')?.value || [];
-    const index = ingredients.indexOf(ingredient);
+    const index = ingredients.findIndex(
+      (ing: IngredientDto) => ing.id === ingredient.id
+    );
     if (index >= 0) {
       ingredients.splice(index, 1);
       this.formGroup.get('ingredients')?.setValue(ingredients);

@@ -63,12 +63,14 @@ ALTER TABLE graceful.ingredients
 
 CREATE TABLE graceful.products_ingredients
 (
+    id            UUID,
+    version       INTEGER NOT NULL,
     product_id    UUID    NOT NULL,
     ingredient_id UUID    NOT NULL,
     quantity      INTEGER NOT NULL
 );
 ALTER TABLE graceful.products_ingredients
-    ADD CONSTRAINT products_ingredients_pk PRIMARY KEY (product_id, ingredient_id),
+    ADD CONSTRAINT products_ingredients_pk PRIMARY KEY (id),
     ADD CONSTRAINT products_ingredients_product_id_fk FOREIGN KEY (product_id) REFERENCES graceful.products (id),
     ADD CONSTRAINT products_ingredients_ingredient_id_fk FOREIGN KEY (ingredient_id) REFERENCES graceful.ingredients (id);
 CREATE INDEX products_ingredients_product_id_idx ON graceful.products_ingredients (product_id);
@@ -196,14 +198,14 @@ ALTER TABLE graceful.transactions
 CREATE TABLE graceful.cart_item
 (
     id                 UUID,
-    version            INTEGER      NOT NULL,
-    created_date       TIMESTAMP    NOT NULL,
-    created_by         VARCHAR(64)  NOT NULL,
-    last_modified_date TIMESTAMP    NOT NULL,
-    last_modified_by   VARCHAR(64)  NOT NULL,
-    user_id            UUID         NOT NULL,
-    product_id         UUID         NOT NULL,
-    quantity           INTEGER      NOT NULL
+    version            INTEGER     NOT NULL,
+    created_date       TIMESTAMP   NOT NULL,
+    created_by         VARCHAR(64) NOT NULL,
+    last_modified_date TIMESTAMP   NOT NULL,
+    last_modified_by   VARCHAR(64) NOT NULL,
+    user_id            UUID        NOT NULL,
+    product_id         UUID        NOT NULL,
+    quantity           INTEGER     NOT NULL
 );
 ALTER TABLE graceful.cart_item
     ADD CONSTRAINT cart_item_pk PRIMARY KEY (id),

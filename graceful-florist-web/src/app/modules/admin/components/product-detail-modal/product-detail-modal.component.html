@@ -166,11 +166,12 @@
                         let ingredient of formGroup.get('ingredients')?.value
                     "
                     (removed)="removeIngredient(ingredient)"
+                    [value]="ingredient"
                 >
-                    {{ ingredient }}
+                    {{ ingredient.name }}
                     <button
                         matChipRemove
-                        [attr.aria-label]="'remove ' + ingredient"
+                        [attr.aria-label]="'remove ' + ingredient.name"
                     >
                         <mat-icon>cancel</mat-icon>
                     </button>
@@ -178,7 +179,7 @@
             </mat-chip-grid>
             <mat-error></mat-error>
             <input
-                placeholder="New Ingredient..."
+                formControlName="searchIngredientKeyword"
                 [matChipInputFor]="ingredients"
                 (matChipInputTokenEnd)="onAddIngredient($event)"
                 [matAutocomplete]="autoIngredients"
@@ -191,7 +192,7 @@
                 <mat-option
                     *ngFor="let ingredient of filteredIngredients"
                     [value]="ingredient"
-                    >{{ ingredient }}</mat-option
+                    >{{ ingredient.name }}</mat-option
                 >
             </mat-autocomplete>
         </mat-form-field>

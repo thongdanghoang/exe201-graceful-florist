@@ -2,7 +2,6 @@ import {Component, OnInit, inject} from '@angular/core';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {
-  CommentDto,
   CommentSearchCriteriaDto,
   ProductDetailDto,
   ProductDto
@@ -10,10 +9,7 @@ import {
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {ProductService} from '../../services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {
-  SearchCriteriaDto,
-  SearchResultDto
-} from '../../../shared/models/abstract-base-dto';
+import {SearchCriteriaDto} from '../../../shared/models/abstract-base-dto';
 import {PageEvent} from '@angular/material/paginator';
 import {CartService} from '../../../cart/services/cart.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -70,11 +66,11 @@ export class ProductDetailComponent
             this.mainImage = productDto.mainImage;
           });
       }),
-      this.productService
-        .getProductComment(this.commentCriteria)
-        .subscribe((comments: SearchResultDto<CommentDto>): void => {
-          if (this.productDto) this.productDto.comments = comments;
-        }),
+      // this.productService
+      //   .getProductComment(this.commentCriteria)
+      //   .subscribe((comments: SearchResultDto<CommentDto>): void => {
+      //     if (this.productDto) this.productDto.comments = comments;
+      //   }),
       this.productService
         .getRecommendedProducts()
         .subscribe((recommendedProducts: ProductDto[]): void => {
@@ -125,12 +121,12 @@ export class ProductDetailComponent
   protected onCommentPageChange(pageEvent: PageEvent): void {
     this.commentCriteria.page.pageSize = pageEvent.pageSize;
     this.commentCriteria.page.pageNumber = pageEvent.pageIndex;
-    this.registerSubscription(
-      this.productService
-        .getProductComment(this.commentCriteria)
-        .subscribe((comments: SearchResultDto<CommentDto>): void => {
-          if (this.productDto) this.productDto.comments = comments;
-        })
-    );
+    // this.registerSubscription(
+    //   this.productService
+    //     .getProductComment(this.commentCriteria)
+    //     .subscribe((comments: SearchResultDto<CommentDto>): void => {
+    //       if (this.productDto) this.productDto.comments = comments;
+    //     })
+    // );
   }
 }

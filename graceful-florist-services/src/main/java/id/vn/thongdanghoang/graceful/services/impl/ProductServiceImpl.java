@@ -81,4 +81,9 @@ public class ProductServiceImpl implements ProductService {
     public IngredientEntity addIngredient(IngredientEntity ingredientEntity) {
         return ingredientRepository.save(ingredientEntity);
     }
+
+    @Override
+    public List<IngredientEntity> getIngredients() {
+        return ingredientRepository.findAll();
+    }
 }

@@ -16,7 +16,15 @@ import java.util.UUID;
         name = ProductEntity.PRODUCT_DETAIL_ENTITY_GRAPH,
         attributeNodes = {
                 @NamedAttributeNode("categories"),
-                @NamedAttributeNode("ingredients")
+                @NamedAttributeNode(value = "ingredients", subgraph = ProductEntity.PRODUCT_INGREDIENT_ENTITY_GRAPH)
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = ProductEntity.PRODUCT_INGREDIENT_ENTITY_GRAPH,
+                        attributeNodes = {
+                                @NamedAttributeNode("ingredient")
+                        }
+                )
         }
 )
 @Entity
@@ -27,6 +35,7 @@ import java.util.UUID;
 public class ProductEntity extends AbstractAuditableEntity {
 
     public static final String PRODUCT_DETAIL_ENTITY_GRAPH = "product-detail-entity-graph";
+    public static final String PRODUCT_INGREDIENT_ENTITY_GRAPH = "product-ingredient-entity-graph";
 
     @ManyToMany
     @Fetch(FetchMode.SUBSELECT)
@@ -38,15 +47,9 @@ public class ProductEntity extends AbstractAuditableEntity {
     )
     private Set<CategoryEntity> categories = new HashSet<>();
 
-    @ManyToMany
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
-    @JoinTable(
-            name = "products_ingredients",
-            schema = "graceful",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-    )
-    private Set<IngredientEntity> ingredients = new HashSet<>();
+    private Set<ProductIngredientEntity> ingredients = new HashSet<>();
 
     @Column(name = "images")
     private String images;

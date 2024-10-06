@@ -3,10 +3,12 @@ package id.vn.thongdanghoang.graceful.web;
 import id.vn.thongdanghoang.graceful.dtos.SearchCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.SearchResultDto;
 import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
+import id.vn.thongdanghoang.graceful.dtos.products.IngredientDTO;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductCriteria;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductDTO;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.mappers.CommonMapper;
+import id.vn.thongdanghoang.graceful.mappers.IngredientMapper;
 import id.vn.thongdanghoang.graceful.mappers.ProductMapper;
 import id.vn.thongdanghoang.graceful.services.ProductService;
 import jakarta.validation.Valid;
@@ -26,6 +28,7 @@ public class ProductController {
 
     private final ProductService service;
     private final ProductMapper mapper;
+    private final IngredientMapper ingredientMapper;
     private final CommonMapper commonMapper;
 
     @PostMapping("/search")
@@ -102,6 +105,15 @@ public class ProductController {
                 .saveOrUpdateCategory(mapper.toCategoryEntity(category));
         return ResponseEntity.ok(
                 mapper.toCategoryDTO(categoryEntity));
+    }
+
+    @GetMapping("/ingredients")
+    public ResponseEntity<List<IngredientDTO>> getIngredients() {
+        var ingredientDTOs = service
+                .getIngredients().stream()
+                .map(ingredientMapper::toIngredientDTO)
+                .toList();
+        return ResponseEntity.ok(ingredientDTOs);
     }
 
 }

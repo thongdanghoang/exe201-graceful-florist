@@ -31,4 +31,5 @@ public interface ProductService {
 
     IngredientEntity addIngredient(IngredientEntity ingredientEntity);
 
+    List<IngredientEntity> getIngredients();
 }
