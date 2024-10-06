@@ -1,5 +1,5 @@
 export class AppRoutingConstants {
-  public static readonly BASE_URL = 'http://localhost:8080';
+  public static readonly BASE_URL = 'https://graceful.io.vn';
   public static readonly BACKEND_API_URL = `${AppRoutingConstants.BASE_URL}/api`;
 
   // app module
