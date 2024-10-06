@@ -10,7 +10,8 @@ CREATE TABLE graceful.products
     description        TEXT,
     price              INTEGER      NOT NULL,
     enabled            BOOLEAN      NOT NULL,
-    images             TEXT
+    images             TEXT,
+    main_image         UUID         NOT NULL
 );
 ALTER TABLE graceful.products
     ADD CONSTRAINT products_pk PRIMARY KEY (id),
@@ -52,6 +53,8 @@ CREATE TABLE graceful.ingredients
     last_modified_date TIMESTAMP    NOT NULL,
     last_modified_by   VARCHAR(64)  NOT NULL,
     name               VARCHAR(255) NOT NULL,
+    price              INTEGER      NOT NULL,
+    type               VARCHAR(64)  NOT NULL,
     image              UUID
 );
 ALTER TABLE graceful.ingredients
@@ -121,7 +124,11 @@ CREATE TABLE graceful.orders
     recipient_name     VARCHAR(255) NOT NULL,
     recipient_phone    VARCHAR(15)  NOT NULL,
     recipient_address  TEXT         NOT NULL,
-    payment_method     VARCHAR(64)  NOT NULL
+    payment_method     VARCHAR(64)  NOT NULL,
+    delivery_date      DATE         NOT NULL,
+    delivery_time_from TIME         NOT NULL,
+    delivery_time_to   TIME,
+    message            TEXT
 );
 ALTER TABLE graceful.orders
     ADD CONSTRAINT orders_pk PRIMARY KEY (id),
@@ -185,3 +192,22 @@ CREATE TABLE graceful.transactions
 ALTER TABLE graceful.transactions
     ADD CONSTRAINT transactions_pk PRIMARY KEY (id),
     ADD CONSTRAINT transactions_order_id_fk FOREIGN KEY (order_id) REFERENCES graceful.orders (id);
+
+CREATE TABLE graceful.cart_item
+(
+    id                 UUID,
+    version            INTEGER      NOT NULL,
+    created_date       TIMESTAMP    NOT NULL,
+    created_by         VARCHAR(64)  NOT NULL,
+    last_modified_date TIMESTAMP    NOT NULL,
+    last_modified_by   VARCHAR(64)  NOT NULL,
+    user_id            UUID         NOT NULL,
+    product_id         UUID         NOT NULL,
+    quantity           INTEGER      NOT NULL
+);
+ALTER TABLE graceful.cart_item
+    ADD CONSTRAINT cart_item_pk PRIMARY KEY (id),
+    ADD CONSTRAINT cart_item_user_id_fk FOREIGN KEY (user_id) REFERENCES graceful.users (id),
+    ADD CONSTRAINT cart_item_product_id_fk FOREIGN KEY (product_id) REFERENCES graceful.products (id);
+CREATE INDEX cart_item_user_id_idx ON graceful.cart_item (user_id);
+CREATE INDEX cart_item_product_id_idx ON graceful.cart_item (product_id);

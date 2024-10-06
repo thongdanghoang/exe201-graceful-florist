@@ -13,7 +13,8 @@ CREATE TABLE graceful.users
     created_date       TIMESTAMP    NOT NULL,
     created_by         VARCHAR(64)  NOT NULL,
     last_modified_date TIMESTAMP    NOT NULL,
-    last_modified_by   VARCHAR(64)  NOT NULL
+    last_modified_by   VARCHAR(64)  NOT NULL,
+    address            VARCHAR(255)
 );
 ALTER TABLE graceful.users
     ADD CONSTRAINT users_pk PRIMARY KEY (id),
