@@ -19,6 +19,7 @@ import {CategoryDto, CategoryType} from '../../../admin/model/category.dto';
 import {uuid} from '../../../../../../graceful-florist-type';
 import {Router} from '@angular/router';
 import {CartService} from '../../../cart/services/cart.service';
+import {AngularEditorConfig} from '@kolkov/angular-editor';
 
 @Component({
   selector: 'graceful-florist-flower-customization',
@@ -33,7 +34,81 @@ export class FlowerCustomizationComponent
     {label: 'Trang chủ', path: AppRoutingConstants.HOME_PATH},
     {label: 'Thiết Kế Hoa'}
   ];
-
+  protected editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    minWidth: '0',
+    minHeight: '180',
+    width: 'auto',
+    height: 'auto',
+    maxHeight: 'auto',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    defaultParagraphSeparator: '',
+    defaultFontName: 'Nunito',
+    defaultFontSize: '',
+    fonts: [
+      {class: 'arial', name: 'Arial'},
+      {class: 'times-new-roman', name: 'Times New Roman'},
+      {class: 'calibri', name: 'Calibri'},
+      {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+    ],
+    customClasses: [
+      {
+        name: 'quote',
+        class: 'quote'
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1'
+      }
+    ],
+    uploadUrl: 'v1/image',
+    uploadWithCredentials: false,
+    sanitize: false,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [
+      [
+        // 'undo',
+        // 'redo',
+        // 'bold',
+        // 'italic',
+        // 'underline',
+        'strikeThrough',
+        // 'justifyLeft',
+        // 'justifyCenter',
+        // 'justifyRight',
+        // 'justifyFull',
+        'indent',
+        'outdent',
+        // 'insertUnorderedList',
+        // 'insertOrderedList',
+        'heading',
+        'fontName',
+        'superscript',
+        'subscript'
+      ],
+      [
+        // 'fontSize',
+        // 'textColor',
+        // 'backgroundColor',
+        'customClasses',
+        'link',
+        'unlink',
+        'insertImage',
+        'insertVideo',
+        'toggleEditorMode',
+        // 'removeFormat'
+        'insertHorizontalRule'
+      ]
+    ]
+  };
   protected flowerCustomizationFormControls: {
     [key: string]: AbstractControl<any, any>;
   } = {
@@ -68,6 +143,9 @@ export class FlowerCustomizationComponent
   }
 
   ngOnInit(): void {
+    this.form.get('message')?.valueChanges.subscribe((value: any): void => {
+      console.log(value);
+    });
     this.registerSubscriptions([
       this.categoryService
         .getEnabledCategories()

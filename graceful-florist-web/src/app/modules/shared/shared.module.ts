@@ -56,6 +56,7 @@ import {OrderTypePipe} from './pipes/order-type.pipe';
 import {CategoryTypePipe} from './pipes/category-type.pipe';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {ImageUrlTransformPipe} from './pipes/image-url-transform.pipe';
+import {AngularEditorModule} from '@kolkov/angular-editor';
 
 const matModules = [
   MatTableModule,
@@ -125,7 +126,8 @@ const sharedModules = [
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    SvgIconComponent
+    SvgIconComponent,
+    AngularEditorModule
   ],
   exports: [
     ...matModules,
@@ -137,7 +139,8 @@ const sharedModules = [
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    SvgIconComponent
+    SvgIconComponent,
+    AngularEditorModule
   ],
   providers: [ModalService]
 })

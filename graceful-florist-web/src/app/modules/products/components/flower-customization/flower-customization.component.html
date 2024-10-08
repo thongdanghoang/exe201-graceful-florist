@@ -226,17 +226,12 @@
                 </div>
             </div>
             <div class="w-ful sm:w-1/2 flex items-center">
-                <mat-form-field class="mx-auto h-44 w-full *:!bg-transparent">
-                    <mat-label class="!font-sans">Lời nhắn</mat-label>
-                    <textarea
-                        class="!font-sans"
+                <div class="max-w-fit h-full overflow-y-auto">
+                    <angular-editor
                         formControlName="message"
-                        placeholder="Thêm lời nhắn vào thiệp"
-                        rows="4"
-                        cols="50"
-                        matInput
-                    ></textarea>
-                </mat-form-field>
+                        [config]="editorConfig"
+                    ></angular-editor>
+                </div>
             </div>
         </div>
     </div>
