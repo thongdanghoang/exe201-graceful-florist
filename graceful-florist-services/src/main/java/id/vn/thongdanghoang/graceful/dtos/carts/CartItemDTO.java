@@ -5,6 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record CartItemDTO(
         @NotNull ProductDTO product,
-        @NotNull int quantity
+        int quantity
 ) {
 }

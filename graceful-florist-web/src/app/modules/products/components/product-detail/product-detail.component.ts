@@ -94,7 +94,7 @@ export class ProductDetailComponent
             quantity: 1
           }
         )
-        .subscribe(() => {
+        .subscribe((): void => {
           const snackBarRef = this._snackBar.open(
             'Đã thêm vào giỏ hàng',
             'Đi đến giỏ hàng'
@@ -108,7 +108,21 @@ export class ProductDetailComponent
     );
   }
 
-  protected buyNow(): void {}
+  protected buyNow(): void {
+    this.registerSubscription(
+      this.cartService
+        .saveOrUpdate({
+          product: this.productDto as ProductDto,
+          quantity: 1
+        })
+        .subscribe((): void => {
+          const queryParams = {products: [this.productDto?.id]};
+          void this.router
+            .navigate([AppRoutingConstants.PAYMENT_PATH], {queryParams})
+            .then();
+        })
+    );
+  }
 
   protected onProductClick(product: ProductDto): void {
     void this.router.navigate([`products/${product.id}`]);

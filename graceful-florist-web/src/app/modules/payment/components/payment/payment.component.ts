@@ -9,6 +9,7 @@ import {PaymentMethod} from '../../models/payment.dto';
 import {CartService} from '../../../cart/services/cart.service';
 import {ModalService} from '../../../shared/services/modal.service';
 import {PaymentModalComponent} from '../payment-modal/payment-modal.component';
+import {ProductService} from '../../../products/services/product.service';
 
 @Component({
   selector: 'graceful-florist-payment',
@@ -31,7 +32,8 @@ export class PaymentComponent
     private readonly fb: FormBuilder,
     private readonly router: Router,
     private readonly modalService: ModalService,
-    private readonly cartService: CartService
+    private readonly cartService: CartService,
+    private readonly productService: ProductService
   ) {
     super();
     this.paymentForm = this.fb.group({
@@ -53,7 +55,7 @@ export class PaymentComponent
       }),
       message: [''],
       paymentMethod: [PaymentMethod.COD, Validators.required],
-      products: ['', Validators.required]
+      products: [[], Validators.required]
     });
   }
 
@@ -76,10 +78,6 @@ export class PaymentComponent
         }
       })
     ]);
-    this.paymentForm.valueChanges.subscribe(() => {
-      // eslint-disable-next-line no-console
-      console.log(this.paymentForm.value);
-    });
   }
 
   protected deliveryTimeFromChanged(deliveryTimeFrom: Date): void {

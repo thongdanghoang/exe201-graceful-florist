@@ -28,7 +28,6 @@ export enum ProductStatus {
 }
 
 export interface ProductDetailDto extends ProductDto {
-  detail: string;
   reviewCount: number;
   purchaseCount: number;
   ingredients: IngredientDto[];
