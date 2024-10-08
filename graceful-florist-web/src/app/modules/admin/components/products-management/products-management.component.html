@@ -110,13 +110,7 @@
         [fetch]="fetchProduct"
         [sort]="sort"
         [criteria]="criteria"
-        [displayedColumns]="[
-            'select',
-            'name',
-            'createdDate',
-            'enabled',
-            'price',
-        ]"
+        [displayedColumns]="['name', 'createdDate', 'enabled', 'price']"
     >
         <ng-template headerTableTemplate="name" let-column>
             Tên Sản Phẩm

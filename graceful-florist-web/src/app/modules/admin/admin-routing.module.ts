@@ -7,6 +7,7 @@ import {AdminComponent} from './admin.component';
 import {OrdersManagementComponent} from './components/orders-management/orders-management.component';
 import {AdminOrderDetailComponent} from './components/admin-order-detail/admin-order-detail.component';
 import {CategoriesManagementComponent} from './components/categories-management/categories-management.component';
+import {UsersManagementComponent} from './components/users-management/users-management.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,10 @@ const routes: Routes = [
       {
         path: AppRoutingConstants.CLASSIFICATIONS_PATH,
         component: CategoriesManagementComponent
+      },
+      {
+        path: AppRoutingConstants.USERS_MANAGEMENT,
+        component: UsersManagementComponent
       }
     ]
   }

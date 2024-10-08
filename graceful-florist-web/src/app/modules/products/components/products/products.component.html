@@ -1,6 +1,5 @@
 <div class="container mx-auto flex flex-col py-5 gap-5">
     <graceful-florist-breadcrumb [breadcrumbs]="breadcrumbs" />
-    <graceful-florist-tab-category />
     <div class="flex flex-col gap-3.5 sm:flex-row">
         <!--   BỘ LỌC TÌM KIẾM   -->
         <form
@@ -49,7 +48,11 @@
                 </mat-chip-row>
             </mat-chip-set>
             <mat-divider />
-            <mat-accordion class="*:!shadow-none" displayMode="flat">
+            <mat-accordion
+                class="*:!shadow-none"
+                displayMode="flat"
+                [multi]="true"
+            >
                 <mat-expansion-panel
                     class="*:!pl-0"
                     (opened)="panelOpenState.set(true)"
@@ -72,6 +75,17 @@
                         <mat-chip-option
                             *ngFor="let theme of categoryThemes"
                             [value]="theme"
+                            class="!rounded-lg !border"
+                            [ngClass]="{
+                                '!bg-primary': contain(
+                                    'selectedCategoryThemes',
+                                    theme
+                                ),
+                                '!bg-white !border-slate-700': !contain(
+                                    'selectedCategoryThemes',
+                                    theme
+                                ),
+                            }"
                         >
                             {{ theme.name }}
                         </mat-chip-option>
@@ -83,8 +97,8 @@
                     (closed)="panelOpenState.set(false)"
                 >
                     <mat-expansion-panel-header>
-                        <mat-panel-title class="!flex !gap-1 items-center"
-                            ><svg-icon src="assets/flowers-category.svg" />
+                        <mat-panel-title class="!flex !gap-1 items-center">
+                            <svg-icon src="assets/flowers-category.svg" />
                             <div
                                 class="font-base text-base font-normal leading-normal"
                             >
@@ -96,11 +110,23 @@
                         formControlName="selectedCategoryFlowers"
                         [multiple]="true"
                     >
-                        @for (flower of categoryFlowers; track flower) {
-                            <mat-chip-option [value]="flower">{{
-                                flower.name
-                            }}</mat-chip-option>
-                        }
+                        <mat-chip-option
+                            *ngFor="let flower of categoryFlowers"
+                            [value]="flower"
+                            class="!rounded-lg !border"
+                            [ngClass]="{
+                                '!bg-primary': contain(
+                                    'selectedCategoryFlowers',
+                                    flower
+                                ),
+                                '!bg-white !border-slate-700': !contain(
+                                    'selectedCategoryFlowers',
+                                    flower
+                                ),
+                            }"
+                        >
+                            {{ flower.name }}
+                        </mat-chip-option>
                     </mat-chip-listbox>
                 </mat-expansion-panel>
                 <mat-expansion-panel
@@ -109,8 +135,8 @@
                     (closed)="panelOpenState.set(false)"
                 >
                     <mat-expansion-panel-header>
-                        <mat-panel-title class="!flex !gap-1 items-center"
-                            ><svg-icon src="assets/flowers-color.svg" />
+                        <mat-panel-title class="!flex !gap-1 items-center">
+                            <svg-icon src="assets/flowers-color.svg" />
                             <div
                                 class="font-base text-base font-normal leading-normal"
                             >
@@ -122,11 +148,23 @@
                         formControlName="selectedCategoryColors"
                         [multiple]="true"
                     >
-                        @for (color of categoryColors; track color) {
-                            <mat-chip-option [value]="color">{{
-                                color.name
-                            }}</mat-chip-option>
-                        }
+                        <mat-chip-option
+                            *ngFor="let color of categoryColors"
+                            [value]="color"
+                            class="!rounded-lg !border"
+                            [ngClass]="{
+                                '!bg-primary': contain(
+                                    'selectedCategoryColors',
+                                    color
+                                ),
+                                '!bg-white !border-slate-700': !contain(
+                                    'selectedCategoryColors',
+                                    color
+                                ),
+                            }"
+                        >
+                            {{ color.name }}
+                        </mat-chip-option>
                     </mat-chip-listbox>
                 </mat-expansion-panel>
                 <mat-expansion-panel
@@ -135,8 +173,8 @@
                     (closed)="panelOpenState.set(false)"
                 >
                     <mat-expansion-panel-header>
-                        <mat-panel-title class="!flex !gap-1 items-center"
-                            ><svg-icon src="assets/decorator.svg" />
+                        <mat-panel-title class="!flex !gap-1 items-center">
+                            <svg-icon src="assets/decorator.svg" />
                             <div
                                 class="font-base text-base font-normal leading-normal"
                             >

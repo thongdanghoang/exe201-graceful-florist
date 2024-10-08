@@ -121,6 +121,13 @@ export class ProductsComponent
     ];
   }
 
+  contain(formControlName: string, value: any): boolean {
+    return (
+      this.filterFormGroups.get(formControlName)?.value?.includes(value) ??
+      false
+    );
+  }
+
   removeSelectedFilter(category: CategoryDto): void {
     this.filterFormGroups
       .get('selectedCategoryFlowers')

@@ -32,8 +32,8 @@ export class AdminComponent
       name: 'Phân loại'
     },
     {
-      id: AppRoutingConstants.SETTINGS_PATH,
-      name: 'Cài đặt'
+      id: AppRoutingConstants.USERS_MANAGEMENT,
+      name: 'Nhân viên'
     },
     {
       id: AppRoutingConstants.LOGOUT,
