@@ -68,10 +68,6 @@ export class HeaderComponent
     ]);
   }
 
-  protected navigateToDevMode(): void {
-    void this.router.navigate([AppRoutingConstants.DEV_PATH]);
-  }
-
   protected navigateToHomepage(): void {
     void this.router.navigate([AppRoutingConstants.HOME_PATH]);
   }
