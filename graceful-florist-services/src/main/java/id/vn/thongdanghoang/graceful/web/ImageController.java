@@ -11,12 +11,16 @@ import id.vn.thongdanghoang.graceful.mappers.ProductMapper;
 import id.vn.thongdanghoang.graceful.services.ProductService;
 import id.vn.thongdanghoang.graceful.services.StorageService;
 import lombok.RequiredArgsConstructor;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -89,7 +93,7 @@ public class ImageController {
                     .body(cache.get(UUID.fromString(imageId)));
         }
         try (InputStream inputStream = storageService.getFile(imageId)) {
-            byte[] bytes = inputStream.readAllBytes();
+            byte[] bytes = optimizeImage(inputStream).readAllBytes();
             cache.put(UUID.fromString(imageId), bytes);
             return ResponseEntity.ok()
                     .contentType(MediaType.IMAGE_JPEG)
@@ -97,5 +101,19 @@ public class ImageController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private InputStream optimizeImage(InputStream inputStream) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        // Perform the optimization (resize and compress)
+        try {
+            Thumbnails.of(inputStream)
+                    .scale(1)
+                    .outputQuality(0.2)
+                    .toOutputStream(outputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return new ByteArrayInputStream(outputStream.toByteArray());
     }
 }
