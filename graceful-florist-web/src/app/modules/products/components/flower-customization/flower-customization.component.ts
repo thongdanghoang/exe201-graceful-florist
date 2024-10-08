@@ -68,10 +68,6 @@ export class FlowerCustomizationComponent
   }
 
   ngOnInit(): void {
-    this.form.valueChanges.subscribe((value: any): void => {
-      // eslint-disable-next-line no-console
-      console.log(value);
-    });
     this.registerSubscriptions([
       this.categoryService
         .getEnabledCategories()
@@ -209,8 +205,6 @@ export class FlowerCustomizationComponent
   }
 
   submit(): void {
-    // eslint-disable-next-line no-console
-    console.log(this.form.value);
     const payload: ProductCustomDTO = {
       price: 0,
       description: this.form.get('message')?.value,
