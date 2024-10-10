@@ -7,7 +7,11 @@ import {
   SearchResultDto,
   SortDto
 } from '../../../shared/models/abstract-base-dto';
-import {OrderCriteriaDto, OrderDto} from '../../../orders/models/order.dto';
+import {
+  OrderCriteriaDto,
+  OrderDto,
+  OrderStatus
+} from '../../../orders/models/order.dto';
 import {Observable} from 'rxjs';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {OrdersService} from '../../../orders/services/orders.service';
@@ -58,7 +62,9 @@ export class DashboardComponent
       column: 'lastModifiedDate',
       direction: 'asc'
     };
-    this.criteria = {} as OrderCriteriaDto;
+    this.criteria = {
+      status: OrderStatus.PENDING
+    };
   }
 
   // eslint-disable-next-line max-lines-per-function
