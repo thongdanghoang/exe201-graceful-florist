@@ -32,7 +32,6 @@ public class ImageController {
     private final ProductService productService;
     private final IngredientMapper ingma;
     private final ProductMapper proma;
-    private static final Map<UUID, byte[]> cache = new HashMap<>();
 
     @PostMapping()
     public ResponseEntity<UploadImageResponse> uploadImage(@RequestParam("file") MultipartFile file) {
@@ -87,14 +86,8 @@ public class ImageController {
 
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> downloadImage(@PathVariable("id") String imageId) {
-        if (cache.containsKey(UUID.fromString(imageId))) {
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG)
-                    .body(cache.get(UUID.fromString(imageId)));
-        }
         try (InputStream inputStream = storageService.getFile(imageId)) {
             byte[] bytes = optimizeImage(inputStream).readAllBytes();
-            cache.put(UUID.fromString(imageId), bytes);
             return ResponseEntity.ok()
                     .contentType(MediaType.IMAGE_JPEG)
                     .body(bytes);

@@ -81,8 +81,12 @@ public class ProductController {
         productDTO.getIngredients().stream().findAny().ifPresent(ingredientDTO -> {
             productDTO.setMainImage(ingredientDTO.getImage());
         });
+        var price = productDTO.getIngredients().stream()
+                .map(IngredientDTO::getPrice)
+                .reduce(0, Integer::sum);
         var productEntity = mapper.createProduct(productDTO);
         productEntity.setOwner(securityUser.getUserEntity());
+        productEntity.setPrice(price);
         var createdProductEntity = service.createProduct(productEntity);
         CartItemEntity cartItemEntity = new CartItemEntity();
         cartItemEntity.setProduct(createdProductEntity);
