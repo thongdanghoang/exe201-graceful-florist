@@ -69,6 +69,7 @@ public class AdminController {
             var userEntity = user.get();
             userEntity.setFirstName(userDTO.getFirstName());
             userEntity.setLastName(userDTO.getLastName());
+            userEntity.setPassword(userDTO.getPassword());
             var persistedUser = userSecurityService.saveOrUpdateStaff(userEntity);
             return ResponseEntity.ok(userMapper.toStaffDto(persistedUser));
         }

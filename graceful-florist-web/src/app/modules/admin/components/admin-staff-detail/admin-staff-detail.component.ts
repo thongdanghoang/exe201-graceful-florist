@@ -1,4 +1,4 @@
-import {Component, Injector} from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {AbstractModalFormComponent} from '../../../shared/components/modal/abstract-modal-form.component';
 import {StaffDTO} from '../../model/staff.dto';
 import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
@@ -11,7 +11,10 @@ export interface StaffDetailModalOptions extends FormDialogOptions<StaffDTO> {
   selector: 'graceful-florist-admin-staff-detail',
   templateUrl: './admin-staff-detail.component.html'
 })
-export class AdminStaffDetailComponent extends AbstractModalFormComponent<StaffDTO> {
+export class AdminStaffDetailComponent
+  extends AbstractModalFormComponent<StaffDTO>
+  implements OnInit
+{
   staffFormControls: {
     [key: string]: AbstractControl<any, any>;
   } = {
@@ -25,6 +28,13 @@ export class AdminStaffDetailComponent extends AbstractModalFormComponent<StaffD
 
   constructor(injector: Injector) {
     super(injector);
+  }
+  override ngOnInit(): void {
+    super.ngOnInit();
+    if (this.options?.data?.data.id) {
+      // disable username field
+      this.formGroup.get('username')?.disable();
+    }
   }
 
   protected get isEditMode(): boolean {

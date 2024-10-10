@@ -9,16 +9,19 @@ import {UserRoleGuard} from './mock/user-role.guard';
 const routes: Routes = [
   {
     path: '',
-    component: HomepageComponent
+    component: HomepageComponent,
+    canActivate: [UserRoleGuard]
   },
   {
     path: AppRoutingConstants.HOME_PATH,
-    component: HomepageComponent
+    component: HomepageComponent,
+    canActivate: [UserRoleGuard]
   },
   {
     // TODO: Add a 403 page instead homepage
     path: AppRoutingConstants.FORBIDDEN_PATH,
-    component: HomepageComponent
+    component: HomepageComponent,
+    canActivate: [UserRoleGuard]
   },
   {
     path: AppRoutingConstants.DEV_PATH,
@@ -62,9 +65,16 @@ const routes: Routes = [
     canActivate: [AuthenticatedGuard, AdminRoleGuard]
   },
   {
+    path: AppRoutingConstants.STAFF_PATH,
+    loadChildren: () =>
+      import('./modules/staff/staff.module').then(m => m.StaffModule),
+    canActivate: [AuthenticatedGuard]
+  },
+  {
     // TODO: Add a 404 page instead homepage
     path: '**',
-    component: HomepageComponent
+    component: HomepageComponent,
+    canActivate: [UserRoleGuard]
   }
 ];
 

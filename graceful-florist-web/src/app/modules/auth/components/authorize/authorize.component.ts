@@ -40,8 +40,8 @@ export class AuthorizeComponent
     // NOTE: Avoid complex logic or operations that depend on Angular bindings or lifecycle hooks
     super();
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(6)]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]]
     });
 
     this.registerForm = this.fb.group({
@@ -63,6 +63,8 @@ export class AuthorizeComponent
     if (this.userService.authenticated()) {
       if (this.userService.getUser()?.roles.includes(UserRole.ADMIN)) {
         void this.router.navigate([AppRoutingConstants.ADMIN_PATH]);
+      } else if (this.userService.getUser()?.roles.includes(UserRole.STAFF)) {
+        void this.router.navigate([AppRoutingConstants.STAFF_PATH]);
       } else {
         void this.router.navigate([AppRoutingConstants.HOME_PATH]);
       }

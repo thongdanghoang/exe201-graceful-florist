@@ -66,12 +66,6 @@ export interface UserDto extends AbstractAuditableDTO {
   avatar: uuid;
 }
 
-export enum UserRole {
-  USER = 'ROLE_USER',
-  ADMIN = 'ROLE_ADMIN',
-  STAFF = 'ROLE_STAFF'
-}
-
 export interface ProductCriteriaDto {
   status?: ProductStatus;
   categories: CategoryDto[];

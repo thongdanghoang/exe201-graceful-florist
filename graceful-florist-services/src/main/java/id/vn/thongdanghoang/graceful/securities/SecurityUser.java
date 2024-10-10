@@ -21,7 +21,7 @@ public class SecurityUser implements UserDetails {
 
     public SecurityUser(UserEntity userEntity) {
         this.userEntity = userEntity;
-        this.username = userEntity.getUsername(); // Assuming 'name' is used as 'username'
+        this.username = userEntity.getUsername();
         this.password = userEntity.getPassword();
         this.authorities = userEntity.getAuthorities()
                 .stream()

@@ -22,7 +22,11 @@ export class TokenInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('accessToken');
-    if (token && req.url.includes(AppRoutingConstants.BACKEND_API_URL)) {
+    if (
+      token &&
+      req.url.includes(AppRoutingConstants.BACKEND_API_URL) &&
+      !req.url.includes(AppRoutingConstants.AUTH_PATH)
+    ) {
       const decodedToken = this.userService.decodeToken(token);
       if (decodedToken && decodedToken.exp * 1000 < Date.now()) {
         this.userService.clearUser();

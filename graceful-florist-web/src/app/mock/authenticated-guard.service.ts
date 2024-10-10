@@ -9,11 +9,11 @@ import {UserService} from './user.service';
 export class AuthenticatedGuard implements CanActivate {
   constructor(
     private readonly router: Router,
-    private readonly mockUserService: UserService
+    private readonly userService: UserService
   ) {}
 
   canActivate(): boolean {
-    const user = this.mockUserService.getUser();
+    const user = this.userService.getUser();
     if (user) {
       return true;
     }

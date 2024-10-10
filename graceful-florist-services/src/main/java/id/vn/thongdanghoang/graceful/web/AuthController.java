@@ -34,9 +34,12 @@ public class AuthController {
     @PostMapping("/sign-in")
     public TokenResponse signIn(@RequestBody @Valid AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password())
-        );
-        Optional<UserEntity> userEntity = userRepository.findByUsernameWithAuthorities(authRequest.username());
+                new UsernamePasswordAuthenticationToken(
+                        authRequest.username(),
+                        authRequest.password()
+                ));
+        Optional<UserEntity> userEntity = userRepository
+                .findByUsernameWithAuthorities(authRequest.username());
         if (authentication.isAuthenticated() && userEntity.isPresent()) {
             UserEntity user = userEntity.get();
             Set<String> roles = user

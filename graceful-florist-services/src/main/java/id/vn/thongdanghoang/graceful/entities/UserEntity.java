@@ -7,10 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @NamedEntityGraph(
         name = UserEntity.USER_AUTHORITIES_ENTITY_GRAPH,
@@ -60,6 +57,9 @@ public class UserEntity extends AbstractAuditableEntity {
 
     @Column(name = "address")
     private String address;
+
+    @Column(name = "avatar")
+    private UUID avatar;
 
     public static UserEntity register(String username, String password, String fullName) {
         UserEntity user = new UserEntity();
