@@ -42,6 +42,7 @@ export class TableComponent<C, R>
   @Input() searchOnInit: boolean = true;
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
   @Input({required: true}) displayedColumns!: string[];
+  @Input() suppressSortColumns: string[] = [];
   @Input({required: true}) sort!: SortDto;
   @Output() readonly rowClicked = new EventEmitter<R>();
 
@@ -120,6 +121,11 @@ export class TableComponent<C, R>
 
   get dynamicDisplayedColumns(): string[] {
     return this.displayedColumns.filter(column => column !== 'select');
+  }
+
+  isSuppressSorting(column: string): boolean {
+    // based on suppressSortColumns
+    return this.suppressSortColumns.includes(column);
   }
 
   /** Whether the number of selected elements matches the total number of rows. */

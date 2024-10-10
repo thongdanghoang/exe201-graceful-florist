@@ -58,10 +58,18 @@ export interface CommentSearchCriteriaDto {
   productId: string;
 }
 
-export interface UserDto {
-  id: string;
-  name: string;
-  avatar: string;
+export interface UserDto extends AbstractAuditableDTO {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  avatar: uuid;
+}
+
+export enum UserRole {
+  USER = 'ROLE_USER',
+  ADMIN = 'ROLE_ADMIN',
+  STAFF = 'ROLE_STAFF'
 }
 
 export interface ProductCriteriaDto {

@@ -1,1 +1,55 @@
-<p>users-management works!</p>
+<div class="flex flex-col p-8 gap-8">
+    <div class="font-sans text-2xl font-bold">Phân Loại</div>
+    <div class="flex gap-3 justify-start">
+        <div class="ml-auto">
+            <button
+                class="!rounded-lg"
+                mat-flat-button
+                color="primary"
+                (click)="onAddStaffClicked()"
+            >
+                + Thêm Nhân Viên
+            </button>
+        </div>
+    </div>
+    <graceful-florist-table
+        #staffTable
+        (rowClicked)="openStaffDetailModal($event)"
+        [fetch]="fetchCategories"
+        [sort]="sort"
+        [criteria]="criteria"
+        [displayedColumns]="[
+            'username',
+            'fullName',
+            'createdDate',
+            'lastModifiedDate',
+        ]"
+        [suppressSortColumns]="['fullName']"
+    >
+        <ng-template headerTableTemplate="username">
+            Tên Đăng Nhập
+        </ng-template>
+        <ng-template cellTableTemplate="username" let-value>
+            {{ value }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="fullName"> Họ và Tên </ng-template>
+        <ng-template cellTableTemplate="fullName" let-element="element">
+            {{ element.lastName }} {{ element.firstName }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="createdDate" let-column>
+            Ngày thêm
+        </ng-template>
+        <ng-template cellTableTemplate="createdDate" let-value>
+            {{ value | date: "dd/MM/yyyy, HH:mm:s" }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="lastModifiedDate" let-column>
+            Ngày sửa đổi
+        </ng-template>
+        <ng-template cellTableTemplate="lastModifiedDate" let-value>
+            {{ value | date: "dd/MM/yyyy, HH:mm:s" }}
+        </ng-template>
+    </graceful-florist-table>
+</div>

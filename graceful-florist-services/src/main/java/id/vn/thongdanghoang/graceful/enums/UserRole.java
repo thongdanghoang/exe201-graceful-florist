@@ -11,7 +11,8 @@ import java.util.Arrays;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public enum UserRole {
     ROLE_USER(RoleNameConstant.USER),
-    ROLE_ADMIN(RoleNameConstant.ADMIN);
+    ROLE_ADMIN(RoleNameConstant.ADMIN),
+    ROLE_STAFF(RoleNameConstant.STAFF);
 
     private final String roleValue;
 
@@ -25,6 +26,7 @@ public enum UserRole {
     public static final class RoleNameConstant {
         public static final String USER = "USER";
         public static final String ADMIN = "ADMIN";
+        public static final String STAFF = "STAFF";
 
         private RoleNameConstant() {
         }

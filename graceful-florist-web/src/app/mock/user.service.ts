@@ -2,6 +2,14 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {uuid} from '../../../graceful-florist-type';
 import {jwtDecode} from 'jwt-decode';
+import {HttpClient} from '@angular/common/http';
+import {
+  SearchCriteriaDto,
+  SearchResultDto
+} from '../modules/shared/models/abstract-base-dto';
+import {StaffDTO} from '../modules/admin/model/staff.dto';
+import {AppRoutingConstants} from '../app-routing-constants';
+import {UserDto} from '../modules/products/models/product.dto';
 
 interface User {
   id: uuid;
@@ -29,12 +37,34 @@ export class UserService {
   public user$: Observable<User | null>;
   private readonly userSubject: BehaviorSubject<User | null>;
 
-  constructor() {
+  constructor(private readonly httpClient: HttpClient) {
     const user = this.getUserFromToken(
       localStorage.getItem('accessToken') ?? ''
     );
     this.userSubject = new BehaviorSubject<User | null>(user);
     this.user$ = this.userSubject.asObservable();
+  }
+
+  getStaffs(
+    criteria: SearchCriteriaDto<void>
+  ): Observable<SearchResultDto<StaffDTO>> {
+    return this.httpClient.post<SearchResultDto<StaffDTO>>(
+      `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.ADMIN_PATH}/${AppRoutingConstants.USERS_MANAGEMENT}`,
+      criteria
+    );
+  }
+
+  addStaff(staff: StaffDTO): Observable<StaffDTO> {
+    return this.httpClient.put<StaffDTO>(
+      `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.ADMIN_PATH}/${AppRoutingConstants.USERS_MANAGEMENT}`,
+      staff
+    );
+  }
+
+  deleteStaffByID(id: uuid): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.ADMIN_PATH}/${AppRoutingConstants.USERS_MANAGEMENT}/${id}`
+    );
   }
 
   setToken(token: string): void {
@@ -52,6 +82,12 @@ export class UserService {
 
   getUser(): User | null {
     return this.userSubject.value;
+  }
+
+  getUserDetail(): Observable<UserDto> {
+    return this.httpClient.get<UserDto>(
+      `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.USERS_MANAGEMENT}`
+    );
   }
 
   authenticated(): boolean {

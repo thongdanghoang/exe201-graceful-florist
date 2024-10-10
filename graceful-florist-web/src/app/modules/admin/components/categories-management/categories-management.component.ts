@@ -56,7 +56,7 @@ export class CategoriesManagementComponent implements OnInit {
       this.categoryService
     );
     this.sort = {
-      column: 'name',
+      column: 'lastModifiedDate',
       direction: 'asc'
     };
     this.criteria = {};

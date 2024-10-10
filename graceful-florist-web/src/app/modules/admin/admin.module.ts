@@ -12,6 +12,7 @@ import {CategoriesManagementComponent} from './components/categories-management/
 import {AdminOrderDetailComponent} from './components/admin-order-detail/admin-order-detail.component';
 import {CategoryDetailModalComponent} from './components/category-detail-modal/category-detail-modal.component';
 import {UsersManagementComponent} from './components/users-management/users-management.component';
+import {AdminStaffDetailComponent} from './components/admin-staff-detail/admin-staff-detail.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {UsersManagementComponent} from './components/users-management/users-mana
     CategoriesManagementComponent,
     AdminOrderDetailComponent,
     CategoryDetailModalComponent,
-    UsersManagementComponent
+    UsersManagementComponent,
+    AdminStaffDetailComponent
   ],
   imports: [CommonModule, SharedModule, AdminRoutingModule]
 })

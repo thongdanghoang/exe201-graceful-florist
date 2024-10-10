@@ -114,6 +114,16 @@ export class DashboardComponent
       yaxis: {
         title: {
           text: 'Doanh số (₫)'
+        },
+        labels: {
+          formatter(value: number): string {
+            return value
+              ? new Intl.NumberFormat('vi-VN', {
+                  style: 'currency',
+                  currency: 'VND'
+                }).format(value)
+              : '';
+          }
         }
       },
       tooltip: {
@@ -125,7 +135,7 @@ export class DashboardComponent
         },
         y: {
           formatter(value: number): string {
-            return `$${value.toFixed(2)}`;
+            return `${value.toFixed(2)}`;
           }
         }
       },
@@ -186,6 +196,16 @@ export class DashboardComponent
       yaxis: {
         title: {
           text: 'Tổng doanh số (₫)'
+        },
+        labels: {
+          formatter(value: number): string {
+            return value
+              ? new Intl.NumberFormat('vi-VN', {
+                  style: 'currency',
+                  currency: 'VND'
+                }).format(value)
+              : '';
+          }
         }
       },
       tooltip: {
@@ -197,7 +217,12 @@ export class DashboardComponent
         },
         y: {
           formatter(value: number): string {
-            return `$${value.toFixed(2)}`;
+            return value
+              ? new Intl.NumberFormat('vi-VN', {
+                  style: 'currency',
+                  currency: 'VND'
+                }).format(value)
+              : '';
           }
         }
       },
@@ -211,20 +236,6 @@ export class DashboardComponent
         position: 'top'
       }
     };
-  }
-
-  generateDailyData(): number[] {
-    return Array.from(
-      {length: 31},
-      () => Math.floor(Math.random() * 1000) + 100
-    );
-  }
-
-  generateMonthlyData(): number[] {
-    return Array.from(
-      {length: 12},
-      () => Math.floor(Math.random() * 50000) + 10000
-    );
   }
 
   getProductId(id: uuid | undefined): string {

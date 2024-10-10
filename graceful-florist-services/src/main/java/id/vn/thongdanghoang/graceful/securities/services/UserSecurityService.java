@@ -7,12 +7,12 @@ import id.vn.thongdanghoang.graceful.repositories.UserRepository;
 import id.vn.thongdanghoang.graceful.securities.SecurityUser;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -34,11 +34,23 @@ public class UserSecurityService implements UserDetailsService {
     }
 
     public void addUser(UserEntity userEntity) {
-        Optional<AuthorityEntity> roleUser = repository.findUserRoleByRoleName(UserRole.ROLE_USER.name());
+        Optional<AuthorityEntity> roleUser = repository
+                .findUserRoleByRoleName(UserRole.ROLE_USER.name());
         roleUser.ifPresent(userEntity::addAuthority);
         // Encode password before saving the user
         userEntity.setPassword(encoder.encode(userEntity.getPassword()));
         repository.save(userEntity);
+    }
+
+    public UserEntity saveOrUpdateStaff(UserEntity userEntity) {
+        if (Objects.isNull(userEntity.getId())) {
+            var staffRole = repository
+                    .findUserRoleByRoleName(UserRole.ROLE_STAFF.name());
+            staffRole.ifPresent(userEntity::addAuthority);
+        }
+        // Encode password before saving the user
+        userEntity.setPassword(encoder.encode(userEntity.getPassword()));
+        return repository.save(userEntity);
     }
 }
 

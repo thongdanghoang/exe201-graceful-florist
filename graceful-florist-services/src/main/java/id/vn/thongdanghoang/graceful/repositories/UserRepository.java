@@ -2,6 +2,8 @@ package id.vn.thongdanghoang.graceful.repositories;
 
 import id.vn.thongdanghoang.graceful.entities.AuthorityEntity;
 import id.vn.thongdanghoang.graceful.entities.UserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +21,13 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
 
     @Query("SELECT a FROM AuthorityEntity a WHERE a.name = :roleName")
     Optional<AuthorityEntity> findUserRoleByRoleName(String roleName);
+
+    @Query("""
+            SELECT u
+            FROM UserEntity u
+            JOIN u.authorities a
+            WHERE a.name = 'ROLE_STAFF'
+            """)
+    Page<UserEntity> findAllStaffs(Pageable pageable);
 }
 

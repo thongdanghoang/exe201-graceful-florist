@@ -1,0 +1,56 @@
+<div class="text-2xl font-bold font-sans" mat-dialog-title>
+    {{ options.title }}
+</div>
+<mat-dialog-content>
+    <form [formGroup]="formGroup" class="flex flex-col gap-4 w-96">
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Họ</mat-label>
+            <input matInput formControlName="lastName" />
+            <mat-error></mat-error>
+        </mat-form-field>
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Tên</mat-label>
+            <input matInput formControlName="firstName" />
+            <mat-error></mat-error>
+        </mat-form-field>
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Tên đăng nhập</mat-label>
+            <input matInput formControlName="username" />
+            <mat-error></mat-error>
+        </mat-form-field>
+        <mat-form-field
+            appearance="fill"
+            subscriptSizing="dynamic"
+            gracefulFloristErrorMessage
+        >
+            <mat-label>Mật khẩu</mat-label>
+            <input matInput formControlName="password" type="password" />
+            <mat-error></mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="flex justify-end w-full gap-4">
+        <button mat-button (click)="close()">Hủy bỏ</button>
+        <button
+            [disabled]="formGroup.invalid"
+            mat-flat-button
+            color="primary"
+            (click)="submit()"
+        >
+            {{ isEditMode ? "Cập Nhật" : "Thêm Mới" }}
+        </button>
+    </div>
+</mat-dialog-actions>
