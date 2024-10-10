@@ -82,8 +82,9 @@ public class ProductController {
             productDTO.setMainImage(ingredientDTO.getImage());
         });
         var price = productDTO.getIngredients().stream()
-                .map(IngredientDTO::getPrice)
-                .reduce(0, Integer::sum);
+                .map(ingredientDTO -> ingredientDTO.getPrice() * ingredientDTO.getQuantity())
+                .reduce(Integer::sum)
+                .orElseThrow();
         var productEntity = mapper.createProduct(productDTO);
         productEntity.setOwner(securityUser.getUserEntity());
         productEntity.setPrice(price);
