@@ -16,11 +16,11 @@
         @if (percentageChange && percentageChange > 0) {
             <mat-icon class="text-emerald-500">trending_up</mat-icon>
             <div class="font-sans text-base font-semibold text-emerald-500">
-                {{ percentageChange }}%
+                {{ formattedPercentageChange }}
             </div>
         } @else {
             <div class="font-sans text-base font-semibold text-primary">
-                {{ percentageChange }}%
+                {{ formattedPercentageChange }}
             </div>
             <mat-icon class="text-primary">trending_down</mat-icon>
         }

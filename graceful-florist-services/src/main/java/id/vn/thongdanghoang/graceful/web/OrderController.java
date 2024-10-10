@@ -43,7 +43,7 @@ public class OrderController {
         return ResponseEntity.ok(orderDTO);
     }
 
-    @PatchMapping(value = "/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> updateOrderStatus(@PathVariable UUID id, @RequestBody RequestWrapper<OrderStatus> orderStatusWrapper) {
         var orderOptional = orderService.findOrderById(id);
         if (orderOptional.isEmpty()) {

@@ -30,7 +30,7 @@ public class PaymentController {
                 .getContext().getAuthentication().getPrincipal();
         var orderEntity = orderMapper.payment(paymentDTO);
         orderEntity.setUser(securityUser.getUserEntity());
-        orderEntity.setStatus(OrderStatus.PROCESSING);
+        orderEntity.setStatus(OrderStatus.PENDING);
         var itemEntities = paymentDTO
                 .getProducts().stream()
                 .map(cartItemDTO -> {

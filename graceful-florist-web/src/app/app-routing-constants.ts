@@ -34,6 +34,7 @@ export class AppRoutingConstants {
 
   // admin module
   public static readonly ADMIN_PATH = 'admin';
+  public static readonly REPORT_PATH = 'reports';
   public static readonly DASHBOARD_PATH = 'dashboard';
   public static readonly PRODUCTS_MANAGEMENT_PATH = 'products';
   public static readonly ORDERS_MANAGEMENT_PATH = 'orders';

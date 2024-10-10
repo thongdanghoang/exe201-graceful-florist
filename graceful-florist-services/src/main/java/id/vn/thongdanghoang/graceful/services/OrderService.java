@@ -17,4 +17,19 @@ public interface OrderService {
 
     long countOrders();
 
+    long totalOrders();
+
+    long totalOrdersLastWeek();
+
+    long totalOrdersPending();
+
+    long totalOrdersPendingLastWeek();
+
+    long totalRevenue();
+
+    long totalRevenueLastWeek();
+
+    List<Long> thisMonthRevenue();
+
+    List<Long> thisYearRevenue();
 }

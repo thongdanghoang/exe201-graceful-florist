@@ -3,57 +3,74 @@
         <!--     Tổng đơn đặt hàng     -->
         <graceful-florist-total-card
             title="Tổng đơn đặt hàng"
-            [value]="10293"
+            [value]="reportDTO ? reportDTO.totalOrders : 0"
             icon="assets/total-orders.svg"
-            [percentageChange]="1.3"
+            [percentageChange]="
+                reportDTO
+                    ? reportDTO.totalOrders / reportDTO.totalOrdersLastWeek
+                    : 0
+            "
             changeDescription="Up from past week"
         ></graceful-florist-total-card>
         <!--     Tổng doanh thu     -->
         <graceful-florist-total-card
             title="Tổng doanh thu"
             [formatCurrency]="true"
-            [value]="4578000"
+            [value]="reportDTO ? reportDTO.totalRevenue : 0"
             icon="assets/total-income.svg"
-            [percentageChange]="1.3"
+            [percentageChange]="
+                reportDTO
+                    ? reportDTO.totalRevenue / reportDTO.totalRevenueLastWeek
+                    : 0
+            "
             changeDescription="Up from past week"
         ></graceful-florist-total-card>
         <!--     Tổng đơn đang Đợi xử lý     -->
         <graceful-florist-total-card
             title="Tổng đơn đang Đợi xử lý"
-            [value]="150"
+            [value]="reportDTO ? reportDTO.totalOrdersPending : 0"
             icon="assets/waiting.svg"
-            [percentageChange]="-1.8"
+            [percentageChange]="
+                reportDTO
+                    ? reportDTO.totalOrdersPending /
+                      reportDTO.totalOrdersPendingLastWeek
+                    : 0
+            "
             changeDescription="Down from past week"
         ></graceful-florist-total-card>
     </div>
     <!--   Doanh Số Theo Ngày   -->
     <div class="bg-white p-4 rounded-lg shadow">
         <h2 class="font-sans text-xl font-semibold mb-2">Doanh Số Theo Ngày</h2>
-        <apx-chart
-            [series]="dailyChartOptions.series"
-            [chart]="dailyChartOptions.chart"
-            [xaxis]="dailyChartOptions.xaxis"
-            [yaxis]="dailyChartOptions.yaxis"
-            [tooltip]="dailyChartOptions.tooltip"
-            [colors]="dailyChartOptions.colors"
-            [stroke]="dailyChartOptions.stroke"
-        ></apx-chart>
+        @if (dailyChartOptions) {
+            <apx-chart
+                [series]="dailyChartOptions.series"
+                [chart]="dailyChartOptions.chart"
+                [xaxis]="dailyChartOptions.xaxis"
+                [yaxis]="dailyChartOptions.yaxis"
+                [tooltip]="dailyChartOptions.tooltip"
+                [colors]="dailyChartOptions.colors"
+                [stroke]="dailyChartOptions.stroke"
+            ></apx-chart>
+        }
     </div>
     <!--   Doanh Số Tổng Theo Tháng   -->
     <div class="bg-white p-4 rounded-lg shadow">
         <h2 class="font-sans text-xl font-semibold mb-2">
             Doanh Số Tổng Theo Tháng
         </h2>
-        <apx-chart
-            [series]="monthlyChartOptions.series"
-            [chart]="monthlyChartOptions.chart"
-            [xaxis]="monthlyChartOptions.xaxis"
-            [yaxis]="monthlyChartOptions.yaxis"
-            [tooltip]="monthlyChartOptions.tooltip"
-            [colors]="monthlyChartOptions.colors"
-            [stroke]="monthlyChartOptions.stroke"
-            [legend]="monthlyChartOptions.legend"
-        ></apx-chart>
+        @if (monthlyChartOptions) {
+            <apx-chart
+                [series]="monthlyChartOptions.series"
+                [chart]="monthlyChartOptions.chart"
+                [xaxis]="monthlyChartOptions.xaxis"
+                [yaxis]="monthlyChartOptions.yaxis"
+                [tooltip]="monthlyChartOptions.tooltip"
+                [colors]="monthlyChartOptions.colors"
+                [stroke]="monthlyChartOptions.stroke"
+                [legend]="monthlyChartOptions.legend"
+            ></apx-chart>
+        }
     </div>
     <!--   Đơn hàng Đang Đợi Xử Lý   -->
     <div class="flex flex-col gap-3">

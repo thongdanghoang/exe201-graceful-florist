@@ -7,13 +7,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
+import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @NamedEntityGraph(
@@ -23,6 +21,7 @@ import java.util.Set;
                 @NamedAttributeNode("orderItems"),
         }
 )
+@FieldNameConstants
 @Entity
 @Getter
 @Setter

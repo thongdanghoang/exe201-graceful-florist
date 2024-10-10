@@ -12,4 +12,10 @@ export class TotalCardComponent {
   @Input() percentageChange: number | undefined;
   @Input() changeDescription: string | undefined;
   @Input() formatCurrency: boolean = false;
+
+  get formattedPercentageChange(): string {
+    return this.percentageChange
+      ? `${this.percentageChange.toFixed(2)}%`
+      : '0%';
+  }
 }

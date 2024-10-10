@@ -38,4 +38,44 @@ public class OrderServiceImpl implements OrderService {
     public long countOrders() {
         return orderRepository.count();
     }
+
+    @Override
+    public long totalOrders() {
+        return orderRepository.count();
+    }
+
+    @Override
+    public long totalOrdersLastWeek() {
+        return orderRepository.totalOrdersLastWeek();
+    }
+
+    @Override
+    public long totalOrdersPending() {
+        return orderRepository.totalOrdersPending();
+    }
+
+    @Override
+    public long totalOrdersPendingLastWeek() {
+        return orderRepository.totalOrdersPendingLastWeek();
+    }
+
+    @Override
+    public long totalRevenue() {
+        return orderRepository.totalRevenue();
+    }
+
+    @Override
+    public long totalRevenueLastWeek() {
+        return orderRepository.totalRevenueLastWeek();
+    }
+
+    @Override
+    public List<Long> thisMonthRevenue() {
+        return orderRepository.thisMonthRevenue();
+    }
+
+    @Override
+    public List<Long> thisYearRevenue() {
+        return orderRepository.thisYearRevenue();
+    }
 }

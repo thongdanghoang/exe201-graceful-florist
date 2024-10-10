@@ -12,19 +12,25 @@ import {Observable} from 'rxjs';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {OrdersService} from '../../../orders/services/orders.service';
 import {uuid} from '../../../../../../graceful-florist-type';
+import {ReportDTO} from '../../model/report.dto';
+import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 
 @Component({
   selector: 'graceful-florist-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent
+  extends SubscriptionAwareComponent
+  implements OnInit
+{
   fetchProduct!: (
     criteria: SearchCriteriaDto<OrderCriteriaDto>
   ) => Observable<SearchResultDto<OrderDto>>;
   sort!: SortDto;
   criteria!: OrderCriteriaDto;
 
+  reportDTO: ReportDTO | undefined;
   dailyChartOptions: any;
   monthlyChartOptions: any;
 
@@ -33,11 +39,18 @@ export class DashboardComponent implements OnInit {
     private readonly modalService: ModalService,
     private readonly productService: ProductService,
     private readonly ordersService: OrdersService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.initDailyChartOptions();
-    this.initMonthlyChartOptions();
+    this.registerSubscription(
+      this.ordersService.report().subscribe((reportDTO: ReportDTO): void => {
+        this.reportDTO = reportDTO;
+        this.initDailyChartOptions();
+        this.initMonthlyChartOptions();
+      })
+    );
     this.fetchProduct = this.ordersService.searchOrders.bind(
       this.ordersService
     );
@@ -54,7 +67,7 @@ export class DashboardComponent implements OnInit {
       series: [
         {
           name: 'Daily Sales',
-          data: this.generateDailyData()
+          data: this.reportDTO?.thisMonthRevenue ?? []
         }
       ],
       chart: {
@@ -124,7 +137,7 @@ export class DashboardComponent implements OnInit {
       series: [
         {
           name: 'Monthly Total Sales',
-          data: this.generateMonthlyData()
+          data: this.reportDTO?.thisYearRevenue ?? []
         }
       ],
       chart: {

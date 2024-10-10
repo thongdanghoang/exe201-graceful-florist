@@ -7,6 +7,7 @@ import {
 import {Observable} from 'rxjs';
 import {AppRoutingConstants} from '../../../app-routing-constants';
 import {HttpClient} from '@angular/common/http';
+import {ReportDTO} from '../../admin/model/report.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,14 @@ import {HttpClient} from '@angular/common/http';
 export class OrdersService {
   constructor(private readonly httpClient: HttpClient) {}
 
+  report(): Observable<ReportDTO> {
+    return this.httpClient.get<ReportDTO>(
+      `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.ADMIN_PATH}/${AppRoutingConstants.REPORT_PATH}`
+    );
+  }
+
   updateOrderStatus(order: OrderDto): Observable<void> {
-    return this.httpClient.patch<void>(
+    return this.httpClient.put<void>(
       `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.ORDERS_MANAGEMENT_PATH}/${order.id}`,
       {value: order.status}
     );
