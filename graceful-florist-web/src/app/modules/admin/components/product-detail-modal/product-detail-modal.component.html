@@ -64,6 +64,7 @@
                     >
                         <mat-icon class="">add_photo_alternate</mat-icon>
                         <input
+                            [disabled]="formGroup.disabled"
                             #imageUpload
                             class="hidden"
                             type="file"
@@ -136,23 +137,12 @@
             <mat-error></mat-error>
         </mat-form-field>
         <!-- Mô tả -->
-        <mat-form-field
-            class="mx-auto h-44 w-full *:!bg-transparent"
-            appearance="fill"
-            subscriptSizing="dynamic"
-            gracefulFloristErrorMessage
-        >
-            <mat-label class="!font-sans">Mô tả</mat-label>
-            <textarea
-                matInput
-                class="!font-sans"
+        <div class="h-full overflow-y-auto" style="max-width: 472px">
+            <angular-editor
                 formControlName="description"
-                placeholder="Thêm lời nhắn vào thiệp"
-                rows="5"
-                cols="50"
-            ></textarea>
-            <mat-error></mat-error>
-        </mat-form-field>
+                [config]="editorConfig"
+            ></angular-editor>
+        </div>
         <!-- Thành phần auto-complete multi-select -->
         <mat-form-field
             appearance="fill"
@@ -212,7 +202,9 @@
     <div class="flex justify-end w-full gap-4">
         <button mat-button (click)="close()">Hủy bỏ</button>
         <button
-            [disabled]="formGroup.invalid"
+            [disabled]="
+                formGroup.invalid || formGroup.get('owner')?.value !== null
+            "
             mat-flat-button
             color="primary"
             (click)="submit()"

@@ -81,21 +81,21 @@ export class FlowerCustomizationComponent
         // 'italic',
         // 'underline',
         'strikeThrough',
-        // 'justifyLeft',
-        // 'justifyCenter',
-        // 'justifyRight',
-        // 'justifyFull',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
         'indent',
         'outdent',
-        // 'insertUnorderedList',
-        // 'insertOrderedList',
+        'insertUnorderedList',
+        'insertOrderedList',
         'heading',
         'fontName',
         'superscript',
         'subscript'
       ],
       [
-        // 'fontSize',
+        'fontSize',
         // 'textColor',
         // 'backgroundColor',
         'customClasses',
@@ -117,8 +117,8 @@ export class FlowerCustomizationComponent
     layout: this.formBuilder.control(null),
     secondaryFlower: this.formBuilder.control(null, Validators.required),
     message: this.formBuilder.control('', Validators.required),
-    wrapper: this.formBuilder.control(null),
-    accessories: this.formBuilder.control([])
+    wrapper: this.formBuilder.control(null, Validators.required),
+    accessories: this.formBuilder.control(null, Validators.required)
   };
   protected form: FormGroup = this.formBuilder.group(
     this.flowerCustomizationFormControls
@@ -143,9 +143,6 @@ export class FlowerCustomizationComponent
   }
 
   ngOnInit(): void {
-    this.form.get('message')?.valueChanges.subscribe((value: any): void => {
-      console.log(value);
-    });
     this.registerSubscriptions([
       this.categoryService
         .getEnabledCategories()
@@ -289,10 +286,10 @@ export class FlowerCustomizationComponent
       categories: [this.form.get('color')?.value],
       ingredients: [
         ...(this.form.get('mainFlowers')?.value ?? []),
-        ...(this.form.get('accessories')?.value ?? []),
-        this.form.get('secondaryFlower')?.value
+        this.form.get('accessories')?.value,
+        this.form.get('secondaryFlower')?.value,
         // this.form.get('layout')?.value,
-        // this.form.get('wrapper')?.value
+        this.form.get('wrapper')?.value
       ]
     };
     this.registerSubscription(

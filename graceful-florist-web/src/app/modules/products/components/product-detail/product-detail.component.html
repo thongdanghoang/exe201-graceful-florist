@@ -102,22 +102,7 @@
                     Mô Tả
                 </div>
                 <!--     Description Detail    -->
-                <ul
-                    class="list-disc *:text-sm *:font-sans *:font-normal *:leading-normal pl-3"
-                >
-                    <li>
-                        Bó hoa được kết từ những bông hoa tươi mới nhất, đảm bảo
-                        chất lượng cao.
-                    </li>
-                    <li>
-                        Thiết kế tinh tế, sang trọng, phù hợp với mọi không
-                        gian.
-                    </li>
-                    <li>
-                        Mang ý nghĩa sâu sắc về tình yêu nồng nàn và say đắm.
-                    </li>
-                    <li>Là món quà hoàn hảo để dành tặng cho người ấy.</li>
-                </ul>
+                <div [innerHTML]="productDto.description"></div>
                 <!--     Actions    -->
                 <div class="flex gap-8">
                     <button mat-raised-button (click)="addToCart()">
