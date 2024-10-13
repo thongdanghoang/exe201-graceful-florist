@@ -36,6 +36,9 @@ public abstract class OrderMapperDecorator implements OrderMapper {
         if (Objects.nonNull(orderEntity.getUser())) {
             orderDTO.setUser(userMapper.toUserDto(orderEntity.getUser()));
         }
+        if (Objects.nonNull(orderEntity.getStaff())) {
+            orderDTO.setStaff(userMapper.toUserDto(orderEntity.getStaff()));
+        }
         if(JpaUtils.isInitialized(orderEntity.getOrderItems()) && !orderEntity.getOrderItems().isEmpty()) {
             orderDTO.setOrderItems(orderEntity
                     .getOrderItems().stream()

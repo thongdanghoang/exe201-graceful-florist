@@ -113,7 +113,9 @@
             Mã đơn hàng
         </ng-template>
         <ng-template cellTableTemplate="id" let-value>
-            {{ getProductId(value) }}
+            <div class="font-sans" (click)="navigateToOrderDetail(value)">
+                #{{ getProductId(value) }}
+            </div>
         </ng-template>
 
         <ng-template headerTableTemplate="recipientName" let-column>

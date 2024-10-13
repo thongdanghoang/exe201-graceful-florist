@@ -20,6 +20,7 @@ import java.util.Set;
         name = OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH,
         attributeNodes = {
                 @NamedAttributeNode("user"),
+                @NamedAttributeNode("staff"),
                 @NamedAttributeNode("orderItems"),
         }
 )
@@ -50,15 +51,9 @@ public class OrderEntity  extends AbstractAuditableEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItemEntity> orderItems = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "staffs_orders",
-            schema = "graceful",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "staff_id")
-    )
-    @Fetch(FetchMode.SUBSELECT)
-    private Set<UserEntity> staffs = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "staff_id")
+    private UserEntity staff;
 
     @NotNull
     @Column(name = "status")

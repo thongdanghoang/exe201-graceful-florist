@@ -96,6 +96,7 @@
     </form>
     <graceful-florist-table
         #pendingOrdersTable
+        (rowClicked)="navigateToOrderDetail($event.id)"
         [fetch]="fetchProduct"
         [sort]="sort"
         [criteria]="criteria"

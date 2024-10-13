@@ -1,4 +1,4 @@
-import {ProductDto} from '../../products/models/product.dto';
+import {ProductDto, UserDto} from '../../products/models/product.dto';
 import {
   AbstractAuditableDTO,
   AbstractBaseDto
@@ -30,6 +30,8 @@ export interface OrderDto extends AbstractAuditableDTO {
   deliveryDate: Date;
   deliveryTimeFrom: Date;
   deliveryTimeTo: Date;
+  user: UserDto;
+  staff: UserDto;
 }
 
 export interface OrderItemDto extends AbstractBaseDto {

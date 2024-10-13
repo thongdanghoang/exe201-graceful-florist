@@ -28,14 +28,18 @@ public class OrderController {
         var pageable = commonMapper
                 .toPageable(searchCriteria.getPage(), searchCriteria.getSort());
         long total = orderService.countOrders();
-        var orderEntities = orderService.searchOrders(pageable);
-        var orderDTOs = orderMapper.toOrderDTOs(orderEntities);
-        return ResponseEntity.ok(SearchResultDto.of(orderDTOs, total));
+        var results = orderService
+                .searchOrders(pageable)
+                .stream()
+                .map(orderMapper::toOrderDTO)
+                .toList();
+        return ResponseEntity.ok(SearchResultDto.of(results, total));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderDTO> getOrder(@PathVariable UUID id) {
-        var orderEntity = orderService.findOrderById(id);
+        var orderEntity = orderService
+                .findOrderById(id);
         if (orderEntity.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

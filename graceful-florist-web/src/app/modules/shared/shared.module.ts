@@ -20,7 +20,12 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {AsyncPipe, CommonModule, NgOptimizedImage} from '@angular/common';
+import {
+  AsyncPipe,
+  CommonModule,
+  DatePipe,
+  NgOptimizedImage
+} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -127,6 +132,7 @@ const sharedModules = [
     FormsModule,
     ReactiveFormsModule,
     SvgIconComponent,
+    DatePipe,
     AngularEditorModule
   ],
   exports: [
@@ -140,6 +146,7 @@ const sharedModules = [
     FormsModule,
     ReactiveFormsModule,
     SvgIconComponent,
+    DatePipe,
     AngularEditorModule
   ],
   providers: [ModalService]

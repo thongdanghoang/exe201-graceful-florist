@@ -16,6 +16,7 @@ import {uuid} from '../../../../../../graceful-florist-type';
 import {StaffService} from '../../services/staff.service';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {TableComponent} from '../../../shared/components/table/table.component';
+import {AppRoutingConstants} from '../../../../app-routing-constants';
 
 @Component({
   selector: 'graceful-florist-pending-orders',
@@ -71,6 +72,12 @@ export class PendingOrdersComponent
         this.pendingOrdersTable.search();
       })
     );
+  }
+
+  navigateToOrderDetail(orderId: uuid): void {
+    void this.router.navigate([
+      `${AppRoutingConstants.STAFF_PATH}/${AppRoutingConstants.STAFF_ORDERS_PATH}/${orderId}`
+    ]);
   }
 
   // It's seem mat-calendar is not work with reactive form

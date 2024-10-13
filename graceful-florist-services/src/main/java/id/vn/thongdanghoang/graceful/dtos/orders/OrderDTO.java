@@ -21,6 +21,7 @@ public class OrderDTO extends AbstractAuditableDTO {
 
     @NotNull
     private UserDTO user;
+    private UserDTO staff;
 
     private Set<OrderItemDTO> orderItems = new HashSet<>();
 
@@ -33,7 +34,6 @@ public class OrderDTO extends AbstractAuditableDTO {
     private String recipientPhone;
     private String recipientAddress;
     private PaymentMethod paymentMethod;
-    @Column(name = "message")
     private String message;
     private LocalDate deliveryDate;
     private LocalTime deliveryTimeFrom;

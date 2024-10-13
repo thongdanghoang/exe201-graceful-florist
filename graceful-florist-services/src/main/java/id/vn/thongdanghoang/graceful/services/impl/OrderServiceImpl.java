@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,21 +31,21 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<OrderEntity> staffOrders(UserEntity staff, Pageable page) {
-        return orderRepository.findByStaffID(staff.getId(), page);
+        return orderRepository.findByStaff(staff, page);
     }
 
     @Override
     public Page<OrderEntity> staffSearchPendingOrders(Pageable page) {
-        return orderRepository.findByStatus(OrderStatus.PENDING, page);
+        return orderRepository.staffFindPendingOrders(page);
     }
 
     @Override
     public OrderEntity staffReceiveOrder(UUID orderId, UserEntity staff) {
         var order = orderRepository
                 .findById(orderId).orElseThrow();
-        if(order.getStatus() == OrderStatus.PENDING) {
+        if(order.getStatus() == OrderStatus.PENDING && Objects.isNull(order.getStaff())) {
             order.setStatus(OrderStatus.PROCESSING);
-            order.getStaffs().add(staff);
+            order.setStaff(staff);
             orderRepository.save(order);
             return order;
         }

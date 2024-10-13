@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/staffs")
@@ -33,8 +34,12 @@ public class StaffController {
                 .toPageable(searchCriteriaDto.getPage(), searchCriteriaDto.getSort());
         var staffOrders = orderService
                 .staffOrders(securityUser.getUserEntity(), pageable);
+        var results = staffOrders
+                .getContent().stream()
+                .map(orderMapper::toOrderDTO)
+                .toList();
         var searchResult = SearchResultDto
-                .of(orderMapper.toOrderDTOs(staffOrders.getContent()), staffOrders.getTotalElements());
+                .of(results, staffOrders.getTotalElements());
         return ResponseEntity.ok(searchResult);
     }
 
@@ -44,8 +49,12 @@ public class StaffController {
                 .toPageable(searchCriteriaDto.getPage(), searchCriteriaDto.getSort());
         var staffOrders = orderService
                 .staffSearchPendingOrders(pageable);
+        var results = staffOrders
+                .getContent().stream()
+                .map(orderMapper::toOrderDTO)
+                .toList();
         var searchResult = SearchResultDto
-                .of(orderMapper.toOrderDTOs(staffOrders.getContent()), staffOrders.getTotalElements());
+                .of(results, staffOrders.getTotalElements());
         return ResponseEntity.ok(searchResult);
     }
 

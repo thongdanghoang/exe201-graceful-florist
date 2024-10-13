@@ -7,8 +7,6 @@ import id.vn.thongdanghoang.graceful.entities.OrderEntity;
 import id.vn.thongdanghoang.graceful.entities.OrderItemEntity;
 import org.mapstruct.*;
 
-import java.util.List;
-
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 @DecoratedWith(OrderMapperDecorator.class)
 public interface OrderMapper {
@@ -17,10 +15,9 @@ public interface OrderMapper {
     OrderItemDTO toOrderItemDTO(OrderItemEntity orderItemEntity);
 
     @Mapping(target = "user", source = "user", ignore = true)
+    @Mapping(target = "staff", source = "staff", ignore = true)
     @Mapping(target = "orderItems", source = "orderItems", ignore = true)
     OrderDTO toOrderDTO(OrderEntity orderEntity);
-
-    List<OrderDTO> toOrderDTOs(List<OrderEntity> orderEntities);
 
     @Mapping(target = "senderName", source = "paymentDTO.sender.fullName")
     @Mapping(target = "senderPhone", source = "paymentDTO.sender.phone")
