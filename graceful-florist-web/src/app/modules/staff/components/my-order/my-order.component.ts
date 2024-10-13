@@ -16,6 +16,7 @@ import {TableComponent} from '../../../shared/components/table/table.component';
 import {Router} from '@angular/router';
 import {StaffService} from '../../services/staff.service';
 import {uuid} from '../../../../../../graceful-florist-type';
+import {AppRoutingConstants} from '../../../../app-routing-constants';
 
 @Component({
   selector: 'graceful-florist-my-order',
@@ -63,12 +64,10 @@ export class MyOrderComponent
     this.criteria = {} as OrderCriteriaDto;
   }
 
-  receiveOrder(order: OrderDto): void {
-    this.registerSubscription(
-      this.staffService.receiveOrder(order.id).subscribe((): void => {
-        this.pendingOrdersTable.search();
-      })
-    );
+  navigateToOrderDetail(orderId: uuid): void {
+    void this.router.navigate([
+      `${AppRoutingConstants.STAFF_PATH}/${AppRoutingConstants.STAFF_ORDERS_PATH}/${orderId}`
+    ]);
   }
 
   // It's seem mat-calendar is not work with reactive form
