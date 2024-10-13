@@ -8,6 +8,7 @@ import {uuid} from '../../../../../graceful-florist-type';
 export interface ProductDto extends AbstractAuditableDTO {
   name: string;
   price: number;
+  purchases: number;
   mainImage: uuid;
   images: uuid[];
   enabled: boolean;

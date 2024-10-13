@@ -14,6 +14,7 @@ public class ProductDTO extends AbstractAuditableDTO {
     private String name;
     private String description;
     private int price;
+    private int purchases;
     private boolean enabled;
     private Set<CategoryDTO> categories;
     private Set<IngredientDTO> ingredients;

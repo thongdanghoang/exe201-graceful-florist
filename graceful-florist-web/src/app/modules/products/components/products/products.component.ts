@@ -172,13 +172,16 @@ export class ProductsComponent
   onPageChange(pageEvent: PageEvent): void {
     this.criteria.page.pageSize = pageEvent.pageSize;
     this.criteria.page.pageNumber = pageEvent.pageIndex;
-    this.registerSubscription(
-      this.productService
-        .searchProducts(this.criteria)
-        .subscribe((results: SearchResultDto<ProductDto>): void => {
-          this.products = results;
-        })
-    );
+    this.search();
+  }
+
+  onSortChange(
+    col: 'lastModifiedDate' | 'price' | 'purchases',
+    direction: 'asc' | 'desc'
+  ): void {
+    this.criteria.sort.column = col;
+    this.criteria.sort.direction = direction;
+    this.search();
   }
 
   onProductClick(product: ProductDto): void {

@@ -36,6 +36,8 @@ public class PaymentController {
                 .map(cartItemDTO -> {
                     var productEntity = productService
                             .getProductById(cartItemDTO.product().getId()).orElseThrow();
+                    productEntity.setPurchases(productEntity.getPurchases() + cartItemDTO.quantity());
+                    productEntity = productService.updateProduct(productEntity);
                     return OrderItemEntity.of(
                             orderEntity,
                             productEntity,

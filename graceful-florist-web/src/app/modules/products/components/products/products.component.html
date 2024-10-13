@@ -198,11 +198,8 @@
             <div
                 class="flex flex-col sm:flex-row sm:justify-between sm:items-center"
             >
-                <!--       Filters       -->
+                <!--       Sorting       -->
                 <div class="flex gap-0 sm:gap-2">
-                    <button class="!rounded-lg" mat-flat-button color="primary">
-                        Tất Cả
-                    </button>
                     <button
                         class="!rounded-lg"
                         mat-flat-button
@@ -213,8 +210,18 @@
                         <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
                     </button>
                     <mat-menu #purchases="matMenu">
-                        <button mat-menu-item>Tăng dần</button>
-                        <button mat-menu-item>Giảm dần</button>
+                        <button
+                            mat-menu-item
+                            (click)="onSortChange('purchases', 'asc')"
+                        >
+                            Tăng dần
+                        </button>
+                        <button
+                            mat-menu-item
+                            (click)="onSortChange('purchases', 'desc')"
+                        >
+                            Giảm dần
+                        </button>
                     </mat-menu>
                     <button
                         class="!rounded-lg"
@@ -226,8 +233,18 @@
                         <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
                     </button>
                     <mat-menu #price="matMenu">
-                        <button mat-menu-item>Tăng dần</button>
-                        <button mat-menu-item>Giảm dần</button>
+                        <button
+                            mat-menu-item
+                            (click)="onSortChange('price', 'asc')"
+                        >
+                            Tăng dần
+                        </button>
+                        <button
+                            mat-menu-item
+                            (click)="onSortChange('price', 'desc')"
+                        >
+                            Giảm dần
+                        </button>
                     </mat-menu>
                     <button
                         class="!rounded-lg"
@@ -239,8 +256,18 @@
                         <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
                     </button>
                     <mat-menu #modificationDate="matMenu">
-                        <button mat-menu-item>Mới nhất</button>
-                        <button mat-menu-item>Cũ Nhất</button>
+                        <button
+                            mat-menu-item
+                            (click)="onSortChange('lastModifiedDate', 'desc')"
+                        >
+                            Mới nhất
+                        </button>
+                        <button
+                            mat-menu-item
+                            (click)="onSortChange('lastModifiedDate', 'asc')"
+                        >
+                            Cũ Nhất
+                        </button>
                     </mat-menu>
                 </div>
                 <mat-paginator

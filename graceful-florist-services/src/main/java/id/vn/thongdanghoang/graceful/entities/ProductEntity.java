@@ -73,6 +73,9 @@ public class ProductEntity extends AbstractAuditableEntity {
     @Column(name = "price")
     private int price;
 
+    @Column(name = "purchases")
+    private int purchases = 0;
+
     @Column(name = "enabled")
     private boolean enabled;
 }
