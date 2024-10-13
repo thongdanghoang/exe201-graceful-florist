@@ -1,6 +1,8 @@
 package id.vn.thongdanghoang.graceful.services;
 
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
+import id.vn.thongdanghoang.graceful.entities.UserEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -10,6 +12,12 @@ import java.util.UUID;
 public interface OrderService {
 
     List<OrderEntity> searchOrders(Pageable page);
+
+    Page<OrderEntity> staffOrders(UserEntity staff, Pageable page);
+
+    Page<OrderEntity> staffSearchPendingOrders(Pageable page);
+
+    OrderEntity staffReceiveOrder(UUID orderId, UserEntity staff);
 
     Optional<OrderEntity> findOrderById(UUID id);
 

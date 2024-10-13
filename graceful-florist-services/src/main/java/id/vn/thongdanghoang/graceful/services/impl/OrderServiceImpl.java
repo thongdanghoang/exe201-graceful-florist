@@ -1,10 +1,14 @@
 package id.vn.thongdanghoang.graceful.services.impl;
 
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
+import id.vn.thongdanghoang.graceful.entities.UserEntity;
+import id.vn.thongdanghoang.graceful.enums.OrderStatus;
 import id.vn.thongdanghoang.graceful.repositories.OrderRepository;
+import id.vn.thongdanghoang.graceful.repositories.UserRepository;
 import id.vn.thongdanghoang.graceful.services.OrderService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +26,29 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderEntity> searchOrders(Pageable page) {
         return orderRepository.findOrdersForAdminManagement(page);
+    }
+
+    @Override
+    public Page<OrderEntity> staffOrders(UserEntity staff, Pageable page) {
+        return orderRepository.findByStaffID(staff.getId(), page);
+    }
+
+    @Override
+    public Page<OrderEntity> staffSearchPendingOrders(Pageable page) {
+        return orderRepository.findByStatus(OrderStatus.PENDING, page);
+    }
+
+    @Override
+    public OrderEntity staffReceiveOrder(UUID orderId, UserEntity staff) {
+        var order = orderRepository
+                .findById(orderId).orElseThrow();
+        if(order.getStatus() == OrderStatus.PENDING) {
+            order.setStatus(OrderStatus.PROCESSING);
+            order.getStaffs().add(staff);
+            orderRepository.save(order);
+            return order;
+        }
+        throw new IllegalStateException("Order is not pending");
     }
 
     @Override

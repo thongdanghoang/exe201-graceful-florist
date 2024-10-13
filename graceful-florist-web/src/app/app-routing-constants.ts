@@ -43,7 +43,7 @@ export class AppRoutingConstants {
   public static readonly LOGOUT = 'logout';
 
   // staff module
-  public static readonly STAFF_PATH = 'staff';
+  public static readonly STAFF_PATH = 'staffs';
   public static readonly STAFF_ORDERS_PATH = 'orders';
   public static readonly STAFF_PENDING_ORDERS_PATH = 'pending-orders';
 }

@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -47,6 +49,16 @@ public class OrderEntity  extends AbstractAuditableEntity {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItemEntity> orderItems = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "staffs_orders",
+            schema = "graceful",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "staff_id")
+    )
+    @Fetch(FetchMode.SUBSELECT)
+    private Set<UserEntity> staffs = new HashSet<>();
 
     @NotNull
     @Column(name = "status")

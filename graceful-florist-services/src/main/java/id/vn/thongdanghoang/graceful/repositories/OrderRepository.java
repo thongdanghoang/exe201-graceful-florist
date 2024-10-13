@@ -1,6 +1,8 @@
 package id.vn.thongdanghoang.graceful.repositories;
 
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
+import id.vn.thongdanghoang.graceful.enums.OrderStatus;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,6 +19,16 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID>, Repor
     @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)
     @Query("SELECT o FROM OrderEntity o")
     List<OrderEntity> findOrdersForAdminManagement(Pageable page);
+
+    @Query("""
+            SELECT o
+            FROM OrderEntity o
+            JOIN o.staffs sf
+            WHERE sf.id = :staffID
+            """)
+    Page<OrderEntity> findByStaffID(UUID staffID, Pageable page);
+
+    Page<OrderEntity> findByStatus(OrderStatus status, Pageable page);
 
     @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)
     @Query("SELECT o FROM OrderEntity o WHERE o.id = :id")
