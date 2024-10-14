@@ -170,6 +170,7 @@ export class ProductsComponent
   }
 
   resetFilters(): void {
+    this.criteria.criteria.keyword = '';
     this.filterFormGroups.reset();
   }
 
