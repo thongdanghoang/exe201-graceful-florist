@@ -1,4 +1,4 @@
-<ng-container *ngIf="!userRoles.includes(UserRole.USER); else userHeader">
+<ng-container *ngIf="userRoles.includes(UserRole.ADMIN); else userHeader">
     <div class="hidden sm:flex items-center">
         <!--  Logo  -->
         <div
@@ -45,9 +45,6 @@
         </div>
         <!--  Navigations  -->
         <div class="flex flex-row justify-between items-center gap-1">
-            <button mat-button (click)="navigateToOrdersTracking()">
-                Tra Cứu Đơn Hàng
-            </button>
             <button mat-button (click)="navigateToProducts()">Sản Phẩm</button>
             <button mat-button (click)="navigateToCustomization()">
                 Thiết Kế Hoa

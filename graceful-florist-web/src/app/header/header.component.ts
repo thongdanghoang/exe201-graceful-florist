@@ -80,10 +80,6 @@ export class HeaderComponent
     void this.router.navigate([AppRoutingConstants.HOME_PATH]);
   }
 
-  protected navigateToOrdersTracking(): void {
-    void this.router.navigate([`${AppRoutingConstants.ORDERS_PATH}`]);
-  }
-
   protected navigateToAdmin(): void {
     void this.router.navigate([`${AppRoutingConstants.ADMIN_PATH}`]);
   }

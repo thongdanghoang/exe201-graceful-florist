@@ -114,7 +114,7 @@ export class FlowerCustomizationComponent
   } = {
     color: this.formBuilder.control(null, Validators.required),
     mainFlowers: this.formBuilder.control([], Validators.minLength(1)),
-    layout: this.formBuilder.control(null),
+    layout: this.formBuilder.control(null, Validators.required),
     secondaryFlower: this.formBuilder.control(null, Validators.required),
     message: this.formBuilder.control('', Validators.required),
     wrapper: this.formBuilder.control(null, Validators.required),
@@ -288,7 +288,7 @@ export class FlowerCustomizationComponent
         ...(this.form.get('mainFlowers')?.value ?? []),
         this.form.get('accessories')?.value,
         this.form.get('secondaryFlower')?.value,
-        // this.form.get('layout')?.value,
+        this.form.get('layout')?.value,
         this.form.get('wrapper')?.value
       ]
     };
