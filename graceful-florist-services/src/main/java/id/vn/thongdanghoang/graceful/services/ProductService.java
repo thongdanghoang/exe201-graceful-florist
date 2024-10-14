@@ -1,5 +1,6 @@
 package id.vn.thongdanghoang.graceful.services;
 
+import id.vn.thongdanghoang.graceful.dtos.products.ProductCriteria;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.entities.IngredientEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
@@ -20,7 +21,7 @@ public interface ProductService {
 
     Optional<ProductEntity> getProductById(UUID id);
 
-    Page<ProductEntity> searchProducts(Set<UUID> categories, Pageable page, UserEntity user);
+    Page<ProductEntity> searchProducts(ProductCriteria criteria, Pageable page);
 
     CategoryEntity saveOrUpdateCategory(CategoryEntity categoryEntity);
 
@@ -33,4 +34,6 @@ public interface ProductService {
     IngredientEntity addIngredient(IngredientEntity ingredientEntity);
 
     List<IngredientEntity> getIngredients();
+
+    List<String> getSuggestions(String keyword);
 }

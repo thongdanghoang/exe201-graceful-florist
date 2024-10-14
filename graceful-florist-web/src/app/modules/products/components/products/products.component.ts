@@ -9,7 +9,7 @@ import {ProductCriteriaDto, ProductDto} from '../../models/product.dto';
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CategoryService} from '../../../admin/services/category.service';
 import {CategoryDto, CategoryType} from '../../../admin/model/category.dto';
 import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
@@ -46,7 +46,8 @@ export class ProductsComponent
     private readonly formBuilder: FormBuilder,
     private readonly productService: ProductService,
     private readonly categoryService: CategoryService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute
   ) {
     super();
     this.criteria = {
@@ -83,6 +84,13 @@ export class ProductsComponent
             : [])
         ];
         this.registerSubscription(this.search());
+      }),
+      this.activatedRoute.queryParamMap.subscribe(params => {
+        const keyword = params.get('keyword');
+        if (keyword) {
+          this.criteria.criteria.keyword = keyword;
+          this.search();
+        }
       })
     ]);
   }

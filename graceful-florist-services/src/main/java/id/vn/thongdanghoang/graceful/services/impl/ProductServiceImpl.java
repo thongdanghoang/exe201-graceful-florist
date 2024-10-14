@@ -1,9 +1,11 @@
 package id.vn.thongdanghoang.graceful.services.impl;
 
+import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
+import id.vn.thongdanghoang.graceful.dtos.products.ProductCriteria;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.entities.IngredientEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
-import id.vn.thongdanghoang.graceful.entities.UserEntity;
+import id.vn.thongdanghoang.graceful.enums.ProductStatus;
 import id.vn.thongdanghoang.graceful.repositories.CategoryRepository;
 import id.vn.thongdanghoang.graceful.repositories.IngredientRepository;
 import id.vn.thongdanghoang.graceful.repositories.ProductRepository;
@@ -11,12 +13,14 @@ import id.vn.thongdanghoang.graceful.securities.SecurityUser;
 import id.vn.thongdanghoang.graceful.services.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackOn = Throwable.class)
@@ -43,19 +47,33 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductEntity> searchProducts(Set<UUID> categories, Pageable page, UserEntity user) {
-        var securityUser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        boolean isAdmin = securityUser.getAuthorities().stream().map(Object::toString).anyMatch("ROLE_ADMIN"::equals);
-        if (isAdmin) {
-            if (categories.isEmpty()) {
-                return repository.findAll(page);
-            }
-            return repository.searchByCategories(categories, page);
+    public Page<ProductEntity> searchProducts(ProductCriteria criteria, Pageable page) {
+        var securityUser = (SecurityUser) SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
+        var categories = criteria
+                .categories().stream()
+                .map(CategoryDTO::getId)
+                .collect(Collectors.toSet());
+        if(categories.isEmpty()) {
+            categories = null;
         }
-        if (categories.isEmpty()) {
-            return repository.findAllByEnabledTrue(page);
+        var keyword = Optional
+                .ofNullable(criteria.keyword())
+                .orElse(StringUtils.EMPTY)
+                .replace(" ", " & ")
+                .toLowerCase();
+        if (StringUtils.isBlank(keyword)) {
+            keyword = null;
         }
-        return repository.searchEnabledByCategories(categories, page);
+        var isAdmin = securityUser
+                .getAuthorities().stream()
+                .map(Object::toString)
+                .anyMatch("ROLE_ADMIN"::equalsIgnoreCase);
+        if(Objects.isNull(criteria.status())) {
+            return repository.searchProduct(categories, keyword, isAdmin, page);
+        }
+        boolean enable = !isAdmin || criteria.status() == ProductStatus.SELLING;
+        return repository.searchProduct(categories, keyword, enable, isAdmin, page);
     }
 
     @Override
@@ -86,5 +104,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<IngredientEntity> getIngredients() {
         return ingredientRepository.findAll();
+    }
+
+    @Override
+    public List<String> getSuggestions(String keyword) {
+        String formattedKeyword = keyword.replace(" ", " & ");
+        if (StringUtils.isBlank(formattedKeyword)) {
+            return List.of();
+        }
+        return repository.fullTextSearch(formattedKeyword);
     }
 }

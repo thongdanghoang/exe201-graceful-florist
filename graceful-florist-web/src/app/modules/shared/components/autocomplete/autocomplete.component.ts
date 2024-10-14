@@ -1,39 +1,72 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable, map, startWith} from 'rxjs';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Observable, Subscription, of} from 'rxjs';
 import {FormControl} from '@angular/forms';
+import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
+import {HttpClient} from '@angular/common/http';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap
+} from 'rxjs/operators';
 
 @Component({
   selector: 'graceful-florist-autocomplete',
   templateUrl: './autocomplete.component.html',
   styleUrl: './autocomplete.component.css'
 })
-export class AutocompleteComponent implements OnInit {
+export class AutocompleteComponent
+  extends SubscriptionAwareComponent
+  implements OnInit
+{
+  @Input() suggestionUrl: string | undefined;
+  @Output() readonly selectedKeyword: EventEmitter<string> =
+    new EventEmitter<string>();
   control = new FormControl('');
-  streets: string[] = [
-    'Champs-Élysées',
-    'Lombard Street',
-    'Abbey Road',
-    'Fifth Avenue'
-  ];
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  filteredStreets: Observable<string[]>;
+  filteredSuggestions: Observable<string[]> = of([]);
+  private valueChangesSubscription: Subscription | undefined;
+
+  constructor(private readonly httpClient: HttpClient) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.filteredStreets = this.control.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || ''))
-    );
+    this.setupValueChanges();
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = this._normalizeValue(value);
-    return this.streets.filter(street =>
-      this._normalizeValue(street).includes(filterValue)
-    );
+  onSearchSubmit(): void {
+    const keyword = this.control.value;
+    if (keyword) this.selectedKeyword.emit(keyword);
   }
 
-  private _normalizeValue(value: string): string {
-    return value.toLowerCase().replace(/\s/g, '');
+  onOptionSelected(event: any): void {
+    if (this.valueChangesSubscription) {
+      this.valueChangesSubscription.unsubscribe();
+    }
+    this.selectedKeyword.emit(event.option.value);
+    this.setupValueChanges(); // Re-subscribe to value changes after emitting the selected keyword
+  }
+
+  private setupValueChanges(): void {
+    this.valueChangesSubscription = this.control.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap(value => this._fetchSuggestions(value || ''))
+      )
+      .subscribe(suggestions => {
+        this.filteredSuggestions = of(suggestions);
+      });
+  }
+
+  private _fetchSuggestions(keyword: string): Observable<string[]> {
+    if (!this.suggestionUrl) {
+      return of([]);
+    }
+    return this.httpClient
+      .get<string[]>(`${this.suggestionUrl}?keyword=${keyword}`)
+      .pipe(
+        catchError(() => of([])) // Handle errors gracefully
+      );
   }
 }

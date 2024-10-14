@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -43,5 +44,38 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
     @EntityGraph(ProductEntity.PRODUCT_DETAIL_ENTITY_GRAPH)
     @Query("SELECT p FROM ProductEntity p WHERE p.id = :id")
     Optional<ProductEntity> findByIdWithDetail(UUID id);
+
+    @Query(value = """
+            SELECT p.name
+            FROM graceful.products p
+            WHERE to_tsvector('english', unaccent(p.name)) @@ to_tsquery('english', unaccent(:keyword) || ':*')
+            """, nativeQuery = true)
+    List<String> fullTextSearch(String keyword);
+
+    @Query("""
+            SELECT p
+            FROM ProductEntity p
+            WHERE (:categories IS NULL OR EXISTS (SELECT c FROM p.categories c WHERE c.id IN :categories))
+            AND (:keyword IS NULL OR LOWER(p.name) LIKE %:keyword%)
+            AND p.enabled = :enabled
+            AND (:admin = true OR p.owner IS NULL)
+            """)
+    Page<ProductEntity> searchProduct(Set<UUID> categories,
+                                      String keyword,
+                                      boolean enabled,
+                                      boolean admin,
+                                      Pageable pageable);
+
+    @Query("""
+            SELECT p
+            FROM ProductEntity p
+            WHERE (:categories IS NULL OR EXISTS (SELECT c FROM p.categories c WHERE c.id IN :categories))
+            AND (:keyword IS NULL OR LOWER(p.name) LIKE %:keyword%)
+            AND (:admin = true OR p.owner IS NULL)
+            """)
+    Page<ProductEntity> searchProduct(Set<UUID> categories,
+                                      String keyword,
+                                      boolean admin,
+                                      Pageable pageable);
 }
 

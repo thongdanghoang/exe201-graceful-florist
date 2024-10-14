@@ -68,6 +68,7 @@ export interface UserDto extends AbstractAuditableDTO {
 }
 
 export interface ProductCriteriaDto {
+  keyword?: string;
   status?: ProductStatus;
   categories: CategoryDto[];
 }

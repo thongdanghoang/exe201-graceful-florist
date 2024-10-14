@@ -8,17 +8,25 @@
         placeholder="Tìm kiếm"
         [formControl]="control"
         [matAutocomplete]="auto"
+        (keydown.enter)="onSearchSubmit()"
     />
-    <mat-autocomplete #auto="matAutocomplete">
-        @for (street of filteredStreets | async; track street) {
-            <mat-option [value]="street">{{ street }}</mat-option>
-        }
+    <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="onOptionSelected($event)"
+    >
+        <mat-option
+            *ngFor="let suggestion of filteredSuggestions | async"
+            [value]="suggestion"
+        >
+            {{ suggestion }}
+        </mat-option>
     </mat-autocomplete>
     <button
         class="!shadow-none !rounded-full"
         mat-mini-fab
         color="primary"
         aria-label="Example icon button with a cart icon"
+        (click)="onSearchSubmit()"
     >
         <mat-icon>search</mat-icon>
     </button>

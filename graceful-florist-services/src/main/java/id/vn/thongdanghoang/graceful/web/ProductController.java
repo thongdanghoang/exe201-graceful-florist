@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -36,18 +37,17 @@ public class ProductController {
     private final IngredientMapper ingredientMapper;
     private final CommonMapper commonMapper;
 
+    @GetMapping("/suggestions")
+    public ResponseEntity<List<String>> getSuggestions(@RequestParam String keyword) {
+        return ResponseEntity.ok(service.getSuggestions(keyword));
+    }
+
     @PostMapping("/search")
     public ResponseEntity<SearchResultDto<ProductDTO>> searchProducts(@RequestBody SearchCriteriaDto<ProductCriteria> searchCriteria) {
-        var securityUser = (SecurityUser) SecurityContextHolder
-                .getContext().getAuthentication().getPrincipal();
-        var categories = searchCriteria.getCriteria()
-                .categories().stream()
-                .map(CategoryDTO::getId)
-                .collect(Collectors.toSet());
         var pageable = commonMapper
                 .toPageable(searchCriteria.getPage(), searchCriteria.getSort());
         var productEntities = service
-                .searchProducts(categories, pageable, securityUser.getUserEntity());
+                .searchProducts(searchCriteria.getCriteria(), pageable);
         var productsSearchResult = SearchResultDto
                 .of(mapper.toProductDTOs(productEntities.toList()), productEntities.getTotalElements());
         return ResponseEntity.ok(productsSearchResult);

@@ -15,6 +15,7 @@ export class HeaderComponent
   extends SubscriptionAwareComponent
   implements OnInit
 {
+  suggestionUrl = `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PRODUCTS_PATH}/suggestions`;
   cartItemCount: number = 0;
   protected readonly AppRoutingConstants = AppRoutingConstants;
   protected readonly UserRole = UserRole;
@@ -35,6 +36,13 @@ export class HeaderComponent
         }
       )
     );
+  }
+
+  protected onSearchSubmit(keyword: string): void {
+    const queryParams = {keyword};
+    void this.router.navigate([`${AppRoutingConstants.PRODUCTS_PATH}`], {
+      queryParams
+    });
   }
 
   protected get isLoggedIn(): boolean {

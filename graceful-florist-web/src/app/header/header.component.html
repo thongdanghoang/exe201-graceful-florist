@@ -9,6 +9,7 @@
         </div>
         <div class="flex w-full justify-between items-center py-3">
             <graceful-florist-autocomplete
+                [suggestionUrl]="suggestionUrl"
                 class="w-96"
             ></graceful-florist-autocomplete>
             <div class="flex items-center gap-4">
@@ -55,7 +56,9 @@
         </div>
         <!--  Search, User & Cart  -->
         <div class="flex flex-row justify-center items-center gap-1">
-            <graceful-florist-autocomplete></graceful-florist-autocomplete>
+            <graceful-florist-autocomplete
+                (selectedKeyword)="onSearchSubmit($event)"
+            ></graceful-florist-autocomplete>
             <button
                 mat-icon-button
                 aria-label="Example icon button with a user icon"
