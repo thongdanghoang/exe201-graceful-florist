@@ -1,5 +1,6 @@
 package id.vn.thongdanghoang.graceful.services;
 
+import id.vn.thongdanghoang.graceful.dtos.orders.OrderCriteriaDto;
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
 import id.vn.thongdanghoang.graceful.entities.UserEntity;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 public interface OrderService {
 
-    List<OrderEntity> searchOrders(Pageable page);
+    List<OrderEntity> searchOrders(OrderCriteriaDto criteria, Pageable page);
 
     Page<OrderEntity> staffOrders(UserEntity staff, Pageable page);
 

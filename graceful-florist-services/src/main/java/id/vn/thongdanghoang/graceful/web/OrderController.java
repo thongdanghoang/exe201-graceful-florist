@@ -3,6 +3,7 @@ package id.vn.thongdanghoang.graceful.web;
 import id.vn.thongdanghoang.graceful.dtos.RequestWrapper;
 import id.vn.thongdanghoang.graceful.dtos.SearchCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.SearchResultDto;
+import id.vn.thongdanghoang.graceful.dtos.orders.OrderCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.orders.OrderDTO;
 import id.vn.thongdanghoang.graceful.enums.OrderStatus;
 import id.vn.thongdanghoang.graceful.mappers.CommonMapper;
@@ -24,12 +25,12 @@ public class OrderController {
     private final CommonMapper commonMapper;
 
     @PostMapping
-    public ResponseEntity<SearchResultDto<OrderDTO>> searchOrders(@RequestBody SearchCriteriaDto<Void> searchCriteria) {
+    public ResponseEntity<SearchResultDto<OrderDTO>> searchOrders(@RequestBody SearchCriteriaDto<OrderCriteriaDto> searchCriteria) {
         var pageable = commonMapper
                 .toPageable(searchCriteria.getPage(), searchCriteria.getSort());
         long total = orderService.countOrders();
         var results = orderService
-                .searchOrders(pageable)
+                .searchOrders(searchCriteria.getCriteria(), pageable)
                 .stream()
                 .map(orderMapper::toOrderDTO)
                 .toList();

@@ -1,5 +1,6 @@
 package id.vn.thongdanghoang.graceful.repositories;
 
+import id.vn.thongdanghoang.graceful.dtos.orders.OrderCriteriaDto;
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
 import id.vn.thongdanghoang.graceful.entities.UserEntity;
 import id.vn.thongdanghoang.graceful.enums.OrderStatus;
@@ -18,8 +19,12 @@ import java.util.UUID;
 public interface OrderRepository extends JpaRepository<OrderEntity, UUID>, ReportRepository {
 
     @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)
-    @Query("SELECT o FROM OrderEntity o")
-    List<OrderEntity> findOrdersForAdminManagement(Pageable page);
+    @Query("""
+            SELECT o
+            FROM OrderEntity o
+            WHERE (:status IS NULL OR o.status = :status )
+            """)
+    List<OrderEntity> findOrdersForAdminManagement(OrderStatus status, Pageable page);
 
     Page<OrderEntity> findByStaff(UserEntity staff, Pageable page);
 

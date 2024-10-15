@@ -1,5 +1,6 @@
 package id.vn.thongdanghoang.graceful.services.impl;
 
+import id.vn.thongdanghoang.graceful.dtos.orders.OrderCriteriaDto;
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
 import id.vn.thongdanghoang.graceful.entities.UserEntity;
 import id.vn.thongdanghoang.graceful.enums.OrderStatus;
@@ -25,8 +26,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     @Override
-    public List<OrderEntity> searchOrders(Pageable page) {
-        return orderRepository.findOrdersForAdminManagement(page);
+    public List<OrderEntity> searchOrders(OrderCriteriaDto criteria, Pageable page) {
+        return orderRepository.findOrdersForAdminManagement(criteria.status(), page);
     }
 
     @Override
