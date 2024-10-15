@@ -5,6 +5,7 @@ import id.vn.thongdanghoang.graceful.dtos.products.ProductCriteria;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.entities.IngredientEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
+import id.vn.thongdanghoang.graceful.enums.CategoryType;
 import id.vn.thongdanghoang.graceful.enums.ProductStatus;
 import id.vn.thongdanghoang.graceful.repositories.CategoryRepository;
 import id.vn.thongdanghoang.graceful.repositories.IngredientRepository;
@@ -19,6 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
                 .categories().stream()
                 .map(CategoryDTO::getId)
                 .collect(Collectors.toSet());
-        if(categories.isEmpty()) {
+        if (categories.isEmpty()) {
             categories = null;
         }
         var keyword = Optional
@@ -65,15 +68,17 @@ public class ProductServiceImpl implements ProductService {
         if (StringUtils.isBlank(keyword)) {
             keyword = null;
         }
+        var categoryType = criteria.categoryType();
+        var fromInclusive = criteria.fromInclusive();
         var isAdmin = securityUser
                 .getAuthorities().stream()
                 .map(Object::toString)
                 .anyMatch("ROLE_ADMIN"::equalsIgnoreCase);
-        if(Objects.isNull(criteria.status())) {
-            return repository.searchProduct(categories, keyword, isAdmin, page);
+        if (Objects.isNull(criteria.status())) {
+            return repository.searchProduct(categories, keyword, categoryType, fromInclusive, isAdmin, page);
         }
         boolean enable = !isAdmin || criteria.status() == ProductStatus.SELLING;
-        return repository.searchProduct(categories, keyword, enable, isAdmin, page);
+        return repository.searchProduct(categories, keyword, categoryType, fromInclusive, enable, isAdmin, page);
     }
 
     @Override

@@ -2,7 +2,7 @@ import {
   AbstractAuditableDTO,
   SearchResultDto
 } from '../../shared/models/abstract-base-dto';
-import {CategoryDto} from '../../admin/model/category.dto';
+import {CategoryDto, CategoryType} from '../../admin/model/category.dto';
 import {uuid} from '../../../../../graceful-florist-type';
 
 export interface ProductDto extends AbstractAuditableDTO {
@@ -70,6 +70,8 @@ export interface UserDto extends AbstractAuditableDTO {
 export interface ProductCriteriaDto {
   keyword?: string;
   status?: ProductStatus;
+  fromInclusive?: Date;
+  categoryType?: CategoryType;
   categories: CategoryDto[];
 }
 
