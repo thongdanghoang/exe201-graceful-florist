@@ -28,7 +28,6 @@ export class OrderDetailComponent
       this.activatedRoute.data.subscribe((data: any): void => {
         this.orderDto = data.order;
         this.orderItems = this.orderDto.orderItems;
-        console.log(this.orderItems);
       })
     );
   }

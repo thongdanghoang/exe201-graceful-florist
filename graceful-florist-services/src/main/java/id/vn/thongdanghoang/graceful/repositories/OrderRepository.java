@@ -35,6 +35,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID>, Repor
                                                    LocalDateTime fromInclusive,
                                                    Pageable page);
 
+    @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)
     Page<OrderEntity> findByUserId(UUID userId, Pageable page);
 
     @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)

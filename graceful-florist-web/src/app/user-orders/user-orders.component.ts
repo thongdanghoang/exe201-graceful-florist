@@ -15,6 +15,7 @@ import {Observable} from 'rxjs';
 import {uuid} from '../../../graceful-florist-type';
 import {Router} from '@angular/router';
 import {OrdersService} from '../modules/orders/services/orders.service';
+import {UserService} from '../mock/user.service';
 
 @Component({
   selector: 'graceful-florist-user-orders',
@@ -35,7 +36,8 @@ export class UserOrdersComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private readonly ordersService: OrdersService
+    private readonly ordersService: OrdersService,
+    private readonly userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +48,10 @@ export class UserOrdersComponent implements OnInit {
       column: 'createdDate',
       direction: 'desc'
     };
+  }
+
+  protected getUserFullName(): string {
+    return this.userService.getUser()?.username ?? '';
   }
 
   protected navigateToOrderDetail(id: uuid): void {
