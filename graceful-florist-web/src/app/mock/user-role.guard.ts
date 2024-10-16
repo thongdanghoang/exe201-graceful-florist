@@ -14,7 +14,10 @@ export class UserRoleGuard implements CanActivate {
 
   canActivate(): boolean {
     const user = this.userService.getUser();
-    if (user?.roles.includes(UserRole.USER)) {
+    if (
+      user?.roles.includes(UserRole.USER) ||
+      !this.userService.authenticated()
+    ) {
       return true;
     }
     if (user?.roles.includes(UserRole.ADMIN)) {

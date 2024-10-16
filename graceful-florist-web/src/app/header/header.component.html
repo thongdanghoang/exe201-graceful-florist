@@ -1,4 +1,10 @@
-<ng-container *ngIf="userRoles.includes(UserRole.ADMIN); else userHeader">
+<ng-container
+    *ngIf="
+        userRoles.includes(UserRole.ADMIN) ||
+            userRoles.includes(UserRole.STAFF);
+        else userHeader
+    "
+>
     <div class="hidden sm:flex items-center">
         <!--  Logo  -->
         <div

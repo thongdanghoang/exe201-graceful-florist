@@ -1,5 +1,5 @@
 <div
-    *ngIf="!userRoles.includes(UserRole.ADMIN)"
+    *ngIf="userRoles.includes(UserRole.USER)"
     class="hidden sm:flex sm:flex-col sm:gap-7 pt-14"
 >
     <div class="flex flex-col justify-between gap-4 sm:flex-row">
