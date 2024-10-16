@@ -5,7 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {CartItemDTO} from '../../../cart/models/cart.dto';
-import {PaymentMethod} from '../../models/payment.dto';
+import {PaymentDto, PaymentMethod} from '../../models/payment.dto';
 import {CartService} from '../../../cart/services/cart.service';
 import {ModalService} from '../../../shared/services/modal.service';
 import {PaymentModalComponent} from '../payment-modal/payment-modal.component';
@@ -103,6 +103,7 @@ export class PaymentComponent
       ?.setValue(deliveryTimeTo);
   }
 
+  // eslint-disable-next-line max-lines-per-function
   protected onPaymentSubmit(): void {
     if (this.paymentForm.invalid) {
       return;
@@ -125,14 +126,16 @@ export class PaymentComponent
           submitUrl: `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PAYMENT_PATH}`
         }
       })
-      .then((result: any): void => {
+      .then((result: PaymentDto): void => {
         if (result) {
           this.registerSubscription(
             this.cartService
               .fetchCartItems()
               .subscribe((cartItems: CartItemDTO[]): void => {
                 this.cartService.cartItemsChanged.next(cartItems);
-                void this.router.navigate([AppRoutingConstants.HOME_PATH]);
+                void this.router.navigate([
+                  `${AppRoutingConstants.ORDERS_PATH}/${result.id}`
+                ]);
               })
           );
         }

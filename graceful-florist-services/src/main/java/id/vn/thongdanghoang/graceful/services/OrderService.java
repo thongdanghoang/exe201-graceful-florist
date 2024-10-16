@@ -12,7 +12,9 @@ import java.util.UUID;
 
 public interface OrderService {
 
-    List<OrderEntity> searchOrders(OrderCriteriaDto criteria, Pageable page);
+    Page<OrderEntity> adminSearchOrders(OrderCriteriaDto criteria, Pageable page);
+
+    Page<OrderEntity> usersOrders(UUID userId, Pageable page);
 
     Page<OrderEntity> staffOrders(OrderCriteriaDto orderCriteriaDto, UserEntity staff, Pageable page);
 

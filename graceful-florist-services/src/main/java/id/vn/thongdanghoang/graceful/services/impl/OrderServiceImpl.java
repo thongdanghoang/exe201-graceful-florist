@@ -26,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     @Override
-    public List<OrderEntity> searchOrders(OrderCriteriaDto criteria, Pageable page) {
+    public Page<OrderEntity> adminSearchOrders(OrderCriteriaDto criteria, Pageable page) {
         var customProduct = Objects.nonNull(criteria.orderType())
                 ? criteria.orderType() == OrderType.SPECIAL
                 : null;
@@ -37,6 +37,11 @@ public class OrderServiceImpl implements OrderService {
                 fromInclusive,
                 page
         );
+    }
+
+    @Override
+    public Page<OrderEntity> usersOrders(UUID userId, Pageable page) {
+        return orderRepository.findByUserId(userId, page);
     }
 
     @Override

@@ -1,0 +1,81 @@
+<div class="container mx-auto flex flex-col py-5 gap-5">
+    <graceful-florist-breadcrumb [breadcrumbs]="breadcrumbs" />
+    <div class="flex flex-col bg-white gap-2 py-3 px-4 rounded-lg">
+        <div class="font-sans text-2xl font-semibold leading-normal">
+            Đơn hàng của tôi
+        </div>
+    </div>
+    <graceful-florist-table
+        #userOrders
+        [fetch]="fetchProduct"
+        [sort]="sort"
+        [criteria]="criteria"
+        [displayedColumns]="[
+            'id',
+            'recipientName',
+            'recipientAddress',
+            'createdDate',
+            'type',
+            'status',
+            'actions',
+        ]"
+        [suppressSortColumns]="['type']"
+    >
+        <ng-template headerTableTemplate="id" let-column>
+            Mã đơn hàng
+        </ng-template>
+        <ng-template cellTableTemplate="id" let-value>
+            <div
+                class="font-sans cursor-pointer hover:text-primary"
+                (click)="navigateToOrderDetail(value)"
+            >
+                #{{ simplifyUUID(value) }}
+            </div>
+        </ng-template>
+
+        <ng-template headerTableTemplate="recipientName" let-column>
+            Tên người nhận
+        </ng-template>
+        <ng-template cellTableTemplate="recipientName" let-value>
+            {{ value }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="recipientAddress" let-column>
+            Địa chỉ người nhận
+        </ng-template>
+        <ng-template cellTableTemplate="recipientAddress" let-value>
+            {{ value }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="createdDate" let-column>
+            Ngày đặt
+        </ng-template>
+        <ng-template cellTableTemplate="createdDate" let-value>
+            {{ value | date: "dd/MM/yyyy" }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="type" let-column>
+            Loại đơn
+        </ng-template>
+        <ng-template cellTableTemplate="type" let-value>
+            {{ value | orderType }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="status" let-column>
+            Trạng thái
+        </ng-template>
+        <ng-template cellTableTemplate="status" let-value>
+            {{ value | orderStatus }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="actions" let-column></ng-template>
+        <ng-template cellTableTemplate="actions" let-element="element">
+            <ng-container *ngIf="element.status === OrderStatus.DELIVERED">
+                <button mat-raised-button color="primary">Đánh giá</button>
+            </ng-container>
+            <ng-container *ngIf="element.status === OrderStatus.PENDING">
+                <button mat-raised-button>Huỷ đơn</button>
+            </ng-container>
+        </ng-template>
+    </graceful-florist-table>
+</div>

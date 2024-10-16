@@ -60,13 +60,19 @@
             ></graceful-florist-autocomplete>
             <button
                 mat-icon-button
-                aria-label="Example icon button with a user icon"
-                (click)="navigateToLoginPage()"
+                [matMenuTriggerFor]="menu"
+                *ngIf="userRoles.includes(UserRole.USER)"
             >
-                <mat-icon color="primary"
-                    >{{ isLoggedIn ? "logout" : "person" }}
-                </mat-icon>
+                <mat-icon color="primary">person</mat-icon>
             </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="navigateToProfile()">
+                    Quản lý tài khoản
+                </button>
+                <button mat-menu-item (click)="navigateToOrders()">
+                    Đơn hàng của tôi
+                </button>
+            </mat-menu>
             <button
                 *ngIf="isLoggedIn"
                 mat-icon-button
@@ -83,6 +89,15 @@
                 <ng-template #emptyCart>
                     <mat-icon color="primary">shopping_cart</mat-icon>
                 </ng-template>
+            </button>
+            <button
+                mat-icon-button
+                aria-label="Example icon button with a user icon"
+                (click)="navigateToLoginPage()"
+            >
+                <mat-icon color="primary"
+                    >{{ isLoggedIn ? "logout" : "person" }}
+                </mat-icon>
             </button>
         </div>
     </div>

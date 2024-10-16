@@ -5,6 +5,9 @@ export class AppRoutingConstants {
   // app module
   public static readonly HOME_PATH = 'homepage';
   public static readonly FORBIDDEN_PATH = 'forbidden';
+  public static readonly USER = 'users';
+  public static readonly USER_PROFILE = `${AppRoutingConstants.USER}/profile`;
+  public static readonly USER_ORDERS = `${AppRoutingConstants.USER}/orders`;
 
   // Products module
   public static readonly PRODUCTS_PATH = 'products';

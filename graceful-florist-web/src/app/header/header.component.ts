@@ -83,4 +83,12 @@ export class HeaderComponent
   protected navigateToAdmin(): void {
     void this.router.navigate([`${AppRoutingConstants.ADMIN_PATH}`]);
   }
+
+  protected navigateToProfile(): void {
+    void this.router.navigate([`${AppRoutingConstants.USER_PROFILE}`]);
+  }
+
+  protected navigateToOrders(): void {
+    void this.router.navigate([`${AppRoutingConstants.USER_ORDERS}`]);
+  }
 }

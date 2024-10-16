@@ -91,12 +91,23 @@
             mat-header-row
             *matHeaderRowDef="displayedColumns"
         ></tr>
-        <tr
-            class="font-sans hover:cursor-pointer *:hover:text-primary"
-            (click)="rowClicked.emit(row)"
-            mat-row
-            *matRowDef="let row; columns: displayedColumns"
-        ></tr>
+        <ng-container
+            *ngIf="this.displayedColumns.includes('actions'); else clickableRow"
+        >
+            <tr
+                class="font-sans"
+                mat-row
+                *matRowDef="let row; columns: displayedColumns"
+            ></tr>
+        </ng-container>
+        <ng-template #clickableRow>
+            <tr
+                class="font-sans hover:cursor-pointer *:hover:text-primary"
+                (click)="rowClicked.emit(row)"
+                mat-row
+                *matRowDef="let row; columns: displayedColumns"
+            ></tr
+        ></ng-template>
     </table>
     <mat-paginator
         [length]="searchResult.total"

@@ -1,4 +1,5 @@
 import {CartItemDTO} from '../../cart/models/cart.dto';
+import {AbstractBaseDto} from '../../shared/models/abstract-base-dto';
 
 export enum PaymentMethod {
   COD = 'COD',
@@ -6,7 +7,7 @@ export enum PaymentMethod {
   MOMO = 'MOMO'
 }
 
-export interface PaymentDto {
+export interface PaymentDto extends AbstractBaseDto {
   recipient: {
     fullName: string;
     phone: string;

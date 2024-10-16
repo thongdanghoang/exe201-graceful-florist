@@ -6,10 +6,6 @@ import {orderDetailResolver} from './services/order-detail.resolver';
 
 const routes: Routes = [
   {
-    path: '',
-    component: OrderTrackingComponent
-  },
-  {
     path: ':id',
     component: OrderDetailComponent,
     resolve: {

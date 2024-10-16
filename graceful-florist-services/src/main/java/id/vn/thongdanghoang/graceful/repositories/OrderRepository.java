@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,10 +30,12 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID>, Repor
             ))
             AND (cast(:fromInclusive as date) IS NULL OR o.createdDate >= :fromInclusive)
             """)
-    List<OrderEntity> findOrdersForAdminManagement(OrderStatus status,
+    Page<OrderEntity> findOrdersForAdminManagement(OrderStatus status,
                                                    Boolean customProduct,
                                                    LocalDateTime fromInclusive,
                                                    Pageable page);
+
+    Page<OrderEntity> findByUserId(UUID userId, Pageable page);
 
     @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)
     @Query("""

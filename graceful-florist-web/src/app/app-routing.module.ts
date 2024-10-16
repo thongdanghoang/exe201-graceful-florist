@@ -5,6 +5,8 @@ import {AppRoutingConstants} from './app-routing-constants';
 import {AuthenticatedGuard} from './mock/authenticated-guard.service';
 import {AdminRoleGuard} from './mock/admin-role.guard';
 import {UserRoleGuard} from './mock/user-role.guard';
+import {UserOrdersComponent} from './user-orders/user-orders.component';
+import {UserProfileComponent} from './user-profile/user-profile.component';
 
 const routes: Routes = [
   {
@@ -15,6 +17,16 @@ const routes: Routes = [
   {
     path: AppRoutingConstants.HOME_PATH,
     component: HomepageComponent,
+    canActivate: [UserRoleGuard]
+  },
+  {
+    path: AppRoutingConstants.USER_PROFILE,
+    component: UserProfileComponent,
+    canActivate: [UserRoleGuard]
+  },
+  {
+    path: AppRoutingConstants.USER_ORDERS,
+    component: UserOrdersComponent,
     canActivate: [UserRoleGuard]
   },
   {
