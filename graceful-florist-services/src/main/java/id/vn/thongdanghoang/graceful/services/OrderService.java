@@ -14,9 +14,9 @@ public interface OrderService {
 
     List<OrderEntity> searchOrders(OrderCriteriaDto criteria, Pageable page);
 
-    Page<OrderEntity> staffOrders(UserEntity staff, Pageable page);
+    Page<OrderEntity> staffOrders(OrderCriteriaDto orderCriteriaDto, UserEntity staff, Pageable page);
 
-    Page<OrderEntity> staffSearchPendingOrders(Pageable page);
+    Page<OrderEntity> staffSearchPendingOrders(OrderCriteriaDto orderCriteriaDto, Pageable page);
 
     OrderEntity staffReceiveOrder(UUID orderId, UserEntity staff);
 

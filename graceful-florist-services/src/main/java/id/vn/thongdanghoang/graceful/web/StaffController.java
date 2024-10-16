@@ -2,6 +2,7 @@ package id.vn.thongdanghoang.graceful.web;
 
 import id.vn.thongdanghoang.graceful.dtos.SearchCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.SearchResultDto;
+import id.vn.thongdanghoang.graceful.dtos.orders.OrderCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.orders.OrderDTO;
 import id.vn.thongdanghoang.graceful.mappers.CommonMapper;
 import id.vn.thongdanghoang.graceful.mappers.OrderMapper;
@@ -27,13 +28,16 @@ public class StaffController {
     private final OrderMapper orderMapper;
 
     @PostMapping("/orders")
-    public ResponseEntity<SearchResultDto<OrderDTO>> staffOrders(@RequestBody SearchCriteriaDto<Void> searchCriteriaDto) {
+    public ResponseEntity<SearchResultDto<OrderDTO>> staffOrders(@RequestBody SearchCriteriaDto<OrderCriteriaDto> searchCriteriaDto) {
         var securityUser = (SecurityUser) SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
         var pageable = commonMapper
                 .toPageable(searchCriteriaDto.getPage(), searchCriteriaDto.getSort());
         var staffOrders = orderService
-                .staffOrders(securityUser.getUserEntity(), pageable);
+                .staffOrders(
+                        searchCriteriaDto.getCriteria(),
+                        securityUser.getUserEntity(),
+                        pageable);
         var results = staffOrders
                 .getContent().stream()
                 .map(orderMapper::toOrderDTO)
@@ -44,11 +48,14 @@ public class StaffController {
     }
 
     @PostMapping("/pending-orders")
-    public ResponseEntity<SearchResultDto<OrderDTO>> searchPendingOrders(@RequestBody SearchCriteriaDto<Void> searchCriteriaDto) {
+    public ResponseEntity<SearchResultDto<OrderDTO>> searchPendingOrders(@RequestBody SearchCriteriaDto<OrderCriteriaDto> searchCriteriaDto) {
         var pageable = commonMapper
                 .toPageable(searchCriteriaDto.getPage(), searchCriteriaDto.getSort());
         var staffOrders = orderService
-                .staffSearchPendingOrders(pageable);
+                .staffSearchPendingOrders(
+                        searchCriteriaDto.getCriteria(),
+                        pageable
+                );
         var results = staffOrders
                 .getContent().stream()
                 .map(orderMapper::toOrderDTO)

@@ -6,7 +6,6 @@ import id.vn.thongdanghoang.graceful.entities.UserEntity;
 import id.vn.thongdanghoang.graceful.enums.OrderStatus;
 import id.vn.thongdanghoang.graceful.enums.OrderType;
 import id.vn.thongdanghoang.graceful.repositories.OrderRepository;
-import id.vn.thongdanghoang.graceful.repositories.UserRepository;
 import id.vn.thongdanghoang.graceful.services.OrderService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -41,13 +40,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderEntity> staffOrders(UserEntity staff, Pageable page) {
-        return orderRepository.findByStaff(staff, page);
+    public Page<OrderEntity> staffOrders(OrderCriteriaDto orderCriteriaDto, UserEntity staff, Pageable page) {
+        var customProduct = Objects.nonNull(orderCriteriaDto.orderType())
+                ? orderCriteriaDto.orderType() == OrderType.SPECIAL
+                : null;
+        var fromInclusive = orderCriteriaDto.fromInclusive();
+        return orderRepository.staffSearchOrders(customProduct, fromInclusive, staff, page);
     }
 
     @Override
-    public Page<OrderEntity> staffSearchPendingOrders(Pageable page) {
-        return orderRepository.staffFindPendingOrders(page);
+    public Page<OrderEntity> staffSearchPendingOrders(OrderCriteriaDto orderCriteriaDto, Pageable page) {
+        var customProduct = Objects.nonNull(orderCriteriaDto.orderType())
+                ? orderCriteriaDto.orderType() == OrderType.SPECIAL
+                : null;
+        var fromInclusive = orderCriteriaDto.fromInclusive();
+        return orderRepository.staffFindPendingOrders(customProduct, fromInclusive, page);
     }
 
     @Override

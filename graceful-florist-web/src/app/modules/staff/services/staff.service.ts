@@ -4,8 +4,12 @@ import {
   SearchCriteriaDto,
   SearchResultDto
 } from '../../shared/models/abstract-base-dto';
-import {Observable} from 'rxjs';
-import {OrderCriteriaDto, OrderDto} from '../../orders/models/order.dto';
+import {Observable, map} from 'rxjs';
+import {
+  OrderCriteriaDto,
+  OrderDto,
+  OrderType
+} from '../../orders/models/order.dto';
 import {AppRoutingConstants} from '../../../app-routing-constants';
 import {uuid} from '../../../../../graceful-florist-type';
 
@@ -22,19 +26,43 @@ export class StaffService {
   getPendingOrders(
     searchCriteria: SearchCriteriaDto<OrderCriteriaDto>
   ): Observable<SearchResultDto<OrderDto>> {
-    return this.httpClient.post<SearchResultDto<OrderDto>>(
-      this.STAFF_PENDING_ORDERS_URL,
-      searchCriteria
-    );
+    return this.httpClient
+      .post<
+        SearchResultDto<OrderDto>
+      >(this.STAFF_PENDING_ORDERS_URL, searchCriteria)
+      .pipe(
+        map(searchResult => {
+          searchResult.results.map(orderDto => {
+            orderDto.type =
+              orderDto.orderItems.filter(item => item.product.owner).length ===
+              0
+                ? OrderType.NORMAL
+                : OrderType.SPECIAL;
+            return orderDto;
+          });
+          return searchResult;
+        })
+      );
   }
 
   getOrders(
     searchCriteria: SearchCriteriaDto<OrderCriteriaDto>
   ): Observable<SearchResultDto<OrderDto>> {
-    return this.httpClient.post<SearchResultDto<OrderDto>>(
-      this.STAFF_ORDERS_URL,
-      searchCriteria
-    );
+    return this.httpClient
+      .post<SearchResultDto<OrderDto>>(this.STAFF_ORDERS_URL, searchCriteria)
+      .pipe(
+        map(searchResult => {
+          searchResult.results.map(orderDto => {
+            orderDto.type =
+              orderDto.orderItems.filter(item => item.product.owner).length ===
+              0
+                ? OrderType.NORMAL
+                : OrderType.SPECIAL;
+            return orderDto;
+          });
+          return searchResult;
+        })
+      );
   }
 
   receiveOrder(orderId: uuid): Observable<OrderDto> {

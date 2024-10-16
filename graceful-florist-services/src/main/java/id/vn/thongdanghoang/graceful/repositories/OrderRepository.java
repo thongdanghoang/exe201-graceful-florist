@@ -1,10 +1,8 @@
 package id.vn.thongdanghoang.graceful.repositories;
 
-import id.vn.thongdanghoang.graceful.dtos.orders.OrderCriteriaDto;
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
 import id.vn.thongdanghoang.graceful.entities.UserEntity;
 import id.vn.thongdanghoang.graceful.enums.OrderStatus;
-import id.vn.thongdanghoang.graceful.enums.OrderType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -38,15 +36,40 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID>, Repor
                                                    LocalDateTime fromInclusive,
                                                    Pageable page);
 
-    Page<OrderEntity> findByStaff(UserEntity staff, Pageable page);
-
+    @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)
     @Query("""
             SELECT o
             FROM OrderEntity o
-            WHERE o.status = 'PENDING'
-            AND o.staff IS NULL
+            WHERE (o.staff = :staff)
+            AND (:customProduct IS NULL OR o.id IN (
+                SELECT oi.order.id
+                FROM OrderItemEntity oi
+                WHERE (:customProduct = true AND oi.product.owner IS NOT NULL)
+                OR (:customProduct = false AND oi.product.owner IS NULL)
+            ))
+            AND (cast(:fromInclusive as date) IS NULL OR o.createdDate >= :fromInclusive)
             """)
-    Page<OrderEntity> staffFindPendingOrders(Pageable page);
+    Page<OrderEntity> staffSearchOrders(Boolean customProduct,
+                                        LocalDateTime fromInclusive,
+                                        UserEntity staff,
+                                        Pageable page);
+
+    @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)
+    @Query("""
+            SELECT o
+            FROM OrderEntity o
+            WHERE (o.status = 'PENDING')
+            AND (:customProduct IS NULL OR o.id IN (
+                SELECT oi.order.id
+                FROM OrderItemEntity oi
+                WHERE (:customProduct = true AND oi.product.owner IS NOT NULL)
+                OR (:customProduct = false AND oi.product.owner IS NULL)
+            ))
+            AND (cast(:fromInclusive as date) IS NULL OR o.createdDate >= :fromInclusive)
+            """)
+    Page<OrderEntity> staffFindPendingOrders(Boolean customProduct,
+                                             LocalDateTime fromInclusive,
+                                             Pageable page);
 
     @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)
     @Query("SELECT o FROM OrderEntity o WHERE o.id = :id")

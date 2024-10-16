@@ -8,7 +8,7 @@ import {
 import {
   OrderCriteriaDto,
   OrderDto,
-  OrderStatus
+  OrderType
 } from '../../../orders/models/order.dto';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
@@ -29,10 +29,9 @@ export class PendingOrdersComponent
   filterFormControls: {
     [key: string]: AbstractControl<any, any>;
   } = {
-    dateType: this.formBuilder.control(null),
-    optionalDate: this.formBuilder.control(null),
+    fromInclusive: this.formBuilder.control(null),
     status: this.formBuilder.control(null),
-    categories: this.formBuilder.control(null)
+    orderType: this.formBuilder.control(null)
   };
   filterFormGroups: FormGroup = this.formBuilder.group(this.filterFormControls);
 
@@ -46,6 +45,8 @@ export class PendingOrdersComponent
     OrderCriteriaDto,
     OrderDto
   >;
+
+  protected readonly orderTypes: OrderType[] = Object.values(OrderType);
 
   constructor(
     private readonly router: Router,
@@ -64,6 +65,15 @@ export class PendingOrdersComponent
       direction: 'asc'
     };
     this.criteria = {} as OrderCriteriaDto;
+    this.registerSubscription(
+      this.filterFormGroups.valueChanges.subscribe(value => {
+        this.pendingOrdersTable.searchCriteria.criteria = {
+          ...this.criteria,
+          ...value
+        };
+        this.pendingOrdersTable.search();
+      })
+    );
   }
 
   receiveOrder(order: OrderDto): void {
@@ -82,37 +92,25 @@ export class PendingOrdersComponent
 
   // It's seem mat-calendar is not work with reactive form
   onSelectedDateFilterChanged(value: any): void {
-    this.filterFormGroups.get('optionalDate')?.setValue(value);
+    this.filterFormGroups.get('fromInclusive')?.setValue(value);
   }
 
   getProductId(id: uuid | undefined): string {
     return id.toString().split('-')[0] ?? '';
   }
 
-  get orderStatus(): OrderStatus[] {
-    return Object.values(OrderStatus);
-  }
-
-  get statusFilterLabel(): OrderStatus {
-    return this.filterFormGroups.get('status')?.value;
+  get selectedOrderType(): OrderType {
+    return this.filterFormGroups.get('orderType')?.value;
   }
 
   get dateTypeFilterLabel(): string {
-    const dateType = this.filterFormGroups.get('dateType')?.value;
-    const optionalDate = this.filterFormGroups.get('optionalDate')?.value;
-
-    if (!dateType) {
-      return 'Ngày';
-    } else if (dateType === 'optional' && optionalDate) {
-      return optionalDate.toLocaleDateString('vi-VN', {
+    const fromInclusive = this.filterFormGroups.get('fromInclusive')?.value;
+    if (fromInclusive) {
+      return fromInclusive.toLocaleDateString('vi-VN', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric'
       });
-    } else if (dateType === 'newest') {
-      return 'Gần Nhất';
-    } else if (dateType === 'oldest') {
-      return 'Cũ nhất';
     }
     return 'Ngày';
   }
