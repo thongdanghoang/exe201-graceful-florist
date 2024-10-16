@@ -112,7 +112,7 @@ export class ProductDetailComponent
     this.registerSubscription(
       this.cartService
         .saveOrUpdate({
-          product: this.productDto as ProductDto,
+          product: this.productDto as ProductDetailDto,
           quantity: 1
         })
         .subscribe((): void => {

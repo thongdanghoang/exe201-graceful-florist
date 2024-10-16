@@ -36,11 +36,27 @@ export class CartComponent
     this.registerSubscriptions([
       this.cartService.cartItemsChanged.subscribe(
         (cartItems: CartItemDTO[]): void => {
-          this.cartItems = cartItems;
+          this.cartItems = cartItems.sort((a: CartItemDTO): number =>
+            a.product.owner === null ? 1 : -1
+          );
           this.loading = false;
         }
       )
     ]);
+  }
+
+  protected get paymentValid(): boolean {
+    if (this.selectedCartItems.length === 0) {
+      return false;
+    }
+    if (this.selectedCartItems.length === 1) {
+      return true;
+    }
+    return (
+      this.selectedCartItems.filter(
+        (item: CartItemDTO): boolean => item.product.owner !== null
+      ).length === 0
+    );
   }
 
   protected isSelected(item: CartItemDTO): boolean {

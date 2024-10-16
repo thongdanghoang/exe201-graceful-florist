@@ -185,9 +185,48 @@
                 </ng-container>
             </div>
         </div>
-        <div class="flex flex-col w-full sm:w-1/2 gap-2.5">
-            <div class="font-sans font-bold text-xl">Tùy Chọn (0)</div>
-            <div class="flex flex-col gap-2.5 px-10"></div>
+        <div
+            *ngIf="cartItems.length === 1 && cartItems[0].product.owner"
+            class="flex flex-col w-full sm:w-1/2 gap-2.5"
+        >
+            <div class="font-sans font-bold text-xl">
+                Tùy Chọn ({{ cartItems[0].product.ingredients?.length }})
+            </div>
+            <div class="flex flex-col gap-2.5 px-10">
+                <ng-container
+                    *ngFor="
+                        let item of cartItems[0].product.ingredients;
+                        let i = index
+                    "
+                >
+                    <div class="flex gap-2">
+                        <ng-container *ngIf="item.image">
+                            <img
+                                [ngSrc]="item.image | imageUrlTransform"
+                                alt="product"
+                                priority
+                                width="100"
+                                height="100"
+                                style="width: 100px; height: 100px"
+                                class="object-cover"
+                            />
+                        </ng-container>
+                        <div class="flex flex-col gap-1">
+                            <div class="font-sans text-sm font-normal">
+                                {{ item.name }}
+                            </div>
+                            <div
+                                class="flex gap-1 font-sans text-sm font-normal"
+                            >
+                                {{ item.price | vndCurrency }}
+                                <div class="text-primary">
+                                    x{{ item.quantity }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
         </div>
     </div>
     <!-- Phương thức thanh toán -->

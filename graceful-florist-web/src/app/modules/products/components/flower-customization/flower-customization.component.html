@@ -163,12 +163,28 @@
                 formControlName="layout"
             >
                 <div *ngFor="let item of layouts">
-                    <ng-container
-                        *ngTemplateOutlet="
-                            flowerRadioCardTemplate;
-                            context: { item, group: 'layout' }
-                        "
-                    ></ng-container>
+                    <label
+                        class="flex flex-col items-center justify-start gap-3"
+                        (click)="selectLayout(item)"
+                    >
+                        <img
+                            class="object-cover"
+                            [ngSrc]="item.image | imageUrlTransform"
+                            [alt]="item.name"
+                            priority
+                            width="100"
+                            height="100"
+                            style="width: 100px; height: 100px"
+                        />
+                        <span class="flex flex-col items-center">
+                            <mat-radio-button color="primary" [value]="item"
+                                >{{ item.name }}
+                            </mat-radio-button>
+                            <div class="font-sans text-xs font-normal">
+                                {{ item.price | vndCurrency }}
+                            </div>
+                        </span>
+                    </label>
                 </div>
             </mat-radio-group>
         </div>
@@ -181,19 +197,26 @@
             >
                 Hoa phụ và lá xanh
             </div>
-            <mat-radio-group
-                class="grid grid-cols-3 gap-10"
-                formControlName="secondaryFlower"
-            >
-                <div *ngFor="let item of flowersAndGreenLeaves">
+            <div class="grid grid-cols-3 gap-10">
+                <div
+                    *ngFor="
+                        let item of flowersAndGreenLeaves;
+                        let index = index
+                    "
+                >
                     <ng-container
                         *ngTemplateOutlet="
                             flowerRadioCardTemplate;
-                            context: { item, group: 'secondaryFlower' }
+                            context: {
+                                item,
+                                group: 'secondaryFlower',
+                                index: index,
+                                options: flowersAndGreenLeaves,
+                            }
                         "
                     ></ng-container>
                 </div>
-            </mat-radio-group>
+            </div>
         </div>
     </div>
     <!-- Thẻ và lời nhắn -->
@@ -243,19 +266,21 @@
             <div class="font-sans text-2xl font-semibold leading-loose">
                 Giấy gói
             </div>
-            <mat-radio-group
-                class="grid grid-cols-3 gap-10"
-                formControlName="wrapper"
-            >
-                <div *ngFor="let item of wrappers">
+            <div class="grid grid-cols-3 gap-10">
+                <div *ngFor="let item of wrappers; let index = index">
                     <ng-container
                         *ngTemplateOutlet="
                             flowerRadioCardTemplate;
-                            context: { item, group: 'wrapper' }
+                            context: {
+                                item,
+                                group: 'wrapper',
+                                index: index,
+                                options: wrappers,
+                            }
                         "
                     ></ng-container>
                 </div>
-            </mat-radio-group>
+            </div>
         </div>
         <!-- Chọn kiểu nơ -->
         <div
@@ -264,19 +289,21 @@
             <div class="font-sans text-2xl font-semibold leading-loose">
                 Phụ kiện
             </div>
-            <mat-radio-group
-                class="grid grid-cols-3 gap-10"
-                formControlName="accessories"
-            >
-                <div *ngFor="let item of accessories">
+            <div class="grid grid-cols-3 gap-10">
+                <div *ngFor="let item of accessories; let index = index">
                     <ng-container
                         *ngTemplateOutlet="
                             flowerRadioCardTemplate;
-                            context: { item, group: 'accessories' }
+                            context: {
+                                item,
+                                group: 'accessories',
+                                index: index,
+                                options: accessories,
+                            }
                         "
                     ></ng-container>
                 </div>
-            </mat-radio-group>
+            </div>
         </div>
     </div>
     <button
@@ -292,19 +319,25 @@
     <div class="mx-auto flex flex-col gap-4 items-center">
         <img
             class="w-64 h-64 object-cover"
-            src="assets/no-flowers-selected.png"
+            ngSrc="assets/no-flowers-selected.png"
             alt="no-flowers-selected"
+            priority
+            height="456"
+            width="456"
         />
         <div class="font-sans text-2xl leading-normal font-bold">
             Hãy lựa chọn loại hoa bạn mong muốn !
         </div>
     </div>
 </ng-template>
-<ng-template #flowerRadioCardTemplate let-item="item" let-group="group">
-    <label
-        class="flex flex-col items-center justify-start gap-3"
-        (click)="selectRadioButton(item, group)"
-    >
+<ng-template
+    #flowerRadioCardTemplate
+    let-item="item"
+    let-group="group"
+    let-index="index"
+    let-options="options"
+>
+    <label class="flex flex-col items-center justify-start gap-3">
         <img
             class="object-cover"
             [ngSrc]="item.image | imageUrlTransform"
@@ -315,9 +348,13 @@
             style="width: 100px; height: 100px"
         />
         <span class="flex flex-col items-center">
-            <mat-radio-button color="primary" [name]="group" [value]="item.name"
+            <mat-checkbox
+                (change)="onCheckboxChange($event, index, options, group)"
+                color="primary"
+                [name]="group"
+                [value]="item.name"
                 >{{ item.name }}
-            </mat-radio-button>
+            </mat-checkbox>
             <div class="font-sans text-xs font-normal">
                 {{ item.price | vndCurrency }}
             </div>

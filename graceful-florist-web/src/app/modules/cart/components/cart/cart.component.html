@@ -239,7 +239,7 @@
                         mat-flat-button
                         color="primary"
                         (click)="navigateToCheckout()"
-                        [disabled]="selectedCartItems.length === 0"
+                        [disabled]="!paymentValid"
                     >
                         Đi đến thanh toán
                     </button>

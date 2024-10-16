@@ -20,6 +20,7 @@ import {uuid} from '../../../../../../graceful-florist-type';
 import {Router} from '@angular/router';
 import {CartService} from '../../../cart/services/cart.service';
 import {AngularEditorConfig} from '@kolkov/angular-editor';
+import {MatCheckboxChange} from '@angular/material/checkbox';
 
 @Component({
   selector: 'graceful-florist-flower-customization',
@@ -115,10 +116,10 @@ export class FlowerCustomizationComponent
     color: this.formBuilder.control(null, Validators.required),
     mainFlowers: this.formBuilder.control([], Validators.minLength(1)),
     layout: this.formBuilder.control(null, Validators.required),
-    secondaryFlower: this.formBuilder.control(null, Validators.required),
+    secondaryFlower: this.formBuilder.control([], Validators.minLength(1)),
     message: this.formBuilder.control('', Validators.required),
-    wrapper: this.formBuilder.control(null, Validators.required),
-    accessories: this.formBuilder.control(null, Validators.required)
+    wrapper: this.formBuilder.control([], Validators.minLength(1)),
+    accessories: this.formBuilder.control([], Validators.minLength(1))
   };
   protected form: FormGroup = this.formBuilder.group(
     this.flowerCustomizationFormControls
@@ -202,8 +203,29 @@ export class FlowerCustomizationComponent
     );
   }
 
-  selectRadioButton(value: string, group: string): void {
-    this.form.get(group)?.setValue(value);
+  selectLayout(value: IngredientDto): void {
+    this.form.get('layout')?.setValue(value);
+  }
+
+  getSelectedValues(formControlName: string): any {
+    return this.form.get(formControlName)?.value;
+  }
+
+  onCheckboxChange(
+    event: MatCheckboxChange,
+    index: number,
+    options: any[],
+    formControlName: string
+  ): void {
+    const formValues = this.getSelectedValues(formControlName);
+    if (event.checked) {
+      formValues.push(options[index]);
+    } else {
+      const i = formValues.findIndex(
+        (value: any): boolean => value.id === options[index].id
+      );
+      formValues.splice(i, 1);
+    }
   }
 
   isSelectedFlowerInFormControl(flower: IngredientDto): boolean {
@@ -285,11 +307,11 @@ export class FlowerCustomizationComponent
       description: this.form.get('message')?.value,
       categories: [this.form.get('color')?.value],
       ingredients: [
-        ...(this.form.get('mainFlowers')?.value ?? []),
-        this.form.get('accessories')?.value,
-        this.form.get('secondaryFlower')?.value,
         this.form.get('layout')?.value,
-        this.form.get('wrapper')?.value
+        ...(this.form.get('mainFlowers')?.value ?? []),
+        ...(this.form.get('accessories')?.value ?? []),
+        ...(this.form.get('secondaryFlower')?.value ?? []),
+        ...(this.form.get('wrapper')?.value ?? [])
       ]
     };
     this.registerSubscription(

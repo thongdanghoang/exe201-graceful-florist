@@ -90,11 +90,17 @@ public abstract class ProductMapperDecorator implements ProductMapper {
                             .collect(Collectors.toSet()));
         }
         if (JpaUtils.isInitialized(productEntity.getIngredients())) {
+            Map<UUID, Integer> ingredients = productEntity
+                    .getIngredients().stream()
+                    .collect(Collectors.toMap(
+                            productIngredientEntity -> productIngredientEntity.getIngredient().getId(),
+                            ProductIngredientEntity::getQuantity));
             productDTO.setIngredients(
                     productEntity
                             .getIngredients().stream()
                             .map(ProductIngredientEntity::getIngredient)
                             .map(ingredientMapper::toIngredientDTO)
+                            .peek(ingredientDTO -> ingredientDTO.setQuantity(ingredients.get(ingredientDTO.getId())))
                             .collect(Collectors.toSet()));
         }
         if(Objects.nonNull(productEntity.getOwner())) {

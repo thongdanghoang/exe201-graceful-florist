@@ -72,6 +72,15 @@ export class PaymentComponent
                   (item: CartItemDTO): boolean =>
                     productIDs.includes(item.product.id)
                 );
+                if (products.length === 1 && products[0].product.owner) {
+                  this.registerSubscription(
+                    this.productService
+                      .getProductById(products[0].product.id)
+                      .subscribe(product => {
+                        products[0].product.ingredients = product.ingredients;
+                      })
+                  );
+                }
                 this.paymentForm.get('products')?.setValue(products);
               })
           );
