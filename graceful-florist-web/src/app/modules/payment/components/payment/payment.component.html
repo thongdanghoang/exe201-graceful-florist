@@ -190,9 +190,20 @@
             class="flex flex-col w-full sm:w-1/2 gap-2.5"
         >
             <div class="font-sans font-bold text-xl">
-                Tùy Chọn ({{ cartItems[0].product.ingredients?.length }})
+                Tùy Chọn ({{ cartItems[0].product.ingredients.length }})
             </div>
             <div class="flex flex-col gap-2.5 px-10">
+                <div class="flex gap-2 items-end">
+                    <div class="font-sans">Giá chi phí custom:</div>
+                    <div class="font-sans text-lg text-primary">
+                        {{ cartItems[0].product.customPrice?.name }}
+                        {{ " - " }}
+                        {{
+                            cartItems[0].product.customPrice?.price
+                                | vndCurrency
+                        }}
+                    </div>
+                </div>
                 <ng-container
                     *ngFor="
                         let item of cartItems[0].product.ingredients;

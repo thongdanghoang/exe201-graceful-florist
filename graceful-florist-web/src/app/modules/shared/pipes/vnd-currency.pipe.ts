@@ -4,7 +4,7 @@ import {Pipe, PipeTransform} from '@angular/core';
   name: 'vndCurrency'
 })
 export class VndCurrencyPipe implements PipeTransform {
-  transform(value: number): string {
+  transform(value: number | null | undefined): string {
     if (value == null || value === 0) return '';
     return new Intl.NumberFormat('vi-VN', {
       style: 'currency',
