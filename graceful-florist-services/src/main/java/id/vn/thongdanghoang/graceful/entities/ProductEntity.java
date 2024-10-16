@@ -74,6 +74,9 @@ public class ProductEntity extends AbstractAuditableEntity {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "notes")
+    private String notes;
+
     @NotNull
     @Column(name = "price")
     private int price;

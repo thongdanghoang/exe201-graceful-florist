@@ -14,6 +14,7 @@ export interface ProductDto extends AbstractAuditableDTO {
   images: uuid[];
   enabled: boolean;
   description: string;
+  notes: string;
   owner?: UserDto;
   customPrice?: ProductCustomPriceDto;
 }
@@ -24,6 +25,7 @@ export interface ProductCustomDTO {
   categories: CategoryDto[];
   ingredients: IngredientDto[];
   customPrice: ProductCustomPriceDto;
+  notes: string;
 }
 
 export enum ProductStatus {

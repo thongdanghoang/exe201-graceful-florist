@@ -60,4 +60,26 @@ export class StaffOrderDetailComponent
   get OrdersStatus(): OrderStatus[] {
     return Object.values(OrderStatus);
   }
+
+  get isCustomProduct(): boolean {
+    return (
+      this.orderDto?.orderItems.some(
+        orderItem => orderItem.product?.owner !== null
+      ) ?? false
+    );
+  }
+
+  get isProductNote(): boolean {
+    return (
+      this.orderDto?.orderItems.length === 1 &&
+      this.orderDto?.orderItems[0].product.notes !== null
+    );
+  }
+
+  get note(): string {
+    if (this.orderDto?.orderItems.length === 1) {
+      return this.orderDto.orderItems[0].product.notes;
+    }
+    return '';
+  }
 }

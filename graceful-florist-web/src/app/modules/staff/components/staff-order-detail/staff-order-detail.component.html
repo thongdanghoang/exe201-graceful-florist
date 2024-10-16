@@ -103,7 +103,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col gap-4 bg-white">
+                <div
+                    *ngIf="isCustomProduct && isProductNote"
+                    class="flex flex-col gap-4 bg-white"
+                >
                     <!-- Ghi chú khách hàng -->
                     <div class="flex flex-col gap-2 p-2">
                         <ng-container
@@ -113,7 +116,7 @@
                             "
                         ></ng-container>
                         <div class="font-sans text-xs font-semibold">
-                            {{ orderDto.message }}
+                            {{ note }}
                         </div>
                     </div>
                 </div>

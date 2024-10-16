@@ -43,6 +43,7 @@ export class FlowerCustomizationComponent
     layout: this.formBuilder.control(null, Validators.required),
     secondaryFlower: this.formBuilder.control([]),
     message: this.formBuilder.control('', Validators.required),
+    notes: this.formBuilder.control(''),
     wrapper: this.formBuilder.control([]),
     accessories: this.formBuilder.control([]),
     customPrice: this.formBuilder.control(null, Validators.required)
@@ -241,6 +242,7 @@ export class FlowerCustomizationComponent
       description: this.form.get('message')?.value,
       categories: [this.form.get('color')?.value],
       customPrice: this.form.get('customPrice')?.value,
+      notes: this.form.get('notes')?.value,
       ingredients: [
         this.form.get('layout')?.value,
         ...(this.form.get('mainFlowers')?.value ?? []),

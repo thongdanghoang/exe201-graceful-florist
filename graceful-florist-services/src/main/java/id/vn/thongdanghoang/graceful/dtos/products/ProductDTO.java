@@ -13,6 +13,7 @@ public class ProductDTO extends AbstractAuditableDTO {
     private UUID mainImage;
     private String name;
     private String description;
+    private String notes;
     private int price;
     private int purchases;
     private boolean enabled;
