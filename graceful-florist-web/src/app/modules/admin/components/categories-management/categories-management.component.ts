@@ -19,16 +19,19 @@ import {
 } from '../category-detail-modal/category-detail-modal.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {TableComponent} from '../../../shared/components/table/table.component';
+import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 
 @Component({
   selector: 'graceful-florist-categories-management',
   templateUrl: './categories-management.component.html'
 })
-export class CategoriesManagementComponent implements OnInit {
+export class CategoriesManagementComponent
+  extends SubscriptionAwareComponent
+  implements OnInit
+{
   filterFormControls: {
     [key: string]: AbstractControl<any, any>;
   } = {
-    name: this.formBuilder.control(null),
     type: this.formBuilder.control(null),
     enabled: this.formBuilder.control(null)
   };
@@ -49,7 +52,9 @@ export class CategoriesManagementComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly modalService: ModalService,
     private readonly categoryService: CategoryService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.fetchCategories = this.categoryService.searchCategories.bind(
@@ -60,6 +65,12 @@ export class CategoriesManagementComponent implements OnInit {
       direction: 'asc'
     };
     this.criteria = {};
+    this.registerSubscription(
+      this.filterFormGroups.valueChanges.subscribe(value => {
+        this.categoriesTable.searchCriteria.criteria = value;
+        this.categoriesTable.search();
+      })
+    );
   }
 
   get typeValue(): CategoryType {

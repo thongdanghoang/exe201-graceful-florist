@@ -1,5 +1,6 @@
 package id.vn.thongdanghoang.graceful.services;
 
+import id.vn.thongdanghoang.graceful.dtos.products.CategoryCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductCriteria;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.entities.IngredientEntity;
@@ -27,7 +28,7 @@ public interface ProductService {
 
     List<CategoryEntity> getEnabledCategories();
 
-    Page<CategoryEntity> getEnabledCategories(Pageable page);
+    Page<CategoryEntity> getEnabledCategories(CategoryCriteriaDto searchCriteria, Pageable page);
 
     Set<CategoryEntity> searchCategoriesByCategoriesID(Set<UUID> categoriesID);
 

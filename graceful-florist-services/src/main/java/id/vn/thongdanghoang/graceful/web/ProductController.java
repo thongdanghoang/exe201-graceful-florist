@@ -2,10 +2,7 @@ package id.vn.thongdanghoang.graceful.web;
 
 import id.vn.thongdanghoang.graceful.dtos.SearchCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.SearchResultDto;
-import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
-import id.vn.thongdanghoang.graceful.dtos.products.IngredientDTO;
-import id.vn.thongdanghoang.graceful.dtos.products.ProductCriteria;
-import id.vn.thongdanghoang.graceful.dtos.products.ProductDTO;
+import id.vn.thongdanghoang.graceful.dtos.products.*;
 import id.vn.thongdanghoang.graceful.entities.CartItemEntity;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.entities.UserEntity;
@@ -17,6 +14,7 @@ import id.vn.thongdanghoang.graceful.services.CartService;
 import id.vn.thongdanghoang.graceful.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -121,9 +119,11 @@ public class ProductController {
     }
 
     @PostMapping("/categories/search")
-    public ResponseEntity<SearchResultDto<CategoryDTO>> searchCategories(@RequestBody SearchCriteriaDto<Void> searchCriteria) {
+    public ResponseEntity<SearchResultDto<CategoryDTO>> searchCategories(@RequestBody SearchCriteriaDto<CategoryCriteriaDto> searchCriteria) {
+        var pageable = commonMapper
+                .toPageable(searchCriteria.getPage(), searchCriteria.getSort());
         var categoryEntities = service
-                .getEnabledCategories(commonMapper.toPageable(searchCriteria.getPage(), searchCriteria.getSort()));
+                .getEnabledCategories(searchCriteria.getCriteria(), pageable);
         var categoryDTOs = categoryEntities.stream()
                 .map(mapper::toCategoryDTO)
                 .toList();

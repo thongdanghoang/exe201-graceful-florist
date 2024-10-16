@@ -13,7 +13,6 @@ export enum CategoryType {
 }
 
 export interface CategoryCriteriaDto {
-  name?: string;
   type?: CategoryType;
   enabled?: boolean;
 }

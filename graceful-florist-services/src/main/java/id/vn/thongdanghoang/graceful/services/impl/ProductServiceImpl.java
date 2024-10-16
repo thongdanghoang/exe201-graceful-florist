@@ -1,5 +1,6 @@
 package id.vn.thongdanghoang.graceful.services.impl;
 
+import id.vn.thongdanghoang.graceful.dtos.products.CategoryCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductCriteria;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
@@ -92,8 +93,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<CategoryEntity> getEnabledCategories(Pageable page) {
-        return categoryRepository.findAll(page);
+    public Page<CategoryEntity> getEnabledCategories(CategoryCriteriaDto searchCriteria, Pageable page) {
+        var type = searchCriteria.type();
+        var enabled = searchCriteria.enabled();
+        return categoryRepository.searchCategory(type, enabled, page);
     }
 
     @Override

@@ -1,20 +1,6 @@
 <div class="flex flex-col p-8 gap-8">
     <div class="font-sans text-2xl font-bold">Phân Loại</div>
     <form [formGroup]="filterFormGroups" class="flex gap-3 justify-start">
-        <!-- Tên -->
-        <button
-            class="!rounded-lg"
-            mat-flat-button
-            [matMenuTriggerFor]="name"
-            aria-label="Ngày"
-        >
-            Tên
-            <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
-        </button>
-        <mat-menu #name="matMenu">
-            <button mat-menu-item>Item 1</button>
-            <button mat-menu-item>Item 2</button></mat-menu
-        >
         <!-- Phân Loại -->
         <button
             class="!rounded-lg"
@@ -51,12 +37,43 @@
             [matMenuTriggerFor]="status"
             aria-label="Trạng thái"
         >
-            Trạng thái
+            {{
+                this.filterFormGroups.get("enabled")?.value !== null
+                    ? this.filterFormGroups.get("enabled")?.value === true
+                        ? "Đang hoạt động"
+                        : "Ngừng hoạt động"
+                    : "Trạng thái"
+            }}
             <mat-icon iconPositionEnd>arrow_drop_down> </mat-icon>
         </button>
         <mat-menu #status="matMenu">
-            <button mat-menu-item>Item 1</button>
-            <button mat-menu-item>Item 2</button>
+            <mat-chip-listbox class="mx-3" formControlName="enabled"
+                ><mat-chip-option
+                    class="!rounded-lg !border"
+                    [ngClass]="{
+                        '!bg-primary':
+                            true ===
+                            this.filterFormGroups.get('enabled')?.value,
+                        '!bg-white !border-slate-700':
+                            true !==
+                            this.filterFormGroups.get('enabled')?.value,
+                    }"
+                    [value]="true"
+                    >Đang hoạt động</mat-chip-option
+                ><mat-chip-option
+                    class="!rounded-lg !border"
+                    [ngClass]="{
+                        '!bg-primary':
+                            false ===
+                            this.filterFormGroups.get('enabled')?.value,
+                        '!bg-white !border-slate-700':
+                            false !==
+                            this.filterFormGroups.get('enabled')?.value,
+                    }"
+                    [value]="false"
+                    >Ngừng hoạt động</mat-chip-option
+                ></mat-chip-listbox
+            >
         </mat-menu>
         <button
             class="!rounded-lg !text-primary"
