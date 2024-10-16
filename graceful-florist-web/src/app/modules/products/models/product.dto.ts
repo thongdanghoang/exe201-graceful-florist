@@ -1,5 +1,6 @@
 import {
   AbstractAuditableDTO,
+  AbstractBaseDto,
   SearchResultDto
 } from '../../shared/models/abstract-base-dto';
 import {CategoryDto, CategoryType} from '../../admin/model/category.dto';
@@ -14,6 +15,7 @@ export interface ProductDto extends AbstractAuditableDTO {
   enabled: boolean;
   description: string;
   owner?: UserDto;
+  customPrice?: ProductCustomPriceDto;
 }
 
 export interface ProductCustomDTO {
@@ -21,6 +23,7 @@ export interface ProductCustomDTO {
   description: string;
   categories: CategoryDto[];
   ingredients: IngredientDto[];
+  customPrice: ProductCustomPriceDto;
 }
 
 export enum ProductStatus {
@@ -82,4 +85,9 @@ export enum IngredientType {
   ACCESSORIES = 'ACCESSORIES',
   LAYOUT = 'LAYOUT',
   PACKAGING = 'PACKAGING'
+}
+
+export interface ProductCustomPriceDto extends AbstractBaseDto {
+  name: string;
+  price: number;
 }

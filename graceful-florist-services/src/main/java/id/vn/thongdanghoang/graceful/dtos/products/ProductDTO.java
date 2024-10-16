@@ -19,4 +19,5 @@ public class ProductDTO extends AbstractAuditableDTO {
     private Set<CategoryDTO> categories;
     private Set<IngredientDTO> ingredients;
     private UserDTO owner;
+    private ProductCustomPriceDto customPrice;
 }

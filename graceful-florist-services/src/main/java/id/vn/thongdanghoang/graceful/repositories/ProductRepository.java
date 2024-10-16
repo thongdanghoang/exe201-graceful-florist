@@ -1,5 +1,6 @@
 package id.vn.thongdanghoang.graceful.repositories;
 
+import id.vn.thongdanghoang.graceful.entities.ProductCustomPriceEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
 import id.vn.thongdanghoang.graceful.enums.CategoryType;
 import jakarta.persistence.EnumType;
@@ -92,5 +93,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
                                       LocalDateTime fromInclusive,
                                       boolean admin,
                                       Pageable pageable);
+
+    @Query("SELECT p FROM ProductCustomPriceEntity p")
+    List<ProductCustomPriceEntity> findAllProductCustomPrices();
 }
 

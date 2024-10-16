@@ -102,7 +102,7 @@
                     Mô Tả
                 </div>
                 <!--     Description Detail    -->
-                <div [innerHTML]="productDto.description"></div>
+                <p>{{ productDto.description }}</p>
                 <!--     Actions    -->
                 <div class="flex gap-8">
                     <button mat-raised-button (click)="addToCart()">

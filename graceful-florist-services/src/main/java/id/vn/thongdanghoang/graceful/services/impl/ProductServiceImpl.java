@@ -5,8 +5,8 @@ import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductCriteria;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
 import id.vn.thongdanghoang.graceful.entities.IngredientEntity;
+import id.vn.thongdanghoang.graceful.entities.ProductCustomPriceEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
-import id.vn.thongdanghoang.graceful.enums.CategoryType;
 import id.vn.thongdanghoang.graceful.enums.ProductStatus;
 import id.vn.thongdanghoang.graceful.repositories.CategoryRepository;
 import id.vn.thongdanghoang.graceful.repositories.IngredientRepository;
@@ -21,8 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -105,8 +103,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public IngredientEntity addIngredient(IngredientEntity ingredientEntity) {
-        return ingredientRepository.save(ingredientEntity);
+    public void addIngredient(IngredientEntity ingredientEntity) {
+        ingredientRepository.save(ingredientEntity);
     }
 
     @Override
@@ -121,5 +119,10 @@ public class ProductServiceImpl implements ProductService {
             return List.of();
         }
         return repository.fullTextSearch(formattedKeyword);
+    }
+
+    @Override
+    public List<ProductCustomPriceEntity> getProductCustomPrices() {
+        return repository.findAllProductCustomPrices();
     }
 }

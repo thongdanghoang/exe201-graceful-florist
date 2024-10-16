@@ -249,12 +249,17 @@
                 </div>
             </div>
             <div class="w-ful sm:w-1/2 flex items-center">
-                <div class="w-full h-full overflow-y-auto">
-                    <angular-editor
+                <mat-form-field class="mx-auto h-44 w-full *:!bg-transparent">
+                    <mat-label class="!font-sans">Lời nhắn</mat-label>
+                    <textarea
+                        class="!font-sans"
                         formControlName="message"
-                        [config]="editorConfig"
-                    ></angular-editor>
-                </div>
+                        placeholder="Thêm lời nhắn vào thiệp"
+                        rows="4"
+                        cols="50"
+                        matInput
+                    ></textarea>
+                </mat-form-field>
             </div>
         </div>
     </div>
@@ -306,8 +311,60 @@
             </div>
         </div>
     </div>
+    <div class="flex flex-col sm:flex-row gap-8">
+        <!-- Giá chi phí custom Hoa theo mẫu -->
+        <div
+            class="flex flex-col w-full sm:w-1/2 bg-white gap-3 py-8 px-6 rounded-lg"
+        >
+            <div
+                class="font-sans text-2xl font-semibold leading-loose text-primary"
+            >
+                Giá chi phí custom Hoa theo mẫu
+            </div>
+            <div class="font-sans text-base italic text-neutral-500">
+                ( Bao gồm mọi chi phí như : Công gói/ thiết kế hoa., phụ kiện để
+                thiết kế hoàn chỉnh cho sản phẩm)
+            </div>
+            <mat-radio-group
+                class="flex flex-col gap-3"
+                formControlName="customPrice"
+            >
+                <div *ngFor="let price of customPrices">
+                    <label
+                        class="flex items-center justify-start gap-3"
+                        (click)="selectPrice(price)"
+                    >
+                        <mat-radio-button color="primary" [value]="price"
+                            >{{ price.name }}
+                        </mat-radio-button>
+                        <ng-container
+                            *ngIf="price.price === -1; else priceTemplate"
+                        >
+                            <div class="font-sans text-sm italic">
+                                Liên hệ sale để nhận báo giá
+                            </div>
+                        </ng-container>
+                        <ng-template #priceTemplate>
+                            <div class="font-sans text-xs font-normal">
+                                {{ price.price | vndCurrency }}
+                            </div>
+                        </ng-template>
+                    </label>
+                </div>
+            </mat-radio-group>
+        </div>
+        <!-- Ghi chú -->
+        <div
+            class="flex flex-col w-full sm:w-1/2 bg-white gap-3 py-8 px-6 rounded-lg"
+        >
+            <div class="font-sans text-2xl font-semibold leading-loose">
+                Ghi chú
+            </div>
+            <div class="grid grid-cols-3 gap-10"></div>
+        </div>
+    </div>
     <button
-        [disabled]="form.invalid"
+        [disabled]="form.invalid || mainFlowersFormValue.length === 0"
         (click)="submit()"
         mat-flat-button
         color="primary"

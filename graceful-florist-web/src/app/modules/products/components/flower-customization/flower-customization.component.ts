@@ -10,7 +10,8 @@ import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {
   IngredientDto,
   IngredientType,
-  ProductCustomDTO
+  ProductCustomDTO,
+  ProductCustomPriceDto
 } from '../../models/product.dto';
 import {ProductService} from '../../services/product.service';
 import {CategoryService} from '../../../admin/services/category.service';
@@ -19,7 +20,6 @@ import {CategoryDto, CategoryType} from '../../../admin/model/category.dto';
 import {uuid} from '../../../../../../graceful-florist-type';
 import {Router} from '@angular/router';
 import {CartService} from '../../../cart/services/cart.service';
-import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {MatCheckboxChange} from '@angular/material/checkbox';
 
 @Component({
@@ -35,91 +35,17 @@ export class FlowerCustomizationComponent
     {label: 'Trang chủ', path: AppRoutingConstants.HOME_PATH},
     {label: 'Thiết Kế Hoa'}
   ];
-  protected editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    minWidth: '0',
-    minHeight: '180',
-    width: 'auto',
-    height: 'auto',
-    maxHeight: 'auto',
-    translate: 'yes',
-    enableToolbar: true,
-    showToolbar: true,
-    defaultParagraphSeparator: '',
-    defaultFontName: 'Nunito',
-    defaultFontSize: '',
-    fonts: [
-      {class: 'arial', name: 'Arial'},
-      {class: 'times-new-roman', name: 'Times New Roman'},
-      {class: 'calibri', name: 'Calibri'},
-      {class: 'comic-sans-ms', name: 'Comic Sans MS'}
-    ],
-    customClasses: [
-      {
-        name: 'quote',
-        class: 'quote'
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1'
-      }
-    ],
-    uploadUrl: 'v1/image',
-    uploadWithCredentials: false,
-    sanitize: false,
-    toolbarPosition: 'top',
-    toolbarHiddenButtons: [
-      [
-        // 'undo',
-        // 'redo',
-        // 'bold',
-        // 'italic',
-        // 'underline',
-        'strikeThrough',
-        'justifyLeft',
-        'justifyCenter',
-        'justifyRight',
-        'justifyFull',
-        'indent',
-        'outdent',
-        'insertUnorderedList',
-        'insertOrderedList',
-        'heading',
-        'fontName',
-        'superscript',
-        'subscript'
-      ],
-      [
-        'fontSize',
-        // 'textColor',
-        // 'backgroundColor',
-        'customClasses',
-        'link',
-        'unlink',
-        'insertImage',
-        'insertVideo',
-        'toggleEditorMode',
-        // 'removeFormat'
-        'insertHorizontalRule'
-      ]
-    ]
-  };
   protected flowerCustomizationFormControls: {
     [key: string]: AbstractControl<any, any>;
   } = {
     color: this.formBuilder.control(null, Validators.required),
-    mainFlowers: this.formBuilder.control([], Validators.minLength(1)),
+    mainFlowers: this.formBuilder.control([]),
     layout: this.formBuilder.control(null, Validators.required),
-    secondaryFlower: this.formBuilder.control([], Validators.minLength(1)),
+    secondaryFlower: this.formBuilder.control([]),
     message: this.formBuilder.control('', Validators.required),
-    wrapper: this.formBuilder.control([], Validators.minLength(1)),
-    accessories: this.formBuilder.control([], Validators.minLength(1))
+    wrapper: this.formBuilder.control([]),
+    accessories: this.formBuilder.control([]),
+    customPrice: this.formBuilder.control(null, Validators.required)
   };
   protected form: FormGroup = this.formBuilder.group(
     this.flowerCustomizationFormControls
@@ -127,6 +53,7 @@ export class FlowerCustomizationComponent
 
   protected categories: CategoryDto[] = [];
   protected ingredients: IngredientDto[] = [];
+  protected customPrices: ProductCustomPriceDto[] = [];
   /**
    * @description: we mainly work on form control,
    * this array just use for quickly remove selected flower from form group
@@ -150,7 +77,10 @@ export class FlowerCustomizationComponent
         .subscribe(categories => (this.categories = categories)),
       this.productService
         .getIngredients()
-        .subscribe(ingredients => (this.ingredients = ingredients))
+        .subscribe(ingredients => (this.ingredients = ingredients)),
+      this.productService
+        .getCustomPrices()
+        .subscribe(prices => (this.customPrices = prices))
     ]);
   }
 
@@ -205,6 +135,10 @@ export class FlowerCustomizationComponent
 
   selectLayout(value: IngredientDto): void {
     this.form.get('layout')?.setValue(value);
+  }
+
+  selectPrice(value: ProductCustomPriceDto): void {
+    this.form.get('customPrice')?.setValue(value);
   }
 
   getSelectedValues(formControlName: string): any {
@@ -306,6 +240,7 @@ export class FlowerCustomizationComponent
       price: 0,
       description: this.form.get('message')?.value,
       categories: [this.form.get('color')?.value],
+      customPrice: this.form.get('customPrice')?.value,
       ingredients: [
         this.form.get('layout')?.value,
         ...(this.form.get('mainFlowers')?.value ?? []),

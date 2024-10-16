@@ -106,6 +106,9 @@ public abstract class ProductMapperDecorator implements ProductMapper {
         if(Objects.nonNull(productEntity.getOwner())) {
             productDTO.setOwner(userMapper.toUserDto(productEntity.getOwner()));
         }
+        if(Objects.nonNull(productEntity.getCustomPrice())) {
+            productDTO.setCustomPrice(delegate.toProductCustomPriceDto(productEntity.getCustomPrice()));
+        }
         return productDTO;
     }
 }

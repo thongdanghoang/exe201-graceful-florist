@@ -16,7 +16,6 @@ import {Subscription, catchError} from 'rxjs';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {CategoryService} from '../../services/category.service';
 import {CategoryDto} from '../../model/category.dto';
-import {AngularEditorConfig} from '@kolkov/angular-editor';
 
 export interface BasicModalOptions extends FormDialogOptions<ProductDetailDto> {
   title: string;
@@ -70,82 +69,6 @@ export class ProductDetailModalComponent
 
   readonly productService: ProductService = inject(ProductService);
   readonly categoryService: CategoryService = inject(CategoryService);
-
-  protected editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    minWidth: '0',
-    minHeight: '300',
-    width: 'auto',
-    height: 'auto',
-    maxHeight: 'auto',
-    translate: 'yes',
-    enableToolbar: true,
-    showToolbar: true,
-    defaultParagraphSeparator: '',
-    defaultFontName: 'Nunito',
-    defaultFontSize: '',
-    fonts: [
-      {class: 'arial', name: 'Arial'},
-      {class: 'times-new-roman', name: 'Times New Roman'},
-      {class: 'calibri', name: 'Calibri'},
-      {class: 'comic-sans-ms', name: 'Comic Sans MS'}
-    ],
-    customClasses: [
-      {
-        name: 'quote',
-        class: 'quote'
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1'
-      }
-    ],
-    uploadUrl: 'v1/image',
-    uploadWithCredentials: false,
-    sanitize: true,
-    toolbarPosition: 'top',
-    toolbarHiddenButtons: [
-      [
-        // 'undo',
-        // 'redo',
-        // 'bold',
-        // 'italic',
-        // 'underline',
-        'strikeThrough',
-        'justifyLeft',
-        'justifyCenter',
-        'justifyRight',
-        'justifyFull',
-        'indent',
-        'outdent',
-        // 'insertUnorderedList',
-        // 'insertOrderedList',
-        'heading',
-        'fontName',
-        'superscript',
-        'subscript'
-      ],
-      [
-        'fontSize',
-        // 'textColor',
-        // 'backgroundColor',
-        'customClasses',
-        'link',
-        'unlink',
-        'insertImage',
-        'insertVideo',
-        'toggleEditorMode',
-        // 'removeFormat'
-        'insertHorizontalRule'
-      ]
-    ]
-  };
 
   constructor(injector: Injector) {
     super(injector);

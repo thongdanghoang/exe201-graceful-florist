@@ -3,6 +3,7 @@ import {
   IngredientDto,
   ProductCriteriaDto,
   ProductCustomDTO,
+  ProductCustomPriceDto,
   ProductDetailDto,
   ProductDto
 } from '../models/product.dto';
@@ -67,6 +68,12 @@ export class ProductService {
   getIngredients(): Observable<IngredientDto[]> {
     return this.httpClient.get<IngredientDto[]>(
       `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.INGREDIENTS_PATH}`
+    );
+  }
+
+  getCustomPrices(): Observable<ProductCustomPriceDto[]> {
+    return this.httpClient.get<ProductCustomPriceDto[]>(
+      `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PRODUCTS_PATH}/custom-prices`
     );
   }
 }

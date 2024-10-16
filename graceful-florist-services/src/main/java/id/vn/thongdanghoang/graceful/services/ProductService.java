@@ -2,10 +2,7 @@ package id.vn.thongdanghoang.graceful.services;
 
 import id.vn.thongdanghoang.graceful.dtos.products.CategoryCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductCriteria;
-import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
-import id.vn.thongdanghoang.graceful.entities.IngredientEntity;
-import id.vn.thongdanghoang.graceful.entities.ProductEntity;
-import id.vn.thongdanghoang.graceful.entities.UserEntity;
+import id.vn.thongdanghoang.graceful.entities.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -32,9 +29,11 @@ public interface ProductService {
 
     Set<CategoryEntity> searchCategoriesByCategoriesID(Set<UUID> categoriesID);
 
-    IngredientEntity addIngredient(IngredientEntity ingredientEntity);
+    void addIngredient(IngredientEntity ingredientEntity);
 
     List<IngredientEntity> getIngredients();
 
     List<String> getSuggestions(String keyword);
+
+    List<ProductCustomPriceEntity> getProductCustomPrices();
 }

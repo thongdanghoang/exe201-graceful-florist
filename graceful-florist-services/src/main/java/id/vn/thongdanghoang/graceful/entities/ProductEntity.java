@@ -17,6 +17,7 @@ import java.util.UUID;
         attributeNodes = {
                 @NamedAttributeNode("categories"),
                 @NamedAttributeNode("owner"),
+                @NamedAttributeNode("customPrice"),
                 @NamedAttributeNode(value = "ingredients", subgraph = ProductEntity.PRODUCT_INGREDIENT_ENTITY_GRAPH)
         },
         subgraphs = {
@@ -55,6 +56,10 @@ public class ProductEntity extends AbstractAuditableEntity {
     @OneToOne
     @JoinColumn(name = "owner_id", updatable = false)
     private UserEntity owner;
+
+    @ManyToOne()
+    @JoinColumn(name = "custom_price_id")
+    private ProductCustomPriceEntity customPrice;
 
     @Column(name = "images")
     private String images;

@@ -5,7 +5,7 @@ import id.vn.thongdanghoang.graceful.dtos.SearchResultDto;
 import id.vn.thongdanghoang.graceful.dtos.products.*;
 import id.vn.thongdanghoang.graceful.entities.CartItemEntity;
 import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
-import id.vn.thongdanghoang.graceful.entities.UserEntity;
+import id.vn.thongdanghoang.graceful.enums.IngredientType;
 import id.vn.thongdanghoang.graceful.mappers.CommonMapper;
 import id.vn.thongdanghoang.graceful.mappers.IngredientMapper;
 import id.vn.thongdanghoang.graceful.mappers.ProductMapper;
@@ -14,15 +14,12 @@ import id.vn.thongdanghoang.graceful.services.CartService;
 import id.vn.thongdanghoang.graceful.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequestMapping("/products")
 @RestController
@@ -76,13 +73,16 @@ public class ProductController {
                 .getContext().getAuthentication().getPrincipal();
         productDTO.setName("Flower Customized " + System.currentTimeMillis());
         productDTO.setEnabled(true);
-        productDTO.getIngredients().stream().findAny().ifPresent(ingredientDTO -> {
-            productDTO.setMainImage(ingredientDTO.getImage());
-        });
-        var price = productDTO.getIngredients().stream()
+        productDTO.getIngredients().stream()
+                .filter(ingredientDTO -> ingredientDTO.getImage() != null)
+                .filter(ingredientDTO -> ingredientDTO.getType() == IngredientType.MAIN_FLOWER)
+                .findAny()
+                .ifPresent(ingredientDTO -> productDTO.setMainImage(ingredientDTO.getImage()));
+        int price = productDTO.getIngredients().stream()
                 .map(ingredientDTO -> ingredientDTO.getPrice() * ingredientDTO.getQuantity())
                 .reduce(Integer::sum)
                 .orElseThrow();
+        price += productDTO.getCustomPrice().getPrice();
         var productEntity = mapper.createProduct(productDTO);
         productEntity.setOwner(securityUser.getUserEntity());
         productEntity.setPrice(price);
@@ -94,6 +94,16 @@ public class ProductController {
         cartService.saveOrUpdate(cartItemEntity);
         var createdProductDTO = mapper.toProductDTO(createdProductEntity);
         return ResponseEntity.ok(createdProductDTO);
+    }
+
+    @GetMapping("/custom-prices")
+    public ResponseEntity<List<ProductCustomPriceDto>> getCustomPrices() {
+        var productCustomPrices = service
+                .getProductCustomPrices()
+                .stream()
+                .map(mapper::toProductCustomPriceDto)
+                .toList();
+        return ResponseEntity.ok(productCustomPrices);
     }
 
     @PutMapping("/{id}")
