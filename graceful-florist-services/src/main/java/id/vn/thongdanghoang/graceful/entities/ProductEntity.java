@@ -81,6 +81,10 @@ public class ProductEntity extends AbstractAuditableEntity {
     @Column(name = "price")
     private int price;
 
+    @NotNull
+    @Column(name = "quantity")
+    private long quantity;
+
     @Column(name = "purchases")
     private int purchases = 0;
 

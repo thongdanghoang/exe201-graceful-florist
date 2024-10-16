@@ -11,7 +11,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.stream.Collectors;
 
@@ -36,7 +39,14 @@ public class PaymentController {
                 .map(cartItemDTO -> {
                     var productEntity = productService
                             .getProductById(cartItemDTO.product().getId()).orElseThrow();
+                    if (productEntity.getQuantity() - cartItemDTO.quantity() < 0) {
+                        throw new RuntimeException("Not enough quantity");
+                    }
                     productEntity.setPurchases(productEntity.getPurchases() + cartItemDTO.quantity());
+                    productEntity.setQuantity(productEntity.getQuantity() - cartItemDTO.quantity());
+                    if (productEntity.getQuantity() == 0) {
+                        productEntity.setEnabled(false);
+                    }
                     productEntity = productService.updateProduct(productEntity);
                     return OrderItemEntity.of(
                             orderEntity,

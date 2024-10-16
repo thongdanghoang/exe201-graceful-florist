@@ -50,6 +50,10 @@ export class ProductDetailModalComponent
       Validators.required,
       Validators.min(1000)
     ]),
+    quantity: this.formBuilder.control(null, [
+      Validators.required,
+      Validators.min(1)
+    ]),
     categories: this.formBuilder.control(null, [Validators.required]),
     ingredients: this.formBuilder.control(null),
     enabled: this.formBuilder.control(false),

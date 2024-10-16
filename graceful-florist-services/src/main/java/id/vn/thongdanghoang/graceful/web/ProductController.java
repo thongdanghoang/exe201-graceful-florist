@@ -86,6 +86,7 @@ public class ProductController {
         var productEntity = mapper.createProduct(productDTO);
         productEntity.setOwner(securityUser.getUserEntity());
         productEntity.setPrice(price);
+        productEntity.setQuantity(1L);
         var createdProductEntity = service.createProduct(productEntity);
         CartItemEntity cartItemEntity = new CartItemEntity();
         cartItemEntity.setProduct(createdProductEntity);

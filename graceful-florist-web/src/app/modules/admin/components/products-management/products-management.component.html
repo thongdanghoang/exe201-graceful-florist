@@ -98,7 +98,13 @@
         [fetch]="fetchProduct"
         [sort]="sort"
         [criteria]="criteria"
-        [displayedColumns]="['name', 'createdDate', 'enabled', 'price']"
+        [displayedColumns]="[
+            'name',
+            'createdDate',
+            'enabled',
+            'price',
+            'quantity',
+        ]"
     >
         <ng-template headerTableTemplate="name" let-column>
             Tên Sản Phẩm
@@ -124,6 +130,13 @@
         <ng-template headerTableTemplate="price" let-column> Giá</ng-template>
         <ng-template cellTableTemplate="price" let-value>
             {{ value | vndCurrency }}
+        </ng-template>
+
+        <ng-template headerTableTemplate="quantity" let-column>
+            Số lượng</ng-template
+        >
+        <ng-template cellTableTemplate="quantity" let-value>
+            {{ value }}
         </ng-template>
     </graceful-florist-table>
 </div>
