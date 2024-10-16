@@ -41,6 +41,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": ["apexcharts", "moment"],
             "outputPath": "dist/graceful-florist-web",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -74,7 +75,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "2mb"
+                  "maximumError": "3mb"
                 },
                 {
                   "type": "anyComponentStyle",

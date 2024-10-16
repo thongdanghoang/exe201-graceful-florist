@@ -44,5 +44,7 @@ export interface OrderItemDto extends AbstractBaseDto {
 }
 
 export interface OrderCriteriaDto {
-  status: OrderStatus;
+  status?: OrderStatus;
+  fromInclusive?: Date;
+  orderType?: OrderType;
 }

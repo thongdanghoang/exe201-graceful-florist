@@ -4,6 +4,7 @@ import id.vn.thongdanghoang.graceful.dtos.orders.OrderCriteriaDto;
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
 import id.vn.thongdanghoang.graceful.entities.UserEntity;
 import id.vn.thongdanghoang.graceful.enums.OrderStatus;
+import id.vn.thongdanghoang.graceful.enums.OrderType;
 import id.vn.thongdanghoang.graceful.repositories.OrderRepository;
 import id.vn.thongdanghoang.graceful.repositories.UserRepository;
 import id.vn.thongdanghoang.graceful.services.OrderService;
@@ -27,7 +28,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderEntity> searchOrders(OrderCriteriaDto criteria, Pageable page) {
-        return orderRepository.findOrdersForAdminManagement(criteria.status(), page);
+        var customProduct = Objects.nonNull(criteria.orderType())
+                ? criteria.orderType() == OrderType.SPECIAL
+                : null;
+        var fromInclusive = criteria.fromInclusive();
+        return orderRepository.findOrdersForAdminManagement(
+                criteria.status(),
+                customProduct,
+                fromInclusive,
+                page
+        );
     }
 
     @Override
@@ -44,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderEntity staffReceiveOrder(UUID orderId, UserEntity staff) {
         var order = orderRepository
                 .findById(orderId).orElseThrow();
-        if(order.getStatus() == OrderStatus.PENDING && Objects.isNull(order.getStaff())) {
+        if (order.getStatus() == OrderStatus.PENDING && Objects.isNull(order.getStaff())) {
             order.setStatus(OrderStatus.PROCESSING);
             order.setStaff(staff);
             orderRepository.save(order);

@@ -11,51 +11,42 @@
             {{ dateTypeFilterLabel }}
             <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
         </button>
-        <mat-menu #date="matMenu" class="!min-w-96">
-            <mat-radio-group
-                formControlName="dateType"
-                class="w-full flex justify-between px-4"
+        <mat-menu #date="matMenu" class="!min-w-80">
+            <mat-card
+                class="min-w-max !shadow-none"
+                (click)="$event.stopPropagation()"
             >
-                <mat-radio-button value="newest">Gần Nhất</mat-radio-button>
-                <mat-radio-button value="oldest">Cũ nhất</mat-radio-button>
-                <mat-radio-button
-                    value="optional"
-                    (click)="$event.stopPropagation()"
-                    >Tùy Chọn</mat-radio-button
-                >
-            </mat-radio-group>
-            <ng-container
-                *ngIf="filterFormGroups.get('dateType')?.value === 'optional'"
-            >
-                <mat-card
-                    class="min-w-max !shadow-none"
-                    (click)="$event.stopPropagation()"
-                >
-                    <mat-calendar
-                        [selected]="filterFormGroups.get('optionalDate')?.value"
-                        (selectedChange)="onSelectedDateFilterChanged($event)"
-                    ></mat-calendar>
-                </mat-card>
-                <div class="min-w-max flex justify-center">
-                    <button class="mx-auto" mat-flat-button color="primary">
-                        Áp dụng
-                    </button>
-                </div>
-            </ng-container>
+                <mat-calendar
+                    [selected]="filterFormGroups.get('fromInclusive')?.value"
+                    (selectedChange)="onSelectedDateFilterChanged($event)"
+                ></mat-calendar>
+            </mat-card>
         </mat-menu>
-        <!-- Danh mục -->
+        <!-- Loại -->
         <button
             class="!rounded-lg"
             mat-flat-button
-            [matMenuTriggerFor]="category"
-            aria-label="Danh mục"
+            [matMenuTriggerFor]="orderType"
+            aria-label="Loại đơn"
         >
-            Danh mục
+            {{ selectedOrderType | orderType: "Loại đơn" }}
             <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
         </button>
-        <mat-menu #category="matMenu">
-            <button mat-menu-item>Item 1</button>
-            <button mat-menu-item>Item 2</button>
+        <mat-menu #orderType="matMenu">
+            <mat-chip-listbox class="mx-3" formControlName="orderType">
+                @for (orderType of orderTypes; track orderType) {
+                    <mat-chip-option
+                        class="!rounded-lg !border"
+                        [ngClass]="{
+                            '!bg-primary': orderType === selectedOrderType,
+                            '!bg-white !border-slate-700':
+                                orderType !== selectedOrderType,
+                        }"
+                        [value]="orderType"
+                        >{{ orderType | orderType }}
+                    </mat-chip-option>
+                }
+            </mat-chip-listbox>
         </mat-menu>
         <!-- Trạng thái -->
         <button
@@ -95,6 +86,7 @@
         </button>
     </form>
     <graceful-florist-table
+        #ordersTable
         (rowClicked)="openAdminOrderDetail($event)"
         [fetch]="fetchProduct"
         [sort]="sort"

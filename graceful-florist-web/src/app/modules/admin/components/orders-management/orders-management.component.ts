@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {
@@ -10,23 +10,28 @@ import {Observable} from 'rxjs';
 import {
   OrderCriteriaDto,
   OrderDto,
-  OrderStatus
+  OrderStatus,
+  OrderType
 } from '../../../orders/models/order.dto';
 import {OrdersService} from '../../../orders/services/orders.service';
 import {uuid} from '../../../../../../graceful-florist-type';
+import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
+import {TableComponent} from '../../../shared/components/table/table.component';
 
 @Component({
   selector: 'graceful-florist-orders-management',
   templateUrl: './orders-management.component.html'
 })
-export class OrdersManagementComponent implements OnInit {
+export class OrdersManagementComponent
+  extends SubscriptionAwareComponent
+  implements OnInit
+{
   filterFormControls: {
     [key: string]: AbstractControl<any, any>;
   } = {
-    dateType: this.formBuilder.control(null),
-    optionalDate: this.formBuilder.control(null),
+    fromInclusive: this.formBuilder.control(null),
     status: this.formBuilder.control(null),
-    categories: this.formBuilder.control(null)
+    orderType: this.formBuilder.control(null)
   };
   filterFormGroups: FormGroup = this.formBuilder.group(this.filterFormControls);
 
@@ -36,11 +41,20 @@ export class OrdersManagementComponent implements OnInit {
   sort!: SortDto;
   criteria!: OrderCriteriaDto;
 
+  @ViewChild('ordersTable') ordersTable!: TableComponent<
+    OrderCriteriaDto,
+    OrderDto
+  >;
+
+  protected readonly orderTypes: OrderType[] = Object.values(OrderType);
+
   constructor(
     private readonly router: Router,
     private readonly formBuilder: FormBuilder,
     private readonly ordersService: OrdersService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.fetchProduct = this.ordersService.searchOrders.bind(
@@ -51,6 +65,15 @@ export class OrdersManagementComponent implements OnInit {
       direction: 'asc'
     };
     this.criteria = {} as OrderCriteriaDto;
+    this.registerSubscription(
+      this.filterFormGroups.valueChanges.subscribe(value => {
+        this.ordersTable.searchCriteria.criteria = {
+          ...this.criteria,
+          ...value
+        };
+        this.ordersTable.search();
+      })
+    );
   }
 
   openAdminOrderDetail(order: OrderDto): void {
@@ -59,7 +82,7 @@ export class OrdersManagementComponent implements OnInit {
 
   // It's seem mat-calendar is not work with reactive form
   onSelectedDateFilterChanged(value: any): void {
-    this.filterFormGroups.get('optionalDate')?.setValue(value);
+    this.filterFormGroups.get('fromInclusive')?.setValue(value);
   }
 
   getProductId(id: uuid | undefined): string {
@@ -70,26 +93,22 @@ export class OrdersManagementComponent implements OnInit {
     return Object.values(OrderStatus);
   }
 
+  get selectedOrderType(): OrderType {
+    return this.filterFormGroups.get('orderType')?.value;
+  }
+
   get statusFilterLabel(): OrderStatus {
     return this.filterFormGroups.get('status')?.value;
   }
 
   get dateTypeFilterLabel(): string {
-    const dateType = this.filterFormGroups.get('dateType')?.value;
-    const optionalDate = this.filterFormGroups.get('optionalDate')?.value;
-
-    if (!dateType) {
-      return 'Ngày';
-    } else if (dateType === 'optional' && optionalDate) {
-      return optionalDate.toLocaleDateString('vi-VN', {
+    const fromInclusive = this.filterFormGroups.get('fromInclusive')?.value;
+    if (fromInclusive) {
+      return fromInclusive.toLocaleDateString('vi-VN', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric'
       });
-    } else if (dateType === 'newest') {
-      return 'Gần Nhất';
-    } else if (dateType === 'oldest') {
-      return 'Cũ nhất';
     }
     return 'Ngày';
   }
