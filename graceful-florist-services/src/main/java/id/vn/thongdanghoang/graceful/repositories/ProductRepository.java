@@ -1,5 +1,6 @@
 package id.vn.thongdanghoang.graceful.repositories;
 
+import id.vn.thongdanghoang.graceful.entities.OrderRatingEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductCustomPriceEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
 import id.vn.thongdanghoang.graceful.enums.CategoryType;

@@ -36,4 +36,6 @@ public interface ProductService {
     List<String> getSuggestions(String keyword);
 
     List<ProductCustomPriceEntity> getProductCustomPrices();
+
+    Page<OrderRatingEntity> searchComment(UUID productId, Pageable pageable);
 }

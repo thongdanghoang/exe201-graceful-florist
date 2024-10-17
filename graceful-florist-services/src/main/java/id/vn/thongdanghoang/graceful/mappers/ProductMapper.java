@@ -1,6 +1,7 @@
 package id.vn.thongdanghoang.graceful.mappers;
 
 import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
+import id.vn.thongdanghoang.graceful.dtos.products.CommentDto;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductCustomPriceDto;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductDTO;
 import id.vn.thongdanghoang.graceful.entities.*;
@@ -55,6 +56,18 @@ public interface ProductMapper {
     ProductCustomPriceDto toProductCustomPriceDto(ProductCustomPriceEntity customPriceEntity);
 
     ProductCustomPriceEntity toProductCustomPriceEntity(ProductCustomPriceDto customPriceDto);
+
+    @Mapping(target = "userDTO", ignore = true)
+    @Mapping(target = "images", source = "images", qualifiedByName = "OrderRatingImageEntitiesToIDs")
+    CommentDto toCommentDto(OrderRatingEntity orderRatingEntity);
+
+    @Named("OrderRatingImageEntitiesToIDs")
+    default List<UUID> OrderRatingImageEntitiesToIDs(Set<OrderRatingImageEntity> images) {
+        return images.stream()
+                .map(OrderRatingImageEntity::getImage)
+                .collect(Collectors.toList());
+    }
+
 
     @Named("toImageIDs")
     default Set<UUID> toImageIDs(String images) {

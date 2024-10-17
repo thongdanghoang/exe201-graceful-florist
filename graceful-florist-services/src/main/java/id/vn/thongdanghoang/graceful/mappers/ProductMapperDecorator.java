@@ -1,8 +1,10 @@
 package id.vn.thongdanghoang.graceful.mappers;
 
 import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
+import id.vn.thongdanghoang.graceful.dtos.products.CommentDto;
 import id.vn.thongdanghoang.graceful.dtos.products.IngredientDTO;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductDTO;
+import id.vn.thongdanghoang.graceful.entities.OrderRatingEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductEntity;
 import id.vn.thongdanghoang.graceful.entities.ProductIngredientEntity;
 import id.vn.thongdanghoang.graceful.repositories.CategoryRepository;
@@ -103,12 +105,23 @@ public abstract class ProductMapperDecorator implements ProductMapper {
                             .peek(ingredientDTO -> ingredientDTO.setQuantity(ingredients.get(ingredientDTO.getId())))
                             .collect(Collectors.toSet()));
         }
-        if(Objects.nonNull(productEntity.getOwner())) {
+        if (Objects.nonNull(productEntity.getOwner())) {
             productDTO.setOwner(userMapper.toUserDto(productEntity.getOwner()));
         }
-        if(Objects.nonNull(productEntity.getCustomPrice())) {
+        if (Objects.nonNull(productEntity.getCustomPrice())) {
             productDTO.setCustomPrice(delegate.toProductCustomPriceDto(productEntity.getCustomPrice()));
         }
         return productDTO;
+    }
+
+    @Override
+    public CommentDto toCommentDto(OrderRatingEntity orderRatingEntity) {
+        var commentDto = delegate.toCommentDto(orderRatingEntity);
+        commentDto.setUserDTO(userMapper.toUserDto(orderRatingEntity.getUser()));
+        if (commentDto.isAnonymous()) {
+            commentDto.getUserDTO().setFirstName("*****");
+            commentDto.getUserDTO().setLastName("***** ***");
+        }
+        return commentDto;
     }
 }

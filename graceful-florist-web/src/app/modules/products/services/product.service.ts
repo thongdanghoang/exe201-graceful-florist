@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import {
+  CommentDto,
+  CommentSearchCriteriaDto,
   IngredientDto,
   ProductCriteriaDto,
   ProductCustomDTO,
@@ -40,6 +42,15 @@ export class ProductService {
   ): Observable<SearchResultDto<ProductDto>> {
     return this.httpClient.post<SearchResultDto<ProductDto>>(
       `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PRODUCTS_PATH}/search`,
+      criteria
+    );
+  }
+
+  getProductComment(
+    criteria: SearchCriteriaDto<CommentSearchCriteriaDto>
+  ): Observable<SearchResultDto<CommentDto>> {
+    return this.httpClient.post<SearchResultDto<CommentDto>>(
+      `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PRODUCTS_PATH}/comments/search`,
       criteria
     );
   }

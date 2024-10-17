@@ -3,13 +3,11 @@ package id.vn.thongdanghoang.graceful.services.impl;
 import id.vn.thongdanghoang.graceful.dtos.products.CategoryCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductCriteria;
-import id.vn.thongdanghoang.graceful.entities.CategoryEntity;
-import id.vn.thongdanghoang.graceful.entities.IngredientEntity;
-import id.vn.thongdanghoang.graceful.entities.ProductCustomPriceEntity;
-import id.vn.thongdanghoang.graceful.entities.ProductEntity;
+import id.vn.thongdanghoang.graceful.entities.*;
 import id.vn.thongdanghoang.graceful.enums.ProductStatus;
 import id.vn.thongdanghoang.graceful.repositories.CategoryRepository;
 import id.vn.thongdanghoang.graceful.repositories.IngredientRepository;
+import id.vn.thongdanghoang.graceful.repositories.OrderRatingRepository;
 import id.vn.thongdanghoang.graceful.repositories.ProductRepository;
 import id.vn.thongdanghoang.graceful.securities.SecurityUser;
 import id.vn.thongdanghoang.graceful.services.ProductService;
@@ -32,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository repository;
     private final CategoryRepository categoryRepository;
     private final IngredientRepository ingredientRepository;
+    private final OrderRatingRepository orderRatingRepository;
 
     @Override
     public ProductEntity createProduct(ProductEntity productEntity) {
@@ -124,5 +123,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductCustomPriceEntity> getProductCustomPrices() {
         return repository.findAllProductCustomPrices();
+    }
+
+    @Override
+    public Page<OrderRatingEntity> searchComment(UUID productId, Pageable pageable) {
+        return orderRatingRepository.searchComment(productId, pageable);
     }
 }

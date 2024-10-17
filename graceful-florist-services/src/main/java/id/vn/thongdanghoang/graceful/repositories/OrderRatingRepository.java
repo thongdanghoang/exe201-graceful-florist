@@ -14,8 +14,13 @@ import java.util.UUID;
 public interface OrderRatingRepository extends JpaRepository<OrderRatingEntity, UUID> {
 
     @EntityGraph(OrderRatingEntity.COMMENT_ENTITY_GRAPH)
-    @Query("SELECT o FROM OrderRatingEntity o")
-    Page<OrderRatingEntity> searchByCategories(Pageable pageable);
+    @Query("""
+            SELECT ore
+            FROM OrderRatingEntity ore
+            JOIN ore.products p
+            WHERE p.id = :productId
+            """)
+    Page<OrderRatingEntity> searchComment(UUID productId, Pageable pageable);
 
 }
 

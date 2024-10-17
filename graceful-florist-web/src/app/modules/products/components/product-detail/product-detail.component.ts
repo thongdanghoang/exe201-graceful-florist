@@ -2,6 +2,7 @@ import {Component, OnInit, inject} from '@angular/core';
 import {BreadcrumbItem} from '../../../shared/components/breadcrumb/breadcrumb.component';
 import {AppRoutingConstants} from '../../../../app-routing-constants';
 import {
+  CommentDto,
   CommentSearchCriteriaDto,
   ProductDetailDto,
   ProductDto
@@ -9,7 +10,10 @@ import {
 import {SubscriptionAwareComponent} from '../../../core/subscription-aware.component';
 import {ProductService} from '../../services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {SearchCriteriaDto} from '../../../shared/models/abstract-base-dto';
+import {
+  SearchCriteriaDto,
+  SearchResultDto
+} from '../../../shared/models/abstract-base-dto';
 import {PageEvent} from '@angular/material/paginator';
 import {CartService} from '../../../cart/services/cart.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -24,6 +28,8 @@ export class ProductDetailComponent
   extends SubscriptionAwareComponent
   implements OnInit
 {
+  protected isProductLoading: boolean = true;
+  protected isCommentsLoading: boolean = true;
   protected productDto: ProductDetailDto | undefined;
   protected commentCriteria: SearchCriteriaDto<CommentSearchCriteriaDto>;
   protected mainImage: uuid | undefined;
@@ -47,8 +53,8 @@ export class ProductDetailComponent
         pageNumber: 0
       },
       sort: {
-        column: 'name',
-        direction: 'asc'
+        column: 'createdDate',
+        direction: 'desc'
       },
       criteria: {
         productId: this.route.snapshot.paramMap.get('id') as string
@@ -59,18 +65,26 @@ export class ProductDetailComponent
   ngOnInit(): void {
     this.registerSubscriptions([
       this.route.paramMap.subscribe(params => {
-        this.productService
-          .getProductById(params.get('id') as string)
-          .subscribe((productDto: ProductDetailDto): void => {
-            this.productDto = productDto;
-            this.mainImage = productDto.mainImage;
-          });
+        this.registerSubscription(
+          this.productService
+            .getProductById(params.get('id') as string)
+            .subscribe((productDto: ProductDetailDto): void => {
+              this.productDto = productDto;
+              this.mainImage = productDto.mainImage;
+              this.isProductLoading = false;
+              this.registerSubscription(
+                this.productService
+                  .getProductComment(this.commentCriteria)
+                  .subscribe((comments: SearchResultDto<CommentDto>): void => {
+                    if (this.productDto) {
+                      this.productDto.comments = comments;
+                      this.isCommentsLoading = false;
+                    }
+                  })
+              );
+            })
+        );
       }),
-      // this.productService
-      //   .getProductComment(this.commentCriteria)
-      //   .subscribe((comments: SearchResultDto<CommentDto>): void => {
-      //     if (this.productDto) this.productDto.comments = comments;
-      //   }),
       this.productService
         .getRecommendedProducts()
         .subscribe((recommendedProducts: ProductDto[]): void => {

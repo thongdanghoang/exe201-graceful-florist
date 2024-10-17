@@ -1,123 +1,131 @@
 <div class="container mx-auto flex flex-col py-5 gap-5">
     <graceful-florist-breadcrumb [breadcrumbs]="breadcrumbs" />
-    <ng-container *ngIf="productDto; else productSkeletonLoading">
-        <div
-            class="flex flex-col rounded-lg gap-5 py-8 px-6 sm:flex-row bg-white"
-        >
+    <ng-container *ngIf="!isProductLoading; else productSkeletonLoading">
+        @if (productDto) {
             <div
-                class="flex flex-col gap-2.5 max-w-sm lg:max-w-xl 2xl:max-w-screen-md"
+                class="flex flex-col rounded-lg gap-5 py-8 px-6 sm:flex-row bg-white"
             >
-                <ng-container *ngIf="mainImage">
-                    <img
-                        [ngSrc]="mainImage | imageUrlTransform"
-                        [alt]="productDto.name"
-                        class="rounded-lg object-cover"
-                        priority
-                        width="472"
-                        height="350"
-                        style="width: 472px; height: 350px"
-                    />
-                </ng-container>
-                <ng-container *ngIf="productDto.images.length">
-                    <div class="flex gap-6 w-full overflow-x-auto">
-                        <img
-                            *ngFor="let image of productDto.images"
-                            [ngSrc]="image | imageUrlTransform"
-                            [alt]="productDto.name"
-                            class="object-cover"
-                            (click)="changeMainImage(image)"
-                            priority
-                            width="100"
-                            height="100"
-                            style="width: 100px; height: 100px"
-                        />
-                    </div>
-                </ng-container>
-            </div>
-            <div class="flex flex-col gap-2.5 w-full">
-                <!--     Name, detail, reviews, purchase     -->
-                <div class="flex flex-col">
-                    <div class="font-sans text-xl font-bold leading-normal">
-                        {{ productDto.name }}
-                    </div>
-                    <div class="flex gap-2">
-                        <div
-                            class="flex gap-1 font-sans text-sm font-normal leading-normal text-slate-500"
-                        >
-                            <strong class="text-slate-900">{{
-                                productDto.purchases
-                            }}</strong
-                            >Lượt Mua
-                        </div>
-                        <mat-divider [vertical]="true"></mat-divider>
-                        <div
-                            class="flex gap-1 font-sans text-sm font-normal leading-normal text-slate-500"
-                        >
-                            <strong class="text-slate-900">{{
-                                productDto.reviewCount
-                            }}</strong
-                            >Lượt đánh giá
-                        </div>
-                    </div>
-                </div>
-                <!--     Price     -->
                 <div
-                    class="font-sans text-xl font-extrabold leading-normal text-primary"
+                    class="flex flex-col gap-2.5 max-w-sm lg:max-w-xl 2xl:max-w-screen-md"
                 >
-                    {{ productDto.price | vndCurrency }}
-                </div>
-                <mat-divider />
-                <!--     Ingredients Title    -->
-                <div class="font-sans text-base font-semibold leading-normal">
-                    Thành Phần
-                </div>
-                <!--     Ingredients Detail    -->
-                <div class="flex gap-2 5 items-center">
-                    @for (
-                        ingredient of productDto.ingredients;
-                        track ingredient
-                    ) {
-                        <div
-                            class="flex flex-col gap-2 5 justify-between items-center"
-                        >
+                    <ng-container *ngIf="mainImage">
+                        <img
+                            [ngSrc]="mainImage | imageUrlTransform"
+                            [alt]="productDto.name"
+                            class="rounded-lg object-cover"
+                            priority
+                            width="472"
+                            height="350"
+                            style="width: 472px; height: 350px"
+                        />
+                    </ng-container>
+                    <ng-container *ngIf="productDto.images.length">
+                        <div class="flex gap-6 w-full overflow-x-auto">
                             <img
-                                [ngSrc]="ingredient.image | imageUrlTransform"
-                                [alt]="ingredient.name"
+                                *ngFor="let image of productDto.images"
+                                [ngSrc]="image | imageUrlTransform"
+                                [alt]="productDto.name"
+                                class="object-cover"
+                                (click)="changeMainImage(image)"
                                 priority
                                 width="100"
                                 height="100"
-                                class="object-cover"
                                 style="width: 100px; height: 100px"
                             />
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="flex flex-col gap-2.5 w-full">
+                    <!--     Name, detail, reviews, purchase     -->
+                    <div class="flex flex-col">
+                        <div class="font-sans text-xl font-bold leading-normal">
+                            {{ productDto.name }}
+                        </div>
+                        <div class="flex gap-2">
                             <div
-                                class="font-sans text-xs font-normal leading-normal text-slate-700"
+                                class="flex gap-1 font-sans text-sm font-normal leading-normal text-slate-500"
                             >
-                                {{ ingredient.name }}
+                                <strong class="text-slate-900">{{
+                                    productDto.purchases
+                                }}</strong
+                                >Lượt Mua
+                            </div>
+                            <mat-divider [vertical]="true"></mat-divider>
+                            <div
+                                class="flex gap-1 font-sans text-sm font-normal leading-normal text-slate-500"
+                            >
+                                <strong class="text-slate-900">{{
+                                    productDto.rating
+                                }}</strong
+                                >Lượt đánh giá
                             </div>
                         </div>
-                    }
-                </div>
-                <!--     Description Title    -->
-                <div class="font-sans text-base font-semibold leading-normal">
-                    Mô Tả
-                </div>
-                <!--     Description Detail    -->
-                <p>{{ productDto.description }}</p>
-                <!--     Actions    -->
-                <div class="flex gap-8">
-                    <button mat-raised-button (click)="addToCart()">
-                        Thêm vào giỏ hàng
-                    </button>
-                    <button
-                        mat-raised-button
-                        color="primary"
-                        (click)="buyNow()"
+                    </div>
+                    <!--     Price     -->
+                    <div
+                        class="font-sans text-xl font-extrabold leading-normal text-primary"
                     >
-                        Mua ngay
-                    </button>
+                        {{ productDto.price | vndCurrency }}
+                    </div>
+                    <mat-divider />
+                    <!--     Ingredients Title    -->
+                    <div
+                        class="font-sans text-base font-semibold leading-normal"
+                    >
+                        Thành Phần
+                    </div>
+                    <!--     Ingredients Detail    -->
+                    <div class="flex gap-2 5 items-center">
+                        @for (
+                            ingredient of productDto.ingredients;
+                            track ingredient
+                        ) {
+                            <div
+                                class="flex flex-col gap-2 5 justify-between items-center"
+                            >
+                                <img
+                                    [ngSrc]="
+                                        ingredient.image | imageUrlTransform
+                                    "
+                                    [alt]="ingredient.name"
+                                    priority
+                                    width="100"
+                                    height="100"
+                                    class="object-cover"
+                                    style="width: 100px; height: 100px"
+                                />
+                                <div
+                                    class="font-sans text-xs font-normal leading-normal text-slate-700"
+                                >
+                                    {{ ingredient.name }}
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <!--     Description Title    -->
+                    <div
+                        class="font-sans text-base font-semibold leading-normal"
+                    >
+                        Mô Tả
+                    </div>
+                    <!--     Description Detail    -->
+                    <p>{{ productDto.description }}</p>
+                    <!--     Actions    -->
+                    <div class="flex gap-8">
+                        <button mat-raised-button (click)="addToCart()">
+                            Thêm vào giỏ hàng
+                        </button>
+                        <button
+                            mat-raised-button
+                            color="primary"
+                            (click)="buyNow()"
+                        >
+                            Mua ngay
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </ng-container>
     <ng-template #productSkeletonLoading>
         <div
@@ -220,7 +228,11 @@
         </div>
         <div class="rounded-lg py-8 px-6 bg-white w-full">
             <mat-tab-group>
-                <mat-tab label="Đánh Giá Khách Hàng (50)">
+                <mat-tab
+                    label="Đánh Giá Khách Hàng ({{
+                        productDto?.comments?.total
+                    }})"
+                >
                     <!-- Comments container -->
                     <ng-template #commentSkeletonLoading>
                         <div class="flex flex-col w-full">
@@ -255,130 +267,127 @@
                         </div>
                     </ng-template>
                     <ng-container
-                        *ngIf="
-                            productDto && productDto.comments?.total;
-                            else commentSkeletonLoading
-                        "
+                        *ngIf="!isCommentsLoading; else commentSkeletonLoading"
                     >
-                        <div class="flex flex-col w-full">
-                            @for (
-                                comment of productDto.comments.results;
-                                track comment
-                            ) {
-                                <div class="flex items-start gap-2.5 p-5">
-                                    <!-- User's avatar -->
-                                    <img
-                                        class="w-auto h-auto"
-                                        [ngSrc]="
-                                            comment.user.avatar
-                                                | imageUrlTransform
-                                        "
-                                        [alt]="comment.user.firstName"
-                                        width="60"
-                                        height="60"
-                                        priority
-                                    />
-                                    <div class="flex flex-col gap-2.5">
-                                        <!-- User's full name, rating, comment -->
-                                        <div class="flex flex-col">
-                                            <div
-                                                class="font-sans text-base font-semibold leading-normal"
-                                            >
-                                                {{ comment.user.lastName }}
-                                                {{ comment.user.firstName }}
+                        @if (productDto && productDto.comments?.total) {
+                            <div class="flex flex-col w-full">
+                                @for (
+                                    comment of productDto.comments.results;
+                                    track comment
+                                ) {
+                                    <div class="flex items-start gap-2.5 p-5">
+                                        <!-- User's avatar -->
+                                        @if (comment.userDTO.avatar) {
+                                            <img
+                                                class="w-auto h-auto"
+                                                [ngSrc]="
+                                                    comment.userDTO.avatar
+                                                        | imageUrlTransform
+                                                "
+                                                [alt]="
+                                                    comment.userDTO.firstName
+                                                "
+                                                width="60"
+                                                height="60"
+                                                priority
+                                            />
+                                        }
+                                        <div class="flex flex-col gap-2.5">
+                                            <!-- User's full name, rating, comment -->
+                                            <div class="flex flex-col">
+                                                <div
+                                                    class="font-sans text-base font-semibold leading-normal"
+                                                >
+                                                    {{
+                                                        comment.userDTO.lastName
+                                                    }}
+                                                    {{
+                                                        comment.userDTO
+                                                            .firstName
+                                                    }}
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <mat-icon
+                                                        *ngFor="
+                                                            let star of [
+                                                                1, 2, 3, 4, 5,
+                                                            ];
+                                                            let i = index
+                                                        "
+                                                        class="!text-primary hover:cursor-pointer"
+                                                        [fontIcon]="
+                                                            i < comment.rating
+                                                                ? 'star'
+                                                                : 'star_outline'
+                                                        "
+                                                        aria-hidden="false"
+                                                        aria-label="Star icon"
+                                                    ></mat-icon>
+                                                </div>
+                                                <div
+                                                    class="font-sans text-base font-semibold leading-normal"
+                                                >
+                                                    {{ comment.description }}
+                                                </div>
                                             </div>
-                                            <!-- TODO: Render rating based on user's rating -->
-                                            <div class="flex">
-                                                <mat-icon
-                                                    class="!text-primary"
-                                                    aria-hidden="false"
-                                                    aria-label="Example star icon"
-                                                    fontIcon="star"
-                                                ></mat-icon>
-                                                <mat-icon
-                                                    class="!text-primary"
-                                                    aria-hidden="false"
-                                                    aria-label="Example star icon"
-                                                    fontIcon="star"
-                                                ></mat-icon>
-                                                <mat-icon
-                                                    class="!text-primary"
-                                                    aria-hidden="false"
-                                                    aria-label="Example star icon"
-                                                    fontIcon="star"
-                                                ></mat-icon>
-                                                <mat-icon
-                                                    class="!text-primary"
-                                                    aria-hidden="false"
-                                                    aria-label="Example star icon"
-                                                    fontIcon="star_half"
-                                                ></mat-icon>
-                                                <mat-icon
-                                                    class="!text-primary"
-                                                    aria-hidden="false"
-                                                    aria-label="Example star icon"
-                                                    fontIcon="star_outline"
-                                                ></mat-icon>
-                                            </div>
+                                            <!-- Images -->
                                             <div
-                                                class="font-sans text-base font-semibold leading-normal"
+                                                class="flex gap-2.5 items-center"
                                             >
-                                                {{ comment.content }}
+                                                @for (
+                                                    image of comment.images;
+                                                    track image
+                                                ) {
+                                                    <img
+                                                        [ngSrc]="
+                                                            image
+                                                                | imageUrlTransform
+                                                        "
+                                                        [alt]="image"
+                                                        priority
+                                                        width="100"
+                                                        height="100"
+                                                        class="object-cover"
+                                                        style="
+                                                            width: 100px;
+                                                            height: 100px;
+                                                        "
+                                                    />
+                                                }
                                             </div>
-                                        </div>
-                                        <!-- Images -->
-                                        <div class="flex">
-                                            @for (
-                                                image of comment.images;
-                                                track image
-                                            ) {
-                                                <img
-                                                    [ngSrc]="image"
-                                                    [alt]="comment.user.avatar"
-                                                    priority
-                                                    width="100"
-                                                    height="100"
-                                                    class="object-cover"
-                                                    style="
-                                                        width: 100px;
-                                                        height: 100px;
-                                                    "
-                                                />
-                                            }
-                                        </div>
-                                        <!-- Address and created date -->
-                                        <div class="flex gap-2.5">
-                                            <div
-                                                class="font-sans text-sm font-normal leading-normal text-slate-600"
-                                            >
-                                                {{ comment.address }}
-                                            </div>
-                                            <div
-                                                class="font-sans text-sm font-normal leading-normal text-slate-600"
-                                            >
-                                                {{ comment.createdDate }}
+                                            <!-- Address and created date -->
+                                            <div class="flex gap-2.5">
+                                                <div
+                                                    class="font-sans text-sm font-normal leading-normal text-slate-600"
+                                                >
+                                                    {{
+                                                        comment.createdDate
+                                                            | date
+                                                                : "hh:mm dd/MM/yyyy"
+                                                    }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            }
-                            <mat-paginator
-                                (page)="onCommentPageChange($event)"
-                                [length]="productDto.comments.total"
-                                [pageSize]="commentCriteria.page.pageSize"
-                                [pageSizeOptions]="[5, 10, 25, 100]"
-                                [showFirstLastButtons]="true"
-                                [hidePageSize]="false"
-                                aria-label="Chọn trang"
-                                customPaginatorLabel
-                                itemsPerPageLabel="Tổng số đánh giá:"
-                                nextPageLabel="Trang tiếp"
-                                previousPageLabel="Trang trước"
-                                firstPageLabel="Trang đầu"
-                                lastPageLabel="Trang cuối"
-                            >
-                            </mat-paginator>
-                        </div>
+                                }
+                                <mat-paginator
+                                    (page)="onCommentPageChange($event)"
+                                    [length]="productDto.comments.total"
+                                    [pageSize]="commentCriteria.page.pageSize"
+                                    [pageSizeOptions]="[5, 10, 25, 100]"
+                                    [showFirstLastButtons]="true"
+                                    [hidePageSize]="false"
+                                    aria-label="Chọn trang"
+                                    customPaginatorLabel
+                                    itemsPerPageLabel="Tổng số đánh giá:"
+                                    nextPageLabel="Trang tiếp"
+                                    previousPageLabel="Trang trước"
+                                    firstPageLabel="Trang đầu"
+                                    lastPageLabel="Trang cuối"
+                                >
+                                </mat-paginator>
+                            </div>
+                        }
                     </ng-container>
                 </mat-tab>
                 <mat-tab label="Vấn Đề Thường Gặp"></mat-tab>

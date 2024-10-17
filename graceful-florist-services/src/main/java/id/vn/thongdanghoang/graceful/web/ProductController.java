@@ -160,4 +160,18 @@ public class ProductController {
         return ResponseEntity.ok(ingredientDTOs);
     }
 
+    @PostMapping("/comments/search")
+    public ResponseEntity<SearchResultDto<CommentDto>> searchComment(@RequestBody SearchCriteriaDto<CommentCriteriaDTO> searchCriteria) {
+        var pageable = commonMapper
+                .toPageable(searchCriteria.getPage(), searchCriteria.getSort());
+        var orderRatingEntities = service
+                .searchComment(searchCriteria.getCriteria().productId(), pageable);
+        var commentDTOs = orderRatingEntities.stream()
+                .map(mapper::toCommentDto)
+                .toList();
+        var comments = SearchResultDto
+                .of(commentDTOs, orderRatingEntities.getTotalElements());
+        return ResponseEntity.ok(comments);
+    }
+
 }

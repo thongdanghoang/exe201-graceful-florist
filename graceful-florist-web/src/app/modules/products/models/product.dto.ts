@@ -52,14 +52,11 @@ export interface IngredientDto {
   quantity?: number;
 }
 
-export interface CommentDto {
-  id: string;
-  content: string;
+export interface CommentDto extends AbstractAuditableDTO {
   rating: number;
-  images: string[];
-  address: string;
-  createdDate: string;
-  user: UserDto;
+  description: string;
+  images: uuid[];
+  userDTO: UserDto;
 }
 
 export interface CommentSearchCriteriaDto {
