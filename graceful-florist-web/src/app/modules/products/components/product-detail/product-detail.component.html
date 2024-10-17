@@ -269,124 +269,113 @@
                     <ng-container
                         *ngIf="!isCommentsLoading; else commentSkeletonLoading"
                     >
-                        @if (productDto && productDto.comments?.total) {
-                            <div class="flex flex-col w-full">
-                                @for (
-                                    comment of productDto.comments.results;
-                                    track comment
-                                ) {
-                                    <div class="flex items-start gap-2.5 p-5">
-                                        <!-- User's avatar -->
-                                        @if (comment.userDTO.avatar) {
-                                            <img
-                                                class="w-auto h-auto"
-                                                [ngSrc]="
-                                                    comment.userDTO.avatar
-                                                        | imageUrlTransform
-                                                "
-                                                [alt]="
-                                                    comment.userDTO.firstName
-                                                "
-                                                width="60"
-                                                height="60"
-                                                priority
-                                            />
-                                        }
-                                        <div class="flex flex-col gap-2.5">
-                                            <!-- User's full name, rating, comment -->
-                                            <div class="flex flex-col">
-                                                <div
-                                                    class="font-sans text-base font-semibold leading-normal"
-                                                >
-                                                    {{
-                                                        comment.userDTO.lastName
-                                                    }}
-                                                    {{
-                                                        comment.userDTO
-                                                            .firstName
-                                                    }}
-                                                </div>
-                                                <div class="flex items-center">
-                                                    <mat-icon
-                                                        *ngFor="
-                                                            let star of [
-                                                                1, 2, 3, 4, 5,
-                                                            ];
-                                                            let i = index
-                                                        "
-                                                        class="!text-primary hover:cursor-pointer"
-                                                        [fontIcon]="
-                                                            i < comment.rating
-                                                                ? 'star'
-                                                                : 'star_outline'
-                                                        "
-                                                        aria-hidden="false"
-                                                        aria-label="Star icon"
-                                                    ></mat-icon>
-                                                </div>
-                                                <div
-                                                    class="font-sans text-base font-semibold leading-normal"
-                                                >
-                                                    {{ comment.description }}
-                                                </div>
-                                            </div>
-                                            <!-- Images -->
+                        @if (productDto && productDto.comments.total) {
+                            @for (
+                                comment of productDto.comments.results;
+                                track comment
+                            ) {
+                                <div class="flex items-start gap-2.5 p-5">
+                                    <!-- User's avatar -->
+                                    @if (comment.userDTO.avatar) {
+                                        <img
+                                            class="w-auto h-auto"
+                                            [ngSrc]="
+                                                comment.userDTO.avatar
+                                                    | imageUrlTransform
+                                            "
+                                            [alt]="comment.userDTO.firstName"
+                                            width="60"
+                                            height="60"
+                                            priority
+                                        />
+                                    }
+                                    <div class="flex flex-col gap-2.5">
+                                        <!-- User's full name, rating, comment -->
+                                        <div class="flex flex-col">
                                             <div
-                                                class="flex gap-2.5 items-center"
+                                                class="font-sans text-base font-semibold leading-normal"
                                             >
-                                                @for (
-                                                    image of comment.images;
-                                                    track image
-                                                ) {
-                                                    <img
-                                                        [ngSrc]="
-                                                            image
-                                                                | imageUrlTransform
-                                                        "
-                                                        [alt]="image"
-                                                        priority
-                                                        width="100"
-                                                        height="100"
-                                                        class="object-cover"
-                                                        style="
-                                                            width: 100px;
-                                                            height: 100px;
-                                                        "
-                                                    />
-                                                }
+                                                {{ comment.userDTO.lastName }}
+                                                {{ comment.userDTO.firstName }}
                                             </div>
-                                            <!-- Address and created date -->
-                                            <div class="flex gap-2.5">
-                                                <div
-                                                    class="font-sans text-sm font-normal leading-normal text-slate-600"
-                                                >
-                                                    {{
-                                                        comment.createdDate
-                                                            | date
-                                                                : "hh:mm dd/MM/yyyy"
-                                                    }}
-                                                </div>
+                                            <div class="flex items-center">
+                                                <mat-icon
+                                                    *ngFor="
+                                                        let star of [
+                                                            1, 2, 3, 4, 5,
+                                                        ];
+                                                        let i = index
+                                                    "
+                                                    class="!text-primary hover:cursor-pointer"
+                                                    [fontIcon]="
+                                                        i < comment.rating
+                                                            ? 'star'
+                                                            : 'star_outline'
+                                                    "
+                                                    aria-hidden="false"
+                                                    aria-label="Star icon"
+                                                ></mat-icon>
+                                            </div>
+                                            <div
+                                                class="font-sans text-base font-semibold leading-normal"
+                                            >
+                                                {{ comment.description }}
+                                            </div>
+                                        </div>
+                                        <!-- Images -->
+                                        <div class="flex gap-2.5 items-center">
+                                            @for (
+                                                image of comment.images;
+                                                track image
+                                            ) {
+                                                <img
+                                                    [ngSrc]="
+                                                        image
+                                                            | imageUrlTransform
+                                                    "
+                                                    [alt]="image"
+                                                    priority
+                                                    width="100"
+                                                    height="100"
+                                                    class="object-cover"
+                                                    style="
+                                                        width: 100px;
+                                                        height: 100px;
+                                                    "
+                                                />
+                                            }
+                                        </div>
+                                        <!-- Address and created date -->
+                                        <div class="flex gap-2.5">
+                                            <div
+                                                class="font-sans text-sm font-normal leading-normal text-slate-600"
+                                            >
+                                                {{
+                                                    comment.createdDate
+                                                        | date
+                                                            : "hh:mm dd/MM/yyyy"
+                                                }}
                                             </div>
                                         </div>
                                     </div>
-                                }
-                                <mat-paginator
-                                    (page)="onCommentPageChange($event)"
-                                    [length]="productDto.comments.total"
-                                    [pageSize]="commentCriteria.page.pageSize"
-                                    [pageSizeOptions]="[5, 10, 25, 100]"
-                                    [showFirstLastButtons]="true"
-                                    [hidePageSize]="false"
-                                    aria-label="Chọn trang"
-                                    customPaginatorLabel
-                                    itemsPerPageLabel="Tổng số đánh giá:"
-                                    nextPageLabel="Trang tiếp"
-                                    previousPageLabel="Trang trước"
-                                    firstPageLabel="Trang đầu"
-                                    lastPageLabel="Trang cuối"
-                                >
-                                </mat-paginator>
-                            </div>
+                                </div>
+                            }
+                            <mat-paginator
+                                (page)="onCommentPageChange($event)"
+                                [length]="productDto.comments.total"
+                                [pageSize]="commentCriteria.page.pageSize"
+                                [pageSizeOptions]="[5, 10, 25, 100]"
+                                [showFirstLastButtons]="true"
+                                [hidePageSize]="false"
+                                aria-label="Chọn trang"
+                                customPaginatorLabel
+                                itemsPerPageLabel="Tổng số đánh giá:"
+                                nextPageLabel="Trang tiếp"
+                                previousPageLabel="Trang trước"
+                                firstPageLabel="Trang đầu"
+                                lastPageLabel="Trang cuối"
+                            >
+                            </mat-paginator>
                         }
                     </ng-container>
                 </mat-tab>

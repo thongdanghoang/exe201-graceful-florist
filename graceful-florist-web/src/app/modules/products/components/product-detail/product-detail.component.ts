@@ -149,12 +149,12 @@ export class ProductDetailComponent
   protected onCommentPageChange(pageEvent: PageEvent): void {
     this.commentCriteria.page.pageSize = pageEvent.pageSize;
     this.commentCriteria.page.pageNumber = pageEvent.pageIndex;
-    // this.registerSubscription(
-    //   this.productService
-    //     .getProductComment(this.commentCriteria)
-    //     .subscribe((comments: SearchResultDto<CommentDto>): void => {
-    //       if (this.productDto) this.productDto.comments = comments;
-    //     })
-    // );
+    this.registerSubscription(
+      this.productService
+        .getProductComment(this.commentCriteria)
+        .subscribe((comments: SearchResultDto<CommentDto>): void => {
+          if (this.productDto) this.productDto.comments = comments;
+        })
+    );
   }
 }

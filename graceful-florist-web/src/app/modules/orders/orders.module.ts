@@ -5,7 +5,7 @@ import {OrdersRoutingModule} from './orders-routing.module';
 import {SharedModule} from '../shared/shared.module';
 import {OrdersService} from './services/orders.service';
 import {OrderDetailComponent} from './components/order-detail/order-detail.component';
-import { RatingComponent } from './components/rating/rating.component';
+import {RatingComponent} from './components/rating/rating.component';
 
 @NgModule({
   declarations: [OrderTrackingComponent, OrderDetailComponent, RatingComponent],
