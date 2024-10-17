@@ -10,7 +10,8 @@ export enum OrderStatus {
   DEPOSITED = 'DEPOSITED',
   DELIVERING = 'DELIVERING',
   DELIVERED = 'DELIVERED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
+  RATED = 'RATED'
 }
 
 export enum OrderType {

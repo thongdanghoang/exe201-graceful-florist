@@ -2,10 +2,13 @@ package id.vn.thongdanghoang.graceful.services.impl;
 
 import id.vn.thongdanghoang.graceful.dtos.orders.OrderCriteriaDto;
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
+import id.vn.thongdanghoang.graceful.entities.OrderRatingEntity;
 import id.vn.thongdanghoang.graceful.entities.UserEntity;
 import id.vn.thongdanghoang.graceful.enums.OrderStatus;
 import id.vn.thongdanghoang.graceful.enums.OrderType;
+import id.vn.thongdanghoang.graceful.repositories.OrderRatingRepository;
 import id.vn.thongdanghoang.graceful.repositories.OrderRepository;
+import id.vn.thongdanghoang.graceful.repositories.ProductRepository;
 import id.vn.thongdanghoang.graceful.services.OrderService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,8 @@ import java.util.UUID;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private final OrderRatingRepository orderRatingRepository;
 
     @Override
     public Page<OrderEntity> adminSearchOrders(OrderCriteriaDto criteria, Pageable page) {
@@ -128,5 +133,19 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Long> thisYearRevenue() {
         return orderRepository.thisYearRevenue();
+    }
+
+    @Override
+    public void rateOrder(OrderRatingEntity orderRating) {
+        var products = orderRating
+                .getProducts()
+                .stream()
+                .peek(product -> product.setRating(product.getRating() + 1))
+                .toList();
+        productRepository.saveAll(products);
+        var order = orderRating.getOrder();
+        order.setStatus(OrderStatus.RATED);
+        orderRepository.save(order);
+        orderRatingRepository.save(orderRating);
     }
 }

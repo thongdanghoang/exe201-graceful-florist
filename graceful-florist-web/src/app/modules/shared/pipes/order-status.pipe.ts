@@ -19,6 +19,8 @@ export class OrderStatusPipe implements PipeTransform {
         return 'Đã đặt cọc';
       case OrderStatus.PENDING:
         return 'Chờ xử lý';
+      case OrderStatus.RATED:
+        return 'Đã đánh giá';
       default:
         return defaultValue;
     }

@@ -11,6 +11,7 @@ export interface ProductDto extends AbstractAuditableDTO {
   price: number;
   quantity: number;
   purchases: number;
+  rating: number;
   mainImage: uuid;
   images: uuid[];
   enabled: boolean;

@@ -5,7 +5,11 @@ import id.vn.thongdanghoang.graceful.dtos.SearchCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.SearchResultDto;
 import id.vn.thongdanghoang.graceful.dtos.orders.OrderCriteriaDto;
 import id.vn.thongdanghoang.graceful.dtos.orders.OrderDTO;
+import id.vn.thongdanghoang.graceful.dtos.orders.OrderRatingDTO;
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
+import id.vn.thongdanghoang.graceful.entities.OrderItemEntity;
+import id.vn.thongdanghoang.graceful.entities.OrderRatingEntity;
+import id.vn.thongdanghoang.graceful.entities.OrderRatingImageEntity;
 import id.vn.thongdanghoang.graceful.enums.OrderStatus;
 import id.vn.thongdanghoang.graceful.mappers.CommonMapper;
 import id.vn.thongdanghoang.graceful.mappers.OrderMapper;
@@ -19,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequestMapping("/orders")
 @RestController
@@ -35,7 +40,7 @@ public class OrderController {
                 .getContext().getAuthentication().getPrincipal();
         var pageable = commonMapper
                 .toPageable(searchCriteria.getPage(), searchCriteria.getSort());
-        if(securityUser.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
+        if (securityUser.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
             return mappingOrderEntities(orderService.usersOrders(securityUser.getUserEntity().getId(), pageable));
         }
         return mappingOrderEntities(orderService.adminSearchOrders(searchCriteria.getCriteria(), pageable));
@@ -70,6 +75,44 @@ public class OrderController {
         var order = orderOptional.get();
         order.setStatus(orderStatusWrapper.getValue());
         orderService.update(order);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/rating")
+    public ResponseEntity<Void> rateOrder(@PathVariable UUID id,
+                                          @RequestBody OrderRatingDTO payload) {
+        // prepare data
+        var orderEntityOptional = orderService
+                .findOrderById(id);
+        if (orderEntityOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var securityUser = (SecurityUser) SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
+        var user = securityUser.getUserEntity();
+        var order = orderEntityOptional.get();
+        var products = order
+                .getOrderItems().stream()
+                .map(OrderItemEntity::getProduct).toList();
+        // mapping
+        var orderRating = new OrderRatingEntity();
+        var images = payload
+                .images().stream()
+                .map(imageId -> {
+                    var image = new OrderRatingImageEntity();
+                    image.setImage(imageId);
+                    image.setOrderRating(orderRating);
+                    return image;
+                })
+                .collect(Collectors.toSet());
+        orderRating.setImages(images);
+        orderRating.setProducts(products);
+        orderRating.setOrder(order);
+        orderRating.setUser(user);
+        orderRating.setAnonymous(payload.anonymous());
+        orderRating.setDescription(payload.description());
+        orderRating.setRating(payload.rating());
+        orderService.rateOrder(orderRating);
         return ResponseEntity.noContent().build();
     }
 }

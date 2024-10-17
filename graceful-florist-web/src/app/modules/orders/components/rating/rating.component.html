@@ -1,0 +1,128 @@
+<div>
+    <div class="text-2xl font-bold font-sans" mat-dialog-title>
+        {{ options.title }}
+    </div>
+    <mat-dialog-content>
+        <form [formGroup]="formGroup" class="flex flex-col gap-4">
+            <ng-container
+                *ngFor="
+                    let item of options.data?.data?.orderItems;
+                    let last = last
+                "
+            >
+                <div class="flex flex-col gap-2.5">
+                    <div class="flex gap-2 px-2">
+                        <img
+                            [ngSrc]="item.product.mainImage | imageUrlTransform"
+                            alt="item.product.mainImage"
+                            width="100"
+                            height="100"
+                            priority
+                            style="width: 100px; height: 100px"
+                            class="object-cover"
+                        />
+                        <div class="flex flex-col gap-1">
+                            <div class="font-sans text-sm font-normal">
+                                {{ item.product.name }}
+                            </div>
+                            <div
+                                class="flex gap-1 font-sans text-sm font-normal"
+                            >
+                                {{ item.product.price | vndCurrency }}
+                                <div class="text-primary">
+                                    x{{ item.quantity }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="font-sans text-base font-semibold">
+                Chất lượng sản phẩm
+            </div>
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <mat-icon
+                        *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+                        class="!text-primary hover:cursor-pointer"
+                        [fontIcon]="i < rating ? 'star' : 'star_outline'"
+                        (click)="setRating(i + 1)"
+                        aria-hidden="false"
+                        aria-label="Star icon"
+                    ></mat-icon>
+                </div>
+                <div class="font-sans text-base font-semibold text-primary">
+                    {{ ratingLabel }}
+                </div>
+            </div>
+            <mat-form-field
+                class="mx-auto h-fit w-full *:!bg-transparent"
+                gracefulFloristErrorMessage
+            >
+                <mat-label class="!font-sans">Đánh giá</mat-label>
+                <textarea
+                    class="!font-sans"
+                    formControlName="description"
+                    rows="5"
+                    cols="80"
+                    matInput
+                ></textarea>
+                <mat-error></mat-error>
+            </mat-form-field>
+            <div class="flex gap-2.5">
+                <button
+                    *ngIf="images.length === 0"
+                    mat-flat-button
+                    type="button"
+                    (click)="imageUpload.click()"
+                >
+                    Thêm ảnh
+                </button>
+                <ng-container *ngFor="let image of images">
+                    <img
+                        alt="rating image"
+                        [ngSrc]="image | imageUrlTransform"
+                        width="50"
+                        height="50"
+                        priority
+                        class="rounded-lg"
+                        style="width: 50px; height: 50px"
+                    />
+                </ng-container>
+                <ng-container *ngIf="images.length > 0 && images.length < 5">
+                    <div
+                        class="rounded-lg flex justify-center items-center border border-neutral-500 hover:border-primary hover:cursor-pointer *:hover:text-primary"
+                        style="width: 50px; height: 50px"
+                        (click)="imageUpload.click()"
+                    >
+                        <mat-icon class="">add_photo_alternate</mat-icon>
+                    </div>
+                </ng-container>
+                <input
+                    [disabled]="formGroup.disabled"
+                    #imageUpload
+                    class="hidden"
+                    type="file"
+                    accept="image/*"
+                    (change)="onImageUpload($event)"
+                />
+            </div>
+            <mat-checkbox formControlName="anonymous"
+                >Hiển thị tên bạn trên đánh giá này</mat-checkbox
+            >
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <div class="flex justify-end w-full gap-4">
+            <button mat-flat-button (click)="close()">TRỞ LẠI</button>
+            <button
+                (click)="submit()"
+                [disabled]="formGroup.invalid"
+                mat-flat-button
+                color="primary"
+            >
+                Hoàn Thành
+            </button>
+        </div>
+    </mat-dialog-actions>
+</div>

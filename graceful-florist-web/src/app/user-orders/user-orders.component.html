@@ -74,7 +74,13 @@
         <ng-template headerTableTemplate="actions" let-column></ng-template>
         <ng-template cellTableTemplate="actions" let-element="element">
             <ng-container *ngIf="element.status === OrderStatus.DELIVERED">
-                <button mat-raised-button color="primary">Đánh giá</button>
+                <button
+                    mat-raised-button
+                    (click)="openRatingModal(element)"
+                    color="primary"
+                >
+                    Đánh giá
+                </button>
             </ng-container>
             <ng-container *ngIf="element.status === OrderStatus.PENDING">
                 <button mat-raised-button>Huỷ đơn</button>

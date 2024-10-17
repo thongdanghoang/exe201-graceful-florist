@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -21,7 +19,15 @@ import java.util.Set;
         attributeNodes = {
                 @NamedAttributeNode("user"),
                 @NamedAttributeNode("staff"),
-                @NamedAttributeNode("orderItems"),
+                @NamedAttributeNode(value = "orderItems", subgraph = OrderEntity.ORDER_ITEM_PRODUCT_ENTITY_GRAPH)
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = OrderEntity.ORDER_ITEM_PRODUCT_ENTITY_GRAPH,
+                        attributeNodes = {
+                                @NamedAttributeNode("product")
+                        }
+                )
         }
 )
 @FieldNameConstants
@@ -33,6 +39,7 @@ import java.util.Set;
 public class OrderEntity  extends AbstractAuditableEntity {
 
     public static final String ORDER_MANAGEMENT_ENTITY_GRAPH = "order-management-entity-graph";
+    public static final String ORDER_ITEM_PRODUCT_ENTITY_GRAPH = "order-item-product-entity-graph";
 
     @NotNull
     @ManyToOne

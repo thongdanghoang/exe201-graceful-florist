@@ -2,6 +2,7 @@ package id.vn.thongdanghoang.graceful.services;
 
 import id.vn.thongdanghoang.graceful.dtos.orders.OrderCriteriaDto;
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
+import id.vn.thongdanghoang.graceful.entities.OrderRatingEntity;
 import id.vn.thongdanghoang.graceful.entities.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,4 +44,6 @@ public interface OrderService {
     List<Long> thisMonthRevenue();
 
     List<Long> thisYearRevenue();
+
+    void rateOrder(OrderRatingEntity orderRating);
 }

@@ -88,6 +88,9 @@ public class ProductEntity extends AbstractAuditableEntity {
     @Column(name = "purchases")
     private int purchases = 0;
 
+    @Column(name = "rating")
+    private int rating = 0;
+
     @Column(name = "enabled")
     private boolean enabled;
 }
