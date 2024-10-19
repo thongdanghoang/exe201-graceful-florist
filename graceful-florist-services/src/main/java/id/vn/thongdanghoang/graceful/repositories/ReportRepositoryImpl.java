@@ -43,9 +43,7 @@ public class ReportRepositoryImpl implements ReportRepository{
         Root<OrderEntity> order = cq.from(OrderEntity.class);
 
         // Define the predicate for pending status
-        Predicate statusPredicate = cb.equal(
-                order.get(OrderEntity.Fields.status),
-                OrderStatus.PENDING);
+        Predicate statusPredicate = cb.equal(order.get(OrderEntity.Fields.status), OrderStatus.PENDING);
 
         cq.select(cb.count(order)).where(statusPredicate);
 
@@ -78,8 +76,10 @@ public class ReportRepositoryImpl implements ReportRepository{
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         Root<OrderEntity> order = cq.from(OrderEntity.class);
 
-        var deliveredOrder = cb
-                .equal(order.get(OrderEntity.Fields.status), OrderStatus.DELIVERED);
+        var deliveredOrder = cb.or(
+                cb.equal(order.get(OrderEntity.Fields.status), OrderStatus.DELIVERED),
+                cb.equal(order.get(OrderEntity.Fields.status), OrderStatus.RATED)
+        );
 
         // Define the selection for the total revenue
         cq
@@ -100,8 +100,10 @@ public class ReportRepositoryImpl implements ReportRepository{
                 order.get(AbstractAuditableEntity.Fields.createdDate),
                 cb.function("DATE_TRUNC", java.sql.Date.class, cb.literal("week"), cb.currentDate()).as(java.sql.Date.class)
         );
-        var deliveredOrder = cb
-                .equal(order.get(OrderEntity.Fields.status), OrderStatus.DELIVERED);
+        var deliveredOrder = cb.or(
+                cb.equal(order.get(OrderEntity.Fields.status), OrderStatus.DELIVERED),
+                cb.equal(order.get(OrderEntity.Fields.status), OrderStatus.RATED)
+        );
 
         // Define the selection for the total revenue
         cq
@@ -117,8 +119,10 @@ public class ReportRepositoryImpl implements ReportRepository{
         CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
         Root<OrderEntity> order = cq.from(OrderEntity.class);
 
-        var deliveredOrder = cb
-                .equal(order.get(OrderEntity.Fields.status), OrderStatus.DELIVERED);
+        var deliveredOrder = cb.or(
+                cb.equal(order.get(OrderEntity.Fields.status), OrderStatus.DELIVERED),
+                cb.equal(order.get(OrderEntity.Fields.status), OrderStatus.RATED)
+        );
 
         // Get the start of the current month and the current day
         LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
@@ -163,15 +167,16 @@ public class ReportRepositoryImpl implements ReportRepository{
         return dailyRevenue;
     }
 
-
     @Override
     public List<Long> thisYearRevenue() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
         Root<OrderEntity> order = cq.from(OrderEntity.class);
 
-        var deliveredOrder = cb
-                .equal(order.get(OrderEntity.Fields.status), OrderStatus.DELIVERED);
+        var deliveredOrRatedOrder = cb.or(
+                cb.equal(order.get(OrderEntity.Fields.status), OrderStatus.DELIVERED),
+                cb.equal(order.get(OrderEntity.Fields.status), OrderStatus.RATED)
+        );
 
         // Get the start of the year (January 1st of the current year) using LocalDateTime
         LocalDate startOfYear = LocalDate.now().withDayOfYear(1);
@@ -190,7 +195,7 @@ public class ReportRepositoryImpl implements ReportRepository{
 
         // Select the total revenue for each month and use COALESCE to handle null values
         cq.multiselect(truncatedMonth, cb.coalesce(cb.sum(order.get(OrderEntity.Fields.totalPrice)), 0L))
-                .where(deliveredOrder, dateRange)
+                .where(deliveredOrRatedOrder, dateRange)
                 .groupBy(truncatedMonth)
                 .orderBy(cb.asc(truncatedMonth));
 
@@ -214,6 +219,5 @@ public class ReportRepositoryImpl implements ReportRepository{
 
         return monthlyRevenue;
     }
-
 
 }
