@@ -1,37 +1,39 @@
 <ng-container *ngIf="isConfirm; else confirmAddress">
-    <div class="h-fit">
-        <mat-dialog-content class="min-h-fit">
-            <div class="flex flex-col gap-7 items-center">
-                <div class="font-sans text-2xl font-bold">
-                    {{ options.title }}
+    <ng-container *ngIf="isVNPay; else confirmAddress">
+        <div class="h-fit">
+            <mat-dialog-content class="min-h-fit">
+                <div class="flex flex-col gap-7 items-center">
+                    <div class="font-sans text-2xl font-bold">
+                        {{ options.title }}
+                    </div>
+                    <img
+                        ngSrc="assets/IMG_1979.webp"
+                        alt="payment-qr"
+                        width="592"
+                        height="742"
+                        priority
+                        style="width: 592px; height: 742px"
+                        class="object-cover"
+                    />
                 </div>
-                <img
-                    ngSrc="assets/IMG_1979.webp"
-                    alt="payment-qr"
-                    width="592"
-                    height="742"
-                    priority
-                    style="width: 592px; height: 742px"
-                    class="object-cover"
-                />
-            </div>
-        </mat-dialog-content>
-        <mat-dialog-actions>
-            <div class="flex flex-col gap-2 5 w-full">
-                <button
-                    [disabled]="formGroup.invalid"
-                    mat-flat-button
-                    color="primary"
-                    (click)="submit()"
-                >
-                    Hoàn Thành
-                </button>
-                <button class="!ml-0" mat-flat-button (click)="close()">
-                    Đóng
-                </button>
-            </div>
-        </mat-dialog-actions>
-    </div>
+            </mat-dialog-content>
+            <mat-dialog-actions>
+                <div class="flex flex-col gap-2 5 w-full">
+                    <button
+                        [disabled]="formGroup.invalid"
+                        mat-flat-button
+                        color="primary"
+                        (click)="submit()"
+                    >
+                        Hoàn Thành
+                    </button>
+                    <button class="!ml-0" mat-flat-button (click)="close()">
+                        Đóng
+                    </button>
+                </div>
+            </mat-dialog-actions>
+        </div>
+    </ng-container>
 </ng-container>
 <ng-template #confirmAddress>
     <div class="p-20">

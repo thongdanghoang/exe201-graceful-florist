@@ -86,7 +86,7 @@ export class ProductDetailComponent
         );
       }),
       this.productService
-        .getRecommendedProducts()
+        .getRecommendedProducts(this.productDto?.id)
         .subscribe((recommendedProducts: ProductDto[]): void => {
           this.recommendedProducts = recommendedProducts;
         })
@@ -139,6 +139,13 @@ export class ProductDetailComponent
   }
 
   protected onProductClick(product: ProductDto): void {
+    this.registerSubscription(
+      this.productService
+        .getRecommendedProducts(product.id)
+        .subscribe((recommendedProducts: ProductDto[]): void => {
+          this.recommendedProducts = recommendedProducts;
+        })
+    );
     void this.router.navigate([`products/${product.id}`]);
   }
 

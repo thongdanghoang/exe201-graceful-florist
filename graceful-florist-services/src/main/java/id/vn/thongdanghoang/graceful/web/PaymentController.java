@@ -58,8 +58,9 @@ public class PaymentController {
                 })
                 .collect(Collectors.toSet());
         orderEntity.setOrderItems(itemEntities);
-        orderEntity.setTotalPrice(Math.round(itemEntities.stream().mapToDouble(OrderItemEntity::getTotalPrice).sum()));
-        orderEntity.setShippingPrice(paymentService.getRandomShippingPrice());
+        var totalPrice= Math.round(itemEntities.stream().mapToDouble(OrderItemEntity::getTotalPrice).sum())
+                + paymentDTO.getRecipient().getShippingPrice().getPrice();
+        orderEntity.setTotalPrice(totalPrice);
         var orderSaved = paymentService.createPayment(orderEntity);
         return ResponseEntity.ok(orderMapper.toPaymentDTO(orderSaved));
     }

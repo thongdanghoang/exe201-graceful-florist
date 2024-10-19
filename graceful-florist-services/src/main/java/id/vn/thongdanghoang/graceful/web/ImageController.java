@@ -102,7 +102,7 @@ public class ImageController {
         try {
             Thumbnails.of(inputStream)
                     .scale(1)
-                    .outputQuality(0.2)
+                    .outputQuality(0.1)
                     .toOutputStream(outputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);

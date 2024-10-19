@@ -10,6 +10,8 @@ import {CartService} from '../../../cart/services/cart.service';
 import {ModalService} from '../../../shared/services/modal.service';
 import {PaymentModalComponent} from '../payment-modal/payment-modal.component';
 import {ProductService} from '../../../products/services/product.service';
+import {ShippingPriceDTO} from '../../../products/models/product.dto';
+import {MatSelectChange} from '@angular/material/select';
 
 @Component({
   selector: 'graceful-florist-payment',
@@ -20,8 +22,9 @@ export class PaymentComponent
   extends SubscriptionAwareComponent
   implements OnInit
 {
-  protected paymentForm: FormGroup;
   protected readonly PaymentMethod = PaymentMethod;
+  protected shippingPrices: ShippingPriceDTO[] = [];
+  protected paymentForm: FormGroup;
   protected breadcrumbs: BreadcrumbItem[] = [
     {label: 'Trang chủ', path: AppRoutingConstants.HOME_PATH},
     {label: 'Thanh toán'}
@@ -40,9 +43,10 @@ export class PaymentComponent
       recipient: this.fb.group({
         fullName: ['', Validators.required],
         phone: ['', Validators.required],
-        district: ['', Validators.required],
+        district: [''],
         ward: ['', Validators.required],
-        addressDetail: ['', Validators.required]
+        addressDetail: ['', Validators.required],
+        shippingPrice: [null, Validators.required]
       }),
       sender: this.fb.group({
         fullName: ['', Validators.required],
@@ -85,8 +89,20 @@ export class PaymentComponent
               })
           );
         }
-      })
+      }),
+      this.productService
+        .getShippingPrices()
+        .subscribe((shippingPrices: ShippingPriceDTO[]): void => {
+          this.shippingPrices = shippingPrices;
+        })
     ]);
+  }
+
+  protected onSelectedShippingPrice(change: MatSelectChange): void {
+    this.paymentForm
+      .get('recipient')
+      ?.get('district')
+      ?.setValue(change.value.name);
   }
 
   protected deliveryTimeFromChanged(deliveryTimeFrom: Date): void {
@@ -149,10 +165,14 @@ export class PaymentComponent
 
   protected get recipientAddress(): string {
     const recipient = this.paymentForm.get('recipient')?.value;
-    if (!recipient.addressDetail || !recipient.ward || !recipient.district) {
+    if (
+      !recipient.addressDetail ||
+      !recipient.ward ||
+      !recipient.shippingPrice
+    ) {
       return '';
     }
-    return `${recipient.addressDetail}, ${recipient.ward}, ${recipient.district}`;
+    return `${recipient.addressDetail}, ${recipient.ward}, ${recipient.shippingPrice.name}`;
   }
 
   protected get recipientName(): string {

@@ -7,7 +7,8 @@ import {
   ProductCustomDTO,
   ProductCustomPriceDto,
   ProductDetailDto,
-  ProductDto
+  ProductDto,
+  ShippingPriceDTO
 } from '../models/product.dto';
 import {
   SearchCriteriaDto,
@@ -63,15 +64,16 @@ export class ProductService {
       .pipe(map((result: {id: uuid}) => result.id));
   }
 
-  getRecommendedProducts(): Observable<ProductDto[]> {
-    // TODO: should be have separate endpoint for recommended products
+  getRecommendedProducts(id: uuid): Observable<ProductDto[]> {
     return this.searchProducts({
       sort: {column: 'createdDate', direction: 'desc'},
       page: {pageNumber: 0, pageSize: 5},
       criteria: {categories: []}
     }).pipe(
       map((result: SearchResultDto<ProductDto>): ProductDto[] =>
-        result.results.filter(product => product.enabled)
+        result.results.filter(
+          (product: ProductDto): boolean => product.id !== id
+        )
       )
     );
   }
@@ -85,6 +87,12 @@ export class ProductService {
   getCustomPrices(): Observable<ProductCustomPriceDto[]> {
     return this.httpClient.get<ProductCustomPriceDto[]>(
       `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PRODUCTS_PATH}/custom-prices`
+    );
+  }
+
+  getShippingPrices(): Observable<ShippingPriceDTO[]> {
+    return this.httpClient.get<ShippingPriceDTO[]>(
+      `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.PRODUCTS_PATH}/shipping-prices`
     );
   }
 }

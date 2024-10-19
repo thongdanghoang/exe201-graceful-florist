@@ -21,9 +21,10 @@ export class PaymentModalComponent extends AbstractModalFormComponent<PaymentDto
     recipient: this.formBuilder.group({
       fullName: this.formBuilder.control(null, [Validators.required]),
       phone: this.formBuilder.control(null, [Validators.required]),
-      district: this.formBuilder.control(null, [Validators.required]),
+      district: this.formBuilder.control(null),
       ward: this.formBuilder.control(null, [Validators.required]),
-      addressDetail: this.formBuilder.control(null, [Validators.required])
+      addressDetail: this.formBuilder.control(null, [Validators.required]),
+      shippingPrice: [null, Validators.required]
     }),
     sender: this.formBuilder.group({
       fullName: this.formBuilder.control(null, [Validators.required]),
@@ -35,10 +36,7 @@ export class PaymentModalComponent extends AbstractModalFormComponent<PaymentDto
       deliveryTimeTo: ['']
     }),
     message: this.formBuilder.control(''),
-    paymentMethod: this.formBuilder.control(
-      PaymentMethod.COD,
-      Validators.required
-    ),
+    paymentMethod: this.formBuilder.control(null, Validators.required),
     products: this.formBuilder.control('', Validators.required)
   };
 
@@ -49,6 +47,10 @@ export class PaymentModalComponent extends AbstractModalFormComponent<PaymentDto
   constructor(injector: Injector) {
     super(injector);
     this.cartService = injector.get(CartService);
+  }
+
+  protected get isVNPay(): boolean {
+    return this.formGroup.get('paymentMethod')?.value === PaymentMethod.VNPAY;
   }
 
   protected get recipientAddress(): string {

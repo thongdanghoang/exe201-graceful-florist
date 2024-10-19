@@ -174,4 +174,13 @@ public class ProductController {
         return ResponseEntity.ok(comments);
     }
 
+    @GetMapping("/shipping-prices")
+    public ResponseEntity<List<ShippingPriceDTO>> getShippingPrices() {
+        var shippingPriceDTOs = service
+                .getShippingPrices().stream()
+                .map(mapper::toShippingPriceDTO)
+                .toList();
+        return ResponseEntity.ok(shippingPriceDTOs);
+    }
+
 }

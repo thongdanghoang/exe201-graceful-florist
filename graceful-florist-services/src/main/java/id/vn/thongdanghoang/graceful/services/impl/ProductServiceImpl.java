@@ -5,10 +5,7 @@ import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
 import id.vn.thongdanghoang.graceful.dtos.products.ProductCriteria;
 import id.vn.thongdanghoang.graceful.entities.*;
 import id.vn.thongdanghoang.graceful.enums.ProductStatus;
-import id.vn.thongdanghoang.graceful.repositories.CategoryRepository;
-import id.vn.thongdanghoang.graceful.repositories.IngredientRepository;
-import id.vn.thongdanghoang.graceful.repositories.OrderRatingRepository;
-import id.vn.thongdanghoang.graceful.repositories.ProductRepository;
+import id.vn.thongdanghoang.graceful.repositories.*;
 import id.vn.thongdanghoang.graceful.securities.SecurityUser;
 import id.vn.thongdanghoang.graceful.services.ProductService;
 import jakarta.transaction.Transactional;
@@ -31,6 +28,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final IngredientRepository ingredientRepository;
     private final OrderRatingRepository orderRatingRepository;
+    private final ShippingPriceRepository shippingPriceRepository;
 
     @Override
     public ProductEntity createProduct(ProductEntity productEntity) {
@@ -73,7 +71,10 @@ public class ProductServiceImpl implements ProductService {
                 .map(Object::toString)
                 .anyMatch("ROLE_ADMIN"::equalsIgnoreCase);
         if (Objects.isNull(criteria.status())) {
-            return repository.searchProduct(categories, keyword, categoryType, fromInclusive, isAdmin, page);
+            if (isAdmin) {
+                return repository.searchProduct(categories, keyword, categoryType, fromInclusive, true, page);
+            }
+            return repository.searchProduct(categories, keyword, categoryType, fromInclusive, true, false, page);
         }
         boolean enable = !isAdmin || criteria.status() == ProductStatus.SELLING;
         return repository.searchProduct(categories, keyword, categoryType, fromInclusive, enable, isAdmin, page);
@@ -128,5 +129,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<OrderRatingEntity> searchComment(UUID productId, Pageable pageable) {
         return orderRatingRepository.searchComment(productId, pageable);
+    }
+
+    @Override
+    public List<ShippingPriceEntity> getShippingPrices() {
+        return shippingPriceRepository.findAll();
     }
 }

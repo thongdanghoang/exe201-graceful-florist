@@ -92,3 +92,8 @@ export interface ProductCustomPriceDto extends AbstractBaseDto {
   name: string;
   price: number;
 }
+
+export interface ShippingPriceDTO extends AbstractAuditableDTO {
+  name: string;
+  price: number;
+}

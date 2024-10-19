@@ -75,7 +75,7 @@ export class UserOrdersComponent implements OnInit {
     });
   }
 
-  protected getUserFullName(): string {
+  protected get username(): string {
     return this.userService.getUser()?.username ?? '';
   }
 

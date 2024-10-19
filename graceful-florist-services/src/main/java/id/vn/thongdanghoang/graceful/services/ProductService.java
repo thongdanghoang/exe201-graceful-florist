@@ -38,4 +38,6 @@ public interface ProductService {
     List<ProductCustomPriceEntity> getProductCustomPrices();
 
     Page<OrderRatingEntity> searchComment(UUID productId, Pageable pageable);
+
+    List<ShippingPriceEntity> getShippingPrices();
 }

@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @Transactional(rollbackOn = Throwable.class)
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public ShippingPriceEntity getRandomShippingPrice() {
-        return shippingPriceRepository.findAll().stream().findAny().orElseThrow();
+    public ShippingPriceEntity getById(UUID id){
+        return shippingPriceRepository.findById(id).orElseThrow();
     }
 }

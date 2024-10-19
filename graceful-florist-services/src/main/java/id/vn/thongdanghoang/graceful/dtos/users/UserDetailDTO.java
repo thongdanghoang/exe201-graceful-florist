@@ -12,6 +12,5 @@ public class UserDetailDTO extends AbstractAuditableDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private String phone;
-    private UUID avatar;
+    private String address;
 }

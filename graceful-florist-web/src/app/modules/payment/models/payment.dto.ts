@@ -3,8 +3,7 @@ import {AbstractBaseDto} from '../../shared/models/abstract-base-dto';
 
 export enum PaymentMethod {
   COD = 'COD',
-  VNPAY = 'VNPAY',
-  MOMO = 'MOMO'
+  VNPAY = 'VNPAY'
 }
 
 export interface PaymentDto extends AbstractBaseDto {

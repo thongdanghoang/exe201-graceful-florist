@@ -3,8 +3,10 @@ package id.vn.thongdanghoang.graceful.mappers;
 import id.vn.thongdanghoang.graceful.dtos.orders.OrderDTO;
 import id.vn.thongdanghoang.graceful.dtos.orders.OrderItemDTO;
 import id.vn.thongdanghoang.graceful.dtos.payments.PaymentDTO;
+import id.vn.thongdanghoang.graceful.dtos.products.ShippingPriceDTO;
 import id.vn.thongdanghoang.graceful.entities.OrderEntity;
 import id.vn.thongdanghoang.graceful.entities.OrderItemEntity;
+import id.vn.thongdanghoang.graceful.entities.ShippingPriceEntity;
 import org.mapstruct.*;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -23,6 +25,7 @@ public interface OrderMapper {
     @Mapping(target = "senderPhone", source = "paymentDTO.sender.phone")
     @Mapping(target = "recipientName", source = "paymentDTO.recipient.fullName")
     @Mapping(target = "recipientPhone", source = "paymentDTO.recipient.phone")
+    @Mapping(target = "shippingPrice", source = "paymentDTO.recipient.shippingPrice")
     @Mapping(target = "recipientAddress", source = "paymentDTO", qualifiedByName = "recipientAddress")
     @Mapping(target = "deliveryDate", source = "deliveryDateTime.deliveryDate")
     @Mapping(target = "deliveryTimeFrom", source = "deliveryDateTime.deliveryTimeFrom")
@@ -36,8 +39,13 @@ public interface OrderMapper {
     @Mapping(target = "recipient.district", source = "recipientAddress", qualifiedByName = "district")
     @Mapping(target = "recipient.ward", source = "recipientAddress", qualifiedByName = "ward")
     @Mapping(target = "recipient.addressDetail" , source = "recipientAddress", qualifiedByName = "addressDetail")
+    @Mapping(target = "recipient.shippingPrice" , source = "shippingPrice")
     @InheritInverseConfiguration
     PaymentDTO toPaymentDTO(OrderEntity orderEntity);
+
+    ShippingPriceDTO toShippingPriceDTO(ShippingPriceEntity shippingPriceEntity);
+
+    ShippingPriceEntity toShippingPriceEntity(ShippingPriceDTO shippingPriceDTO);
 
     @Named("recipientAddress")
     default String recipientAddress(PaymentDTO paymentDTO) {

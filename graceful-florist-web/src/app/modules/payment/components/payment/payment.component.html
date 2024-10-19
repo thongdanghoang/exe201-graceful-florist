@@ -40,11 +40,18 @@
                             gracefulFloristErrorMessage
                         >
                             <mat-label>Quận</mat-label>
-                            <input
-                                matInput
-                                formControlName="district"
-                                required
-                            />
+                            <mat-select
+                                formControlName="shippingPrice"
+                                (selectionChange)="
+                                    onSelectedShippingPrice($event)
+                                "
+                            >
+                                <mat-option
+                                    *ngFor="let shippingPrice of shippingPrices"
+                                    [value]="shippingPrice"
+                                    >{{ shippingPrice.name }}</mat-option
+                                >
+                            </mat-select>
                             <mat-error></mat-error>
                         </mat-form-field>
                     </div>
@@ -256,15 +263,6 @@
                         PaymentMethod.COD
                     "
                     >Thanh toán khi nhận hàng
-                </mat-radio-button>
-                <mat-radio-button
-                    [value]="PaymentMethod.MOMO"
-                    color="primary"
-                    [checked]="
-                        this.paymentForm.get('paymentMethod')?.value ===
-                        PaymentMethod.MOMO
-                    "
-                    >Thanh toán qua MoMo
                 </mat-radio-button>
                 <mat-radio-button
                     [value]="PaymentMethod.VNPAY"

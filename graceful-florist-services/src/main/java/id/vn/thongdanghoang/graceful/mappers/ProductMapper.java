@@ -1,9 +1,6 @@
 package id.vn.thongdanghoang.graceful.mappers;
 
-import id.vn.thongdanghoang.graceful.dtos.products.CategoryDTO;
-import id.vn.thongdanghoang.graceful.dtos.products.CommentDto;
-import id.vn.thongdanghoang.graceful.dtos.products.ProductCustomPriceDto;
-import id.vn.thongdanghoang.graceful.dtos.products.ProductDTO;
+import id.vn.thongdanghoang.graceful.dtos.products.*;
 import id.vn.thongdanghoang.graceful.entities.*;
 import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.*;
@@ -60,6 +57,8 @@ public interface ProductMapper {
     @Mapping(target = "userDTO", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "OrderRatingImageEntitiesToIDs")
     CommentDto toCommentDto(OrderRatingEntity orderRatingEntity);
+
+    ShippingPriceDTO toShippingPriceDTO(ShippingPriceEntity shippingPriceEntity);
 
     @Named("OrderRatingImageEntitiesToIDs")
     default List<UUID> OrderRatingImageEntitiesToIDs(Set<OrderRatingImageEntity> images) {
