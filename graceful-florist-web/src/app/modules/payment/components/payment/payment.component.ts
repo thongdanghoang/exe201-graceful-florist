@@ -103,21 +103,7 @@ export class PaymentComponent
       ?.setValue(deliveryTimeTo);
   }
 
-  // eslint-disable-next-line max-lines-per-function
   protected onPaymentSubmit(): void {
-    if (this.paymentForm.invalid) {
-      return;
-    }
-    let products = this.paymentForm.get('products')?.value;
-    products = products.map((item: CartItemDTO) => {
-      return {
-        quantity: item.quantity,
-        product: {
-          id: item.product.id
-        }
-      };
-    });
-    this.paymentForm.get('products')?.setValue(products);
     void this.modalService
       .open(PaymentModalComponent, {
         title: 'Thanh Toán',
