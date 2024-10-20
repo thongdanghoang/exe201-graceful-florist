@@ -41,12 +41,20 @@ export class PaymentModalComponent extends AbstractModalFormComponent<PaymentDto
   };
 
   protected isConfirm = false;
+  protected paymentVNPaySuccess = false;
 
   protected readonly cartService: CartService;
 
   constructor(injector: Injector) {
     super(injector);
     this.cartService = injector.get(CartService);
+  }
+
+  protected onConfirmPayment(): void {
+    this.isConfirm = true;
+    if (this.data?.paymentMethod === PaymentMethod.COD) {
+      this.submit();
+    }
   }
 
   protected get isVNPay(): boolean {
@@ -81,10 +89,14 @@ export class PaymentModalComponent extends AbstractModalFormComponent<PaymentDto
     }
     return {} as PaymentDto;
   }
-  protected override onSubmitFormDataSuccess(result: any): void {
+  protected override onSubmitFormDataSuccess(result: PaymentDto): void {
     this.registerSubscription(this.cartService.fetchCartItems().subscribe());
-    this.formGroup.patchValue(result);
-    this.close(result);
+    if (this.data) {
+      if (this.data.paymentMethod === PaymentMethod.VNPAY) {
+        this.paymentVNPaySuccess = true;
+      }
+      this.data.id = result.id;
+    }
   }
   protected override prepareDataBeforeSubmit(): void {}
 

@@ -52,7 +52,7 @@ export class ProductsComponent
     super();
     this.criteria = {
       page: {
-        pageSize: 12,
+        pageSize: 24,
         pageNumber: 0
       },
       sort: {

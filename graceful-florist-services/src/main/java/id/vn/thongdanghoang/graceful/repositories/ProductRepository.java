@@ -84,7 +84,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
             JOIN p.categories c
             WHERE (:categories IS NULL OR EXISTS (SELECT c FROM p.categories c WHERE c.id IN :categories))
             AND (:keyword IS NULL OR LOWER(p.name) LIKE %:keyword%)
-            AND p.enabled = true
             AND (:admin = true OR p.owner IS NULL)
             AND (:categoryType IS NULL OR c.type = :categoryType)
             AND (cast(:fromInclusive as date) IS NULL OR p.createdDate >= :fromInclusive)
