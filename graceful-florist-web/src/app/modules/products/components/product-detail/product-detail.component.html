@@ -278,7 +278,7 @@
                                     <!-- User's avatar -->
                                     @if (comment.userDTO.avatar) {
                                         <img
-                                            class="w-auto h-auto"
+                                            class="object-cover rounded-full"
                                             [ngSrc]="
                                                 comment.userDTO.avatar
                                                     | imageUrlTransform
@@ -287,6 +287,7 @@
                                             width="60"
                                             height="60"
                                             priority
+                                            style="width: 60px; height: 60px"
                                         />
                                     } @else {
                                         <img
