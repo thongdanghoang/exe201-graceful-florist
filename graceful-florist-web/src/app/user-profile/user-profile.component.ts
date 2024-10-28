@@ -75,7 +75,11 @@ export class UserProfileComponent extends AbstractFormComponent<UserDto> {
 
   protected override showValidationErrorNotification(): void {}
 
-  protected override onSubmitFormRequestError(): void {}
+  protected override onSubmitFormRequestError(): void {
+    this._snackBar.open('Cập nhật thông tin thất bại', 'Đóng', {
+      duration: 3000
+    });
+  }
 
   protected override initializeFormControls(): {
     [key: string]: AbstractControl<any, any>;

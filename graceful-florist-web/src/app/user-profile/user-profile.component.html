@@ -82,19 +82,27 @@
                 <mat-label class="font-sans text-base"
                     >Mật khẩu hiện tại</mat-label
                 >
-                <input matInput formControlName="currentPassword" />
+                <input
+                    matInput
+                    formControlName="currentPassword"
+                    type="password"
+                />
                 <mat-error></mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill" gracefulFloristErrorMessage>
                 <mat-label class="font-sans text-base">Mật khẩu mới</mat-label>
-                <input matInput formControlName="newPassword" />
+                <input matInput formControlName="newPassword" type="password" />
                 <mat-error></mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill" gracefulFloristErrorMessage>
                 <mat-label class="font-sans text-base"
                     >Xác nhận mật khẩu mới</mat-label
                 >
-                <input matInput formControlName="confirmPassword" />
+                <input
+                    matInput
+                    formControlName="confirmPassword"
+                    type="password"
+                />
                 <mat-error></mat-error>
             </mat-form-field>
             <div class="flex justify-end w-full gap-4">

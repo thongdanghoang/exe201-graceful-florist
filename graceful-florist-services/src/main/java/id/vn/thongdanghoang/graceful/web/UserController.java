@@ -7,6 +7,7 @@ import id.vn.thongdanghoang.graceful.securities.SecurityUser;
 import id.vn.thongdanghoang.graceful.securities.services.UserSecurityService;
 import id.vn.thongdanghoang.graceful.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +40,11 @@ public class UserController {
         if (Objects.nonNull(request.getCurrentPassword())
                 && Objects.nonNull(request.getNewPassword())
                 && Objects.nonNull(request.getConfirmPassword())
+                && StringUtils.equals(request.getNewPassword(), request.getConfirmPassword())
                 && userSecurityService.checkPassword(request.getCurrentPassword(), securityUser.getPassword())) {
             userEntity.setPassword(userSecurityService.encodePassword(request.getNewPassword()));
+        } else {
+            return ResponseEntity.badRequest().build();
         }
         userEntity = userMapper.updateProfile(userEntity, request);
         var savedUser = userService.updateUser(userEntity);
