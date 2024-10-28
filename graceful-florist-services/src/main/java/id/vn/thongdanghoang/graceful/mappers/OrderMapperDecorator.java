@@ -39,7 +39,7 @@ public abstract class OrderMapperDecorator implements OrderMapper {
         if (Objects.nonNull(orderEntity.getStaff())) {
             orderDTO.setStaff(userMapper.toUserDto(orderEntity.getStaff()));
         }
-        if(JpaUtils.isInitialized(orderEntity.getOrderItems()) && !orderEntity.getOrderItems().isEmpty()) {
+        if (JpaUtils.isInitialized(orderEntity.getOrderItems()) && !orderEntity.getOrderItems().isEmpty()) {
             orderDTO.setOrderItems(orderEntity
                     .getOrderItems().stream()
                     .map(this::toOrderItemDTO)
@@ -52,9 +52,11 @@ public abstract class OrderMapperDecorator implements OrderMapper {
     public OrderItemDTO toOrderItemDTO(OrderItemEntity orderItemEntity) {
         var orderItemDTO = delegate.toOrderItemDTO(orderItemEntity);
         if (Objects.nonNull(orderItemEntity.getProduct())) {
-            orderItemDTO.setProduct(productMapper
-                    .toProductDTO(productRepository
-                            .findById(orderItemEntity.getProduct().getId()).orElseThrow()));
+            if (JpaUtils.isInitialized(orderItemEntity.getProduct())) {
+                orderItemDTO.setProduct(productMapper
+                        .toProductDTO(productRepository
+                                .findById(orderItemEntity.getProduct().getId()).orElseThrow()));
+            }
         }
         return orderItemDTO;
     }

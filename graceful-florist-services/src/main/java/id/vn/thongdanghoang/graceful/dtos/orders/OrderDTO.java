@@ -4,6 +4,7 @@ import id.vn.thongdanghoang.graceful.dtos.AbstractAuditableDTO;
 import id.vn.thongdanghoang.graceful.dtos.users.UserDTO;
 import id.vn.thongdanghoang.graceful.entities.OrderItemEntity;
 import id.vn.thongdanghoang.graceful.enums.OrderStatus;
+import id.vn.thongdanghoang.graceful.enums.OrderType;
 import id.vn.thongdanghoang.graceful.enums.PaymentMethod;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
@@ -38,4 +39,5 @@ public class OrderDTO extends AbstractAuditableDTO {
     private LocalDate deliveryDate;
     private LocalTime deliveryTimeFrom;
     private LocalTime deliveryTimeTo;
+    private OrderType type;
 }

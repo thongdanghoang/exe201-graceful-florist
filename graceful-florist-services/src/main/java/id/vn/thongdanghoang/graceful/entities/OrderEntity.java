@@ -1,6 +1,7 @@
 package id.vn.thongdanghoang.graceful.entities;
 
 import id.vn.thongdanghoang.graceful.enums.OrderStatus;
+import id.vn.thongdanghoang.graceful.enums.OrderType;
 import id.vn.thongdanghoang.graceful.enums.PaymentMethod;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -19,11 +20,18 @@ import java.util.Set;
         attributeNodes = {
                 @NamedAttributeNode("user"),
                 @NamedAttributeNode("staff"),
-                @NamedAttributeNode(value = "orderItems", subgraph = OrderEntity.ORDER_ITEM_PRODUCT_ENTITY_GRAPH)
+                @NamedAttributeNode("orderItems")
+        }
+)
+@NamedEntityGraph(
+        name = OrderEntity.ORDER_PRODUCTS_DETAIL_GRAPH,
+        attributeNodes = {
+                @NamedAttributeNode("user"),
+                @NamedAttributeNode(value = "orderItems", subgraph = OrderEntity.ORDER_PRODUCTS_DETAIL_SUBGRAPH)
         },
         subgraphs = {
                 @NamedSubgraph(
-                        name = OrderEntity.ORDER_ITEM_PRODUCT_ENTITY_GRAPH,
+                        name = OrderEntity.ORDER_PRODUCTS_DETAIL_SUBGRAPH,
                         attributeNodes = {
                                 @NamedAttributeNode("product")
                         }
@@ -39,7 +47,8 @@ import java.util.Set;
 public class OrderEntity  extends AbstractAuditableEntity {
 
     public static final String ORDER_MANAGEMENT_ENTITY_GRAPH = "order-management-entity-graph";
-    public static final String ORDER_ITEM_PRODUCT_ENTITY_GRAPH = "order-item-product-entity-graph";
+    public static final String ORDER_PRODUCTS_DETAIL_GRAPH = "order-products-detail-graph";
+    public static final String ORDER_PRODUCTS_DETAIL_SUBGRAPH = "order-products-detail-subgraph";
 
     @NotNull
     @ManyToOne
@@ -100,5 +109,9 @@ public class OrderEntity  extends AbstractAuditableEntity {
 
     @Column(name = "delivery_time_to")
     private LocalTime deliveryTimeTo;
+
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private OrderType type;
 
 }

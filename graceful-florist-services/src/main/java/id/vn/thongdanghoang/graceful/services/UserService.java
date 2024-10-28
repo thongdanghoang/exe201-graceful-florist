@@ -15,4 +15,6 @@ public interface UserService {
 
     void deleteStaff(UUID id);
 
+    UserEntity updateUser(UserEntity userEntity);
+
 }

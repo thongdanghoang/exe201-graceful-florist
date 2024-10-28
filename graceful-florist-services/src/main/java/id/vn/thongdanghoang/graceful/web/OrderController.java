@@ -47,12 +47,12 @@ public class OrderController {
     }
 
     @NotNull
-    private ResponseEntity<SearchResultDto<OrderDTO>> mappingOrderEntities(Page<OrderEntity> orderService) {
-        var results = orderService
+    private ResponseEntity<SearchResultDto<OrderDTO>> mappingOrderEntities(Page<OrderEntity> orderEntities) {
+        var results = orderEntities
                 .stream()
                 .map(orderMapper::toOrderDTO)
                 .toList();
-        return ResponseEntity.ok(SearchResultDto.of(results, orderService.getTotalElements()));
+        return ResponseEntity.ok(SearchResultDto.of(results, orderEntities.getTotalElements()));
     }
 
     @GetMapping("/{id}")

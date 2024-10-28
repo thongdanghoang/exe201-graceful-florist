@@ -12,6 +12,7 @@ services:
       dockerfile: Dockerfile
     container_name: spring-boot-21
     environment:
+      TZ: Asia/Jakarta
       POSTGRES_HOST: graceful-db
       POSTGRES_PORT: 5432
       POSTGRES_DB: ${POSTGRES_DB}
@@ -27,6 +28,8 @@ services:
     image: postgres:16
     restart: always
     environment:
+      TZ: Asia/Jakarta
+      PGTZ: Asia/Jakarta
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

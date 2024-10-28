@@ -35,7 +35,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID>, Repor
                                                    LocalDateTime fromInclusive,
                                                    Pageable page);
 
-    @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)
     Page<OrderEntity> findByUserId(UUID userId, Pageable page);
 
     @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)
@@ -73,7 +72,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID>, Repor
                                              LocalDateTime fromInclusive,
                                              Pageable page);
 
-    @EntityGraph(OrderEntity.ORDER_MANAGEMENT_ENTITY_GRAPH)
+    @EntityGraph(OrderEntity.ORDER_PRODUCTS_DETAIL_GRAPH)
     @Query("SELECT o FROM OrderEntity o WHERE o.id = :id")
     Optional<OrderEntity> findByIdWithDetail(UUID id);
 }

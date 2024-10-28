@@ -33,4 +33,9 @@ public class UserServiceImpl implements UserService {
     public void deleteStaff(UUID id) {
         userRepository.deleteById(id);
     }
+
+    @Override
+    public UserEntity updateUser(UserEntity userEntity) {
+        return userRepository.save(userEntity);
+    }
 }

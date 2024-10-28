@@ -8,6 +8,7 @@ export class AppRoutingConstants {
   public static readonly USER = 'users';
   public static readonly USER_PROFILE = `${AppRoutingConstants.USER}/profile`;
   public static readonly USER_ORDERS = `${AppRoutingConstants.USER}/orders`;
+  public static readonly USER_PROFILE_URL = `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.USER}`;
 
   // Products module
   public static readonly PRODUCTS_PATH = 'products';

@@ -52,5 +52,13 @@ public class UserSecurityService implements UserDetailsService {
         userEntity.setPassword(encoder.encode(userEntity.getPassword()));
         return repository.save(userEntity);
     }
+
+    public boolean checkPassword(String rawPassword, String encodedPassword) {
+        return encoder.matches(rawPassword, encodedPassword);
+    }
+
+    public String encodePassword(String rawPassword) {
+        return encoder.encode(rawPassword);
+    }
 }
 

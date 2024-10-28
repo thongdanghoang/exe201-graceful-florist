@@ -6,7 +6,7 @@ import {AppRoutingConstants} from '../../../app-routing-constants';
   name: 'imageUrlTransform'
 })
 export class ImageUrlTransformPipe implements PipeTransform {
-  transform(imageId: uuid): string {
+  transform(imageId: uuid | string): string {
     return `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.IMAGES_PATH}/${imageId}`;
   }
 }

@@ -2,7 +2,9 @@ package id.vn.thongdanghoang.graceful.web;
 
 import id.vn.thongdanghoang.graceful.dtos.payments.PaymentDTO;
 import id.vn.thongdanghoang.graceful.entities.OrderItemEntity;
+import id.vn.thongdanghoang.graceful.entities.ProductEntity;
 import id.vn.thongdanghoang.graceful.enums.OrderStatus;
+import id.vn.thongdanghoang.graceful.enums.OrderType;
 import id.vn.thongdanghoang.graceful.mappers.OrderMapper;
 import id.vn.thongdanghoang.graceful.securities.SecurityUser;
 import id.vn.thongdanghoang.graceful.services.PaymentService;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RequestMapping("/payments")
@@ -58,6 +61,11 @@ public class PaymentController {
                 })
                 .collect(Collectors.toSet());
         orderEntity.setOrderItems(itemEntities);
+        var isSpecialOrder = itemEntities.stream()
+                .map(OrderItemEntity::getProduct)
+                .map(ProductEntity::getOwner)
+                .anyMatch(Objects::nonNull);
+        orderEntity.setType(isSpecialOrder ? OrderType.SPECIAL : OrderType.NORMAL);
         var totalPrice= Math.round(itemEntities.stream().mapToDouble(OrderItemEntity::getTotalPrice).sum())
                 + paymentDTO.getRecipient().getShippingPrice().getPrice();
         orderEntity.setTotalPrice(totalPrice);
