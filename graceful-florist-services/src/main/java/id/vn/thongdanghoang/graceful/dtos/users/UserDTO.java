@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.UUID;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class UserDTO extends AbstractAuditableDTO {
@@ -17,4 +19,6 @@ public class UserDTO extends AbstractAuditableDTO {
 
     @NotNull
     private String address;
+
+    private UUID avatar;
 }
