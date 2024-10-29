@@ -40,11 +40,12 @@ public class UserController {
         if (Objects.nonNull(request.getCurrentPassword())
                 && Objects.nonNull(request.getNewPassword())
                 && Objects.nonNull(request.getConfirmPassword())
+                && StringUtils.isNotBlank(request.getCurrentPassword())
+                && StringUtils.isNotBlank(request.getNewPassword())
+                && StringUtils.isNotBlank(request.getConfirmPassword())
                 && StringUtils.equals(request.getNewPassword(), request.getConfirmPassword())
                 && userSecurityService.checkPassword(request.getCurrentPassword(), securityUser.getPassword())) {
             userEntity.setPassword(userSecurityService.encodePassword(request.getNewPassword()));
-        } else {
-            return ResponseEntity.badRequest().build();
         }
         userEntity = userMapper.updateProfile(userEntity, request);
         var savedUser = userService.updateUser(userEntity);
