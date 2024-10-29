@@ -103,6 +103,7 @@ public class ImageController {
             Thumbnails.of(inputStream)
                     .scale(1)
                     .outputQuality(0.1)
+                    .outputFormat("jpg")
                     .toOutputStream(outputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
