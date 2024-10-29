@@ -22,6 +22,7 @@ import {TokenInterceptor} from './mock/token.interceptor';
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {UserOrdersComponent} from './user-orders/user-orders.component';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -34,7 +35,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     HomepageComponent,
     FooterComponent,
     UserProfileComponent,
-    UserOrdersComponent
+    UserOrdersComponent,
+    SubscriptionsComponent
   ],
   imports: [
     AngularSvgIconModule.forRoot(),

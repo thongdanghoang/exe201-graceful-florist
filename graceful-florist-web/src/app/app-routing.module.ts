@@ -7,6 +7,7 @@ import {AdminRoleGuard} from './mock/admin-role.guard';
 import {UserRoleGuard} from './mock/user-role.guard';
 import {UserOrdersComponent} from './user-orders/user-orders.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
+import {SubscriptionsComponent} from './subscriptions/subscriptions.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,11 @@ const routes: Routes = [
   {
     path: AppRoutingConstants.USER_ORDERS,
     component: UserOrdersComponent,
+    canActivate: [UserRoleGuard]
+  },
+  {
+    path: AppRoutingConstants.SUBSCRIPTIONS_PATH,
+    component: SubscriptionsComponent,
     canActivate: [UserRoleGuard]
   },
   {

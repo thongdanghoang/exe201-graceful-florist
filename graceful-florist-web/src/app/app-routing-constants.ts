@@ -6,6 +6,7 @@ export class AppRoutingConstants {
   public static readonly HOME_PATH = 'homepage';
   public static readonly FORBIDDEN_PATH = 'forbidden';
   public static readonly USER = 'users';
+  public static readonly SUBSCRIPTIONS_PATH = 'subscriptions';
   public static readonly USER_PROFILE = `${AppRoutingConstants.USER}/profile`;
   public static readonly USER_ORDERS = `${AppRoutingConstants.USER}/orders`;
   public static readonly USER_PROFILE_URL = `${AppRoutingConstants.BACKEND_API_URL}/${AppRoutingConstants.USER}`;

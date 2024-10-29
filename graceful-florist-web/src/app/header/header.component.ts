@@ -64,6 +64,10 @@ export class HeaderComponent
     void this.router.navigate([AppRoutingConstants.PRODUCTS_PATH]);
   }
 
+  protected navigateToSubscriptions(): void {
+    void this.router.navigate([AppRoutingConstants.SUBSCRIPTIONS_PATH]);
+  }
+
   protected navigateToCart(): void {
     void this.router.navigate([
       `${AppRoutingConstants.PRODUCTS_PATH}/${AppRoutingConstants.CART_PATH}`
